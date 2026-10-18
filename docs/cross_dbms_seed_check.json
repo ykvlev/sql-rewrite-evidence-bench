@@ -1,0 +1,19 @@
+{
+  "dbms": "postgresql",
+  "dbms_version": "16.15",
+  "ddl_adapted": [],
+  "states": 28,
+  "pairs": 1008,
+  "mismatches": [],
+  "statuses": {},
+  "seconds": 162.8,
+  "checked_against": "published MySQL evidence in data/evidence (12 seed families)",
+  "inputs": {
+    "corpus_sha256": "c701d53e42d24070054b837cbefeb047c907021d198f36165844c642a80b5144",
+    "state_bank_sha256": "3809f11b6031ac4fd7594e0944a76c72ece9797588b3ce05d079266dafca38ee",
+    "mysql_version": "8.4.11",
+    "families": 12,
+    "states": 28,
+    "models": 3
+  }
+}

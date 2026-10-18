@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SREB leaderboard — SQL Rewrite Evidence Benchmark v0.2.0</title>
+<meta name="description" content="Executable evidence for SQL rewrites proposed by language models: refuted rewrites, preserved rewrites and the database states that prove them. Dataset v0.2.0.">
+<meta name="sreb-version" content="0.2.0">
+<meta name="sreb-source" content="data/evidence/*.json, docs/tables.md; numbers recomputable with scripts/recompute_tables.py">
+<meta name="generator" content="SREB static leaderboard (no JS, no external assets)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2314110f'/%3E%3Ctext x='16' y='23' font-family='monospace' font-size='18' fill='%23f0b96b' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+<!--
+  SREB leaderboard, dataset v0.2.0 (2026-10-18T22:33:23+00:00).
+  Every figure is computed from data/evidence/*.json and cross-checked against docs/tables.md.
+  Source digests (first 12 hex chars of sha256):
+  active_outer:7ad7d6edb0bc all_returned:efab7ee44781 borrowers:3695c65d2475 latest_ties:95fa13231a3a loan_count:284670e026ba no_loans:5dfd50d4777f not_returned:ccc1cadeb754 price_range:63dd9b7bad79 returned_count:f5db57984d27 top_books:30bfd4d9d855 union_bag:cba2bada1f8d zero_fee:60871cbbd783
+  Verify: python scripts/recompute_tables.py --repo-root .
+-->
+<style>
+:root{
+  --bg:#14110f; --panel:#1c1917; --panel-2:#241f1b; --line:#3b332c; --line-soft:#2b2521;
+  --text:#f2ece4; --muted:#b9afa2; --dim:#958a7f; --accent:#f0b96b; --accent-soft:#3a2a16;
+  --good:#8fd6a8; --bad:#ff9b86; --warm:#e7c28f;
+  --mono:ui-monospace,"Cascadia Mono","SF Mono",Consolas,"Liberation Mono",monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(240,185,107,.35)}
+a:hover{border-bottom-color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-bottom-color:transparent}
+.wrap{width:100%;max-width:1080px;margin:0 auto;padding:0 24px}
+.skip{position:absolute;left:-9999px}
+.skip:focus{left:16px;top:16px;z-index:10;background:var(--panel);padding:8px 12px;border:1px solid var(--line)}
+header.hero{position:relative;border-bottom:1px solid var(--line);overflow:hidden;
+  background:
+    radial-gradient(900px 380px at 12% -10%, rgba(240,185,107,.14), transparent 60%),
+    radial-gradient(700px 360px at 95% 0%, rgba(143,214,168,.07), transparent 55%),
+    var(--bg)}
+header.hero .wrap{padding-top:64px;padding-bottom:44px;position:relative}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);margin:0 0 18px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.kicker .dot{width:8px;height:8px;background:var(--accent);display:inline-block}
+.ver{border:1px solid var(--line);padding:2px 7px;color:var(--warm);letter-spacing:.08em}
+h1{font-size:clamp(2.1rem,6vw,4.15rem);line-height:1.02;letter-spacing:-.025em;margin:0 0 18px;font-weight:800}
+h1 span{color:var(--accent)}
+.lede{font-size:clamp(1.05rem,2.2vw,1.32rem);line-height:1.55;color:#e4dcd2;max-width:62ch;margin:0 0 18px}
+.lede strong{color:#fff;font-weight:650}
+.meta{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;color:var(--muted);margin:0;line-height:1.8}
+main{padding-top:34px;padding-bottom:24px}
+section{margin:0 0 54px}
+h2{font-size:clamp(1.35rem,3vw,1.7rem);letter-spacing:-.01em;margin:0 0 6px;font-weight:750}
+.section-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 20px;margin-bottom:16px}
+.section-head p{margin:0;color:var(--muted);font-size:14.5px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 46px}
+.stat{background:var(--panel);border:1px solid var(--line);padding:16px 16px 14px}
+.stat .k{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px}
+.stat .v{font-family:var(--mono);font-size:clamp(1.5rem,3vw,2rem);font-weight:700;color:var(--text);line-height:1.1;display:block}
+.stat .d{font-size:12.5px;color:var(--dim);display:block;margin-top:6px;line-height:1.45}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);background:var(--panel)}
+table{width:100%;border-collapse:collapse;min-width:760px}
+caption{caption-side:top;text-align:left;padding:14px 16px 12px;color:var(--muted);font-size:13px;border-bottom:1px solid var(--line-soft)}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);white-space:nowrap;font-weight:600;background:var(--panel-2)}
+td{padding:14px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:rgba(240,185,107,.045)}
+.num{text-align:right;white-space:nowrap}
+th.num{text-align:right}
+.n{font-family:var(--mono);font-size:20px;font-weight:700;display:block;line-height:1.15;
+  font-variant-numeric:tabular-nums;color:var(--text)}
+.n.bad{color:var(--bad)} .n.good{color:var(--good)} .n.muted{color:var(--muted)}
+.denom{font-family:var(--mono);font-size:12.5px;color:var(--muted);display:block;margin-top:2px}
+.model{font-weight:700;color:var(--text);border-bottom:0;display:block;line-height:1.3}
+a.model:hover{color:var(--accent)}
+.tag,.tag-inline{font-family:var(--mono);color:var(--warm);font-size:12px}
+.tag{display:inline-block;margin-top:5px;border:1px solid var(--line);padding:1px 6px}
+.tag-inline{font-size:12.5px}
+.sub{display:block;margin-top:5px;color:var(--dim);font-size:12px;line-height:1.5}
+.tag + .sub{margin-top:6px}
+.footnote{color:var(--muted);font-size:13px;line-height:1.65;margin:12px 0 0;max-width:95ch}
+.footnote code, code{font-family:var(--mono);font-size:.92em;color:#e6d8c4;background:rgba(255,255,255,.045);
+  border:1px solid var(--line-soft);padding:1px 5px}
+.evidence-example{background:var(--panel);border:1px solid var(--line);padding:22px 22px 20px}
+.evidence-example h2{margin-bottom:8px}
+.evidence-example p{color:var(--muted);margin:0 0 14px;max-width:78ch}
+pre{margin:0;overflow-x:auto;background:#0f0d0b;border:1px solid var(--line);padding:16px 18px}
+pre code{display:block;border:0;background:none;padding:0;color:#e7dccb;font-size:13px;line-height:1.7;white-space:pre}
+pre .k{color:var(--warm)} pre .r{color:var(--bad)} pre .g{color:var(--good)} pre .c{color:var(--dim)}
+details summary{cursor:pointer;list-style:none;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+details summary::-webkit-details-marker{display:none}
+details summary::marker{content:""}
+details summary::after{content:"+ show all states";font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--dim);margin-left:4px}
+details[open] summary::after{content:"− hide states"}
+.chip{font-family:var(--mono);font-size:11.5px;line-height:1.4;color:#e4d6c2;border:1px solid var(--line);
+  padding:1px 6px;background:rgba(240,185,107,.055);white-space:nowrap}
+.chip .x{color:var(--muted);margin-left:5px}
+.states{display:block;margin-top:12px;padding:10px 12px;border:1px solid var(--line-soft);background:#0f0d0b;
+  font-size:12px;line-height:1.7;white-space:normal;word-break:break-word;color:#d7cbbd}
+.how-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);padding:18px 18px 16px}
+.card h3{margin:0 0 7px;font-size:16px;letter-spacing:.01em}
+.card h3 .mark{font-family:var(--mono);font-size:12px;margin-right:8px}
+.card p{margin:0;color:var(--muted);font-size:14px;line-height:1.6}
+.card p + p{margin-top:8px}
+.card.keep h3 .mark{color:var(--good)} .card.break h3 .mark{color:var(--bad)}
+.card.none h3 .mark{color:var(--muted)} .card.count h3 .mark{color:var(--accent)}
+.links ul{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.links li{background:var(--panel);border:1px solid var(--line);padding:13px 15px}
+.links .t{display:block;font-weight:650;color:var(--text);margin-bottom:2px}
+.links .d{display:block;color:var(--dim);font-size:12.5px;line-height:1.5}
+.links .pending{border-style:dashed}
+.links .pending .t{color:var(--warm)}
+.links .pending .d{color:var(--muted)}
+footer{border-top:1px solid var(--line);background:var(--panel);padding:26px 0 34px;margin-top:20px}
+footer p{margin:0 0 8px;color:var(--muted);font-size:13px;line-height:1.65}
+footer p:last-child{margin-bottom:0}
+footer strong{color:var(--text)}
+@media (max-width:900px){
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:680px){
+  .wrap{padding:0 16px}
+  header.hero .wrap{padding-top:44px;padding-bottom:34px}
+  .how-grid,.links ul{grid-template-columns:1fr}
+  section{margin-bottom:44px}
+  table{min-width:0}
+  .leaderboard thead{position:absolute;left:-9999px}
+  .leaderboard, .leaderboard tbody, .leaderboard tr, .leaderboard td{display:block;width:100%}
+  .leaderboard tr{border-bottom:1px solid var(--line);padding:14px 14px 12px}
+  .leaderboard tr:last-child{border-bottom:0}
+  .leaderboard td{border:0;padding:4px 0;display:flex;align-items:baseline;justify-content:space-between;gap:16px}
+  .leaderboard td:first-child{display:block;padding-bottom:8px}
+  .leaderboard td:not(:first-child)::before{content:attr(data-label);font-family:var(--mono);font-size:11px;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .leaderboard .n{display:inline-block;font-size:18px}
+  .leaderboard .sub,.leaderboard .denom{display:inline-block;margin:0 0 0 8px}
+  .leaderboard td:first-child .sub{display:block}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker"><span class="dot" aria-hidden="true"></span> SREB — SQL Rewrite Evidence Benchmark <span class="ver">v0.2.0</span></p>
+    <h1>Executable evidence,<br><span>not success rates.</span></h1>
+    <p class="lede">For every SQL rewrite a language model proposes, SREB records a database state on which the rewrite changes the result — and the exact rows that prove it.</p>
+    <p class="meta">Library seed · MySQL 8.4.11 · 3 models · 12 evaluated families · 28 frozen states per family</p>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+  <section class="stats" aria-label="Dataset scale at v0.2.0">
+    <div class="stat"><span class="k">Dataset version</span><span class="v">0.2.0</span><span class="d">Library seed evaluated; corpus covers two schemas</span></div>
+    <div class="stat"><span class="k">Evaluated families</span><span class="v">12</span><span class="d">of 136 corpus families; 68 library + 68 shop</span></div>
+    <div class="stat"><span class="k">Executed checks</span><span class="v">1,008</span><span class="d">12 families × 28 states × 3 models = 1,008 state checks</span></div>
+    <div class="stat"><span class="k">Frozen family–state pairs</span><span class="v">3,808</span><span class="d">136 families × 28 states, in <code>data/states/</code></span></div>
+  </section>
+
+  <section aria-labelledby="models-title">
+    <div class="section-head">
+      <h2 id="models-title">Models</h2>
+      <p>Dataset v0.2.0 · sorted by refuting checks, <em>not</em> by accuracy</p>
+    </div>
+    <div class="table-wrap">
+      <table class="leaderboard">
+        <caption>Outcomes of model-proposed rewrites on the 12-family library seed. <strong>Refuting checks</strong> are state checks whose result differed from the reference — evidence against the rewrite, not a quality score.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Model</th>
+            <th scope="col" class="num">Proposed rewrites</th>
+            <th scope="col" class="num">Refuted</th>
+            <th scope="col" class="num">Preserved</th>
+            <th scope="col" class="num">No rewrite</th>
+            <th scope="col" class="num">Refuting checks</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td data-label="Model">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/tree/master/data/runs/qwen2.5-coder-7b/">Qwen2.5-Coder-7B</a>
+            <span class="tag mono">qwen2.5-coder:7b</span>
+            <span class="sub mono">ollama 0.40.4 · Q4_K_M</span>
+          </td>
+          <td class="num" data-label="Proposed rewrites"><span class="n">5</span></td>
+          <td class="num" data-label="Refuted"><span class="n bad">3</span><span class="sub">3 of 12 families</span></td>
+          <td class="num" data-label="Preserved"><span class="n good">2</span></td>
+          <td class="num" data-label="No rewrite"><span class="n muted">7</span></td>
+          <td class="num" data-label="Refuting checks"><span class="n bad">35</span><span class="denom mono">/ 336</span><span class="sub">executed checks refuted</span></td>
+        </tr>
+        <tr>
+          <td data-label="Model">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/tree/master/data/runs/qwen2.5-7b/">Qwen2.5-7B</a>
+            <span class="tag mono">qwen2.5:7b</span>
+            <span class="sub mono">ollama 0.40.5 · Q4_K_M</span>
+          </td>
+          <td class="num" data-label="Proposed rewrites"><span class="n">3</span></td>
+          <td class="num" data-label="Refuted"><span class="n bad">2</span><span class="sub">2 of 12 families</span></td>
+          <td class="num" data-label="Preserved"><span class="n good">1</span></td>
+          <td class="num" data-label="No rewrite"><span class="n muted">9</span></td>
+          <td class="num" data-label="Refuting checks"><span class="n bad">13</span><span class="denom mono">/ 336</span><span class="sub">executed checks refuted</span></td>
+        </tr>
+        <tr>
+          <td data-label="Model">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/tree/master/data/runs/phi3.5-3.8b/">Phi-3.5-mini 3.8B</a>
+            <span class="tag mono">phi3.5:3.8b</span>
+            <span class="sub mono">ollama 0.40.4 · Q4_0</span>
+          </td>
+          <td class="num" data-label="Proposed rewrites"><span class="n">2</span></td>
+          <td class="num" data-label="Refuted"><span class="n bad">1</span><span class="sub">1 of 12 families</span></td>
+          <td class="num" data-label="Preserved"><span class="n good">1</span></td>
+          <td class="num" data-label="No rewrite"><span class="n muted">10</span></td>
+          <td class="num" data-label="Refuting checks"><span class="n bad">3</span><span class="denom mono">/ 336</span><span class="sub">executed checks refuted</span></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="footnote">Each model was run on all 12 evaluated families with one response per family (temperature 0). “Proposed rewrites” = refuted + preserved. “No rewrite” = the model returned the reference query unchanged; “unsupported”/“error” are 0 for all three models. Refuting checks are shown over the 28 × 12 = 336 checks executed per model. Source: <a href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/docs/tables.md"><code>docs/tables.md</code></a> and <a href="https://github.com/ykvlev/sql-rewrite-evidence-bench/tree/master/data/evidence/"><code>data/evidence/</code></a>.</p>
+  </section>
+
+  <section class="evidence-example" aria-labelledby="witness-title">
+    <h2 id="witness-title">What a refutation looks like</h2>
+    <p>All three models independently rewrote this family as <code>UNION ALL</code> → <code>OR</code>. The rewrite looks harmless, but it collapses duplicate rows. One frozen state exposes it; the dataset stores the state and both result sets, and the refuting pair was replayed in a fresh schema.</p>
+    <pre><code><span class="k">family</span>      union_bag
+<span class="k">model</span>       qwen2.5-coder:7b
+<span class="k">state</span>       multiplicity_0  <span class="c">(profile: multiplicity)</span>
+<span class="k">reference</span>   [1] [1] [1] [1]
+<span class="k">candidate</span>   [1] [1] [1]
+<span class="k">verdict</span>     <span class="r">result changed — a duplicate row was lost</span>
+<span class="k">replay</span>      <span class="g">counterexample in an independent fresh schema</span></code></pre>
+  </section>
+
+  <section aria-labelledby="families-title">
+    <div class="section-head">
+      <h2 id="families-title">Refuted families</h2>
+      <p>3 of 12 evaluated families had at least one refuted rewrite</p>
+    </div>
+    <div class="table-wrap">
+      <table class="families">
+        <caption>Only the exact frozen states that broke the candidate are listed. State ids match <code>data/states/states.json</code>; <code>*_0</code> is the designed profile instance, <code>random_uniform_*</code> are pseudo-random states from fixed seeds.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Family</th>
+            <th scope="col">Model</th>
+            <th scope="col">Refuting states (by profile)</th>
+            <th scope="col" class="num">Count</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/all_returned.json">all_returned</a>
+            <span class="sub">condition inversion / conjunction of conditions</span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5-coder:7b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×17</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="chip mono">zero_fee<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, zero_fee_0, nullable_0, boundary_0, ties_0, random_uniform_0, random_uniform_1, random_uniform_2, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">23</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/all_returned.json">all_returned</a>
+            <span class="sub">condition inversion / conjunction of conditions</span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:7b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×5</span></span><span class="chip mono">zero_fee<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, zero_fee_0, nullable_0, boundary_0, random_uniform_0, random_uniform_7, random_uniform_10, random_uniform_12, random_uniform_18</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">10</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/union_bag.json">union_bag</a>
+            <span class="sub">UNION ALL collapsed into OR — bag semantics lost</span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5-coder:7b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="sub">witness state: <code>multiplicity_0</code></span></summary>
+              <code class="states">multiplicity_0, nullable_0, ties_0</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">3</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/union_bag.json">union_bag</a>
+            <span class="sub">UNION ALL collapsed into OR — bag semantics lost</span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:7b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="sub">witness state: <code>multiplicity_0</code></span></summary>
+              <code class="states">multiplicity_0, nullable_0, ties_0</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">3</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/union_bag.json">union_bag</a>
+            <span class="sub">UNION ALL collapsed into OR — bag semantics lost</span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">phi3.5:3.8b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="sub">witness state: <code>multiplicity_0</code></span></summary>
+              <code class="states">multiplicity_0, nullable_0, ties_0</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">3</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/zero_fee.json">zero_fee</a>
+            <span class="sub">aggregate condition replaced by a row condition</span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5-coder:7b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×6</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="chip mono">zero_fee<span class="x">×1</span></span><span class="sub">witness state: <code>multiplicity_0</code></span></summary>
+              <code class="states">multiplicity_0, zero_fee_0, ties_0, random_uniform_1, random_uniform_7, random_uniform_11, random_uniform_14, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">9</span></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="footnote">The other 9 evaluated families had no refuting state for any model: rewrites there were either preserved on the finite state bank or the model returned the reference unchanged. That is evidence of absence on this bank, not a proof of equivalence.</p>
+  </section>
+
+  <section aria-labelledby="how-title">
+    <div class="section-head"><h2 id="how-title">How to read these numbers</h2><p>Outcomes are about evidence, not about “model quality” in the abstract</p></div>
+    <div class="how-grid">
+      <div class="card break"><h3><span class="mark">✕</span>Refuted</h3><p>At least one frozen database state makes the candidate return a different result than the reference query. The state, both result sets and a replay flag are stored in <code>data/evidence/</code>.</p><p>One counterexample is enough: a rewrite is wrong if any allowed state breaks it.</p></div>
+      <div class="card keep"><h3><span class="mark">✓</span>Preserved</h3><p>The candidate differs from the reference SQL, and no state in the finite bank broke it. This is <strong>not</strong> a proof of equivalence — the bank is finite and cannot cover all possible databases.</p><p>Read it as “no evidence against on this bank”, never as “correct rewrite”.</p></div>
+      <div class="card none"><h3><span class="mark">–</span>No rewrite</h3><p>The model returned the reference query unchanged. That is neither a success nor a failure: there was no rewrite to validate.</p><p>Unsupported candidates and execution errors are separate outcomes; both are 0 in this release.</p></div>
+      <div class="card count"><h3><span class="mark">Σ</span>Why checks beat shares</h3><p>A pass rate hides the counterexample: 335/336 sounds excellent until you see that the one failure is a semantic bug. That is why this table shows <strong>refuting checks</strong> (35, 13, 3) over executed checks (336), not percentages.</p><p>Every check is one executable state; the count is directly auditable in the data.</p></div>
+    </div>
+  </section>
+
+  <section class="links" aria-labelledby="links-title">
+    <div class="section-head"><h2 id="links-title">Data &amp; links</h2><p>Everything is public and recomputable from the repository</p></div>
+    <ul>
+      <li><a href="https://github.com/ykvlev/sql-rewrite-evidence-bench"><span class="t">Repository</span><span class="d">github.com/ykvlev/sql-rewrite-evidence-bench</span></a></li>
+      <li><a href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/docs/tables.md"><span class="t">Summary tables</span><span class="d">docs/tables.md — regenerated from evidence</span></a></li>
+      <li><a href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/docs/DATASET_CARD.md"><span class="t">Dataset card</span><span class="d">Format, integrity rules and known limitations</span></a></li>
+      <li><a href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/docs/REPRODUCE.md"><span class="t">Reproduce</span><span class="d">Checks, hashes and evaluation protocol</span></a></li>
+      <li class="pending"><span class="t">Zenodo DOI</span><span class="d">DOI assigned at release — placeholder, no DOI yet</span></li>
+      <li class="pending"><span class="t">Hugging Face dataset</span><span class="d">Card prepared in docs/HF_CARD.md; hosting pending release</span></li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>License.</strong> Data and documentation: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Code in <code>scripts/</code> and <code>.github/</code>: MIT.</p>
+    <p><strong>Author.</strong> Artem Yakovlev · <a href="https://orcid.org/0009-0006-8617-7895">ORCID 0009-0006-8617-7895</a></p>
+    <p>Dataset v0.2.0 · numbers on this page are for v0.2.0 (2026-10-18) and will grow with the dataset. Every figure is derived from <code>data/evidence/*.json</code>; verify with <code>python scripts/recompute_tables.py --repo-root .</code></p>
+  </div>
+</footer>
+</body>
+</html>
