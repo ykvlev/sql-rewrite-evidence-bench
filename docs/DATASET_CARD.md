@@ -1,4 +1,4 @@
-# Dataset card — SREB v0.2
+# Dataset card — SREB v0.2.0
 
 ## Purpose
 
@@ -124,11 +124,24 @@ Rows are exactly what the DBMS returned (a list of rows, a row is a list of colu
 values). `independent_replay` records that the refuting pair was executed again in a
 fresh private schema.
 
+The file protocol pins its inputs: `protocol.corpus_sha256` is the sha256 of the corpus
+file of the evidence file's schema (`data/corpus/families.json` for the library schema,
+`data/corpus/shop.json` for the shop schema), and `protocol.state_bank_sha256` is the
+sha256 of `data/states/states.json`. `check_corpus.py` recomputes both and rejects a file
+whose pin points to inputs that are no longer in the tree.
+
 ### manifest.json
 
 SHA-256 of every file under `data/`, plus the recomputable counts, the model digests and
 the provenance of the upstream runs. A file that is not listed is a validation error, so
 no data can escape the frozen hashes.
+
+`manifest.counts` is the machine-readable statement of coverage; `check_corpus.py` recomputes
+every value from `data/`. `manifest.staging` records the current stage of the dataset —
+for v0.2.0 it is `states-generated-shop`: the corpus and the state banks cover all 136
+families, while model runs and evidence cover the 12-family library seed. The same staging
+note is repeated in the dataset card so a reader cannot mistake corpus coverage for
+evaluated coverage.
 
 ## Integrity rules
 
@@ -143,6 +156,8 @@ no data can escape the frozen hashes.
 6. Every *evaluated* family must have a run record for every model directory and an
    evidence file. A family may still have no runs (staged coverage), but a run record may
    only exist for a family that has frozen states.
+7. Every evidence file must pin the current corpus and state-bank hashes in its protocol;
+   `check_corpus.py` recomputes them, so CI fails when evidence and inputs drift apart.
 
 ## Known limitations
 

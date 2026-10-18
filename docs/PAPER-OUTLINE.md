@@ -43,8 +43,9 @@ Define the terminology the dataset uses:
 - **state profile** — the property a state is built to exercise (empty, nullable,
   multiplicity, boundary, ties, random).
 - **refutation** — reference and candidate return different results on an allowed state.
-- **witness** — the rows that differ, in a form a human can read.
-- **minimal witness** — the smallest state still refuting, for the report.
+- **witness** — the refuting state and the rows that differ, in a form a human can read.
+  Witnesses are not minimised: no state-reduction procedure was run, so they are the first
+  refuting state found, not the smallest one.
 
 Explicitly: absence of refutation on a finite bank is **not** a proof of equivalence.
 The dataset must never imply otherwise.
@@ -71,19 +72,23 @@ For each (family, model):
 
 ## 6. Pilot results (numbers pending final dataset)
 
-Seed scale: 12 families, 28 states each, 336 checks per model, three models.
+The v0.2.0 corpus has 136 families on two schemas; the pilot evidence below covers the
+12-family library seed, 28 states each, 336 checks per model, three models.
 
 - The code-specialised model rewrote more often and was refuted more often than the
   general-purpose model — the opposite of the intuition that specialisation helps.
-- All three models independently produced the same wrong rewrite (`UNION ALL` → `UNION`),
-  losing row multiplicities; only multiplicity-designed states caught it, random states did not.
+- All three models independently produced the same wrong rewrite (`UNION ALL` → `OR`),
+  losing row multiplicities; only the states designed for multiplicity, nullable columns
+  and ties caught it, and none of the random states did.
 - Two models failed on the same family with *different* mechanisms, which matters for
   error taxonomies.
 
 ## 7. Reproducibility
 
 - Every published number recomputable from `data/` without rerunning a model.
-- Every run rerunnable from pinned hashes.
+- Every run is traceable to its model digest, sampling parameters, DBMS version and the
+  corpus/state-bank hashes pinned in its record. Model collection and evaluation scripts
+  are not part of v0.2.0, so a rerun requires reproducing the recorded protocol.
 - Engine version is part of the record: behaviour changes across releases.
 
 ## 8. Limitations

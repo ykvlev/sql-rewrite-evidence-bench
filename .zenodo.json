@@ -1,6 +1,6 @@
 {
   "title": "SREB: SQL Rewrite Evidence Benchmark",
-  "description": "A benchmark of executable evidence for SQL query rewrites proposed by language models. For every rewrite the dataset records the database state on which the result changes and the rows that prove it, together with the DBMS version, model digest, sampling parameters and a minimal counterexample.",
+  "description": "A benchmark of executable evidence for SQL query rewrites proposed by language models. For every rewrite the dataset records the database state on which the result changes and the rows that prove it, together with the DBMS version, model digest, sampling parameters and a counterexample.",
   "upload_type": "dataset",
   "access_right": "open",
   "license": "cc-by-4.0",

@@ -10,8 +10,10 @@ python scripts/check_corpus.py --repo-root .
 ```
 
 Verifies that every file listed in `manifest.json` matches its sha256, that every state
-belongs to an existing family, and that every `refuted` record carries refuting states
-and a witness. CI runs exactly this command on every push.
+belongs to an existing family, that every `refuted` record carries refuting states and a
+witness, and that every evidence file pins the current corpus and state-bank hashes. A
+stale pin is a hard error: published evidence must never refer to inputs that are no
+longer in the tree. CI runs exactly this command on every push.
 
 ## 2. Recompute the tables
 
@@ -19,29 +21,29 @@ and a witness. CI runs exactly this command on every push.
 python scripts/recompute_tables.py --repo-root .
 ```
 
-Builds the summary tables (model x outcome, refutations per family, profile contributions)
-from `data/evidence/`. The output must match `docs/tables.md` byte for byte; a mismatch
-means the published tables are stale.
+Builds the summary tables (model × outcome, refutations per family) from `data/evidence/`.
+The output must match `docs/tables.md` byte for byte; a mismatch means the published
+tables are stale. CI reruns both the check and the regeneration and fails if the committed
+file differs.
 
-## 3. Rerun a model
+## 3. Model collection and evaluation
 
-```bash
-python scripts/run_model.py --model qwen2.5-coder:7b --out data/runs/qwen2.5-coder_7b
-```
+The scripts that collect model answers and execute candidates on a DBMS are **not part of
+v0.2.0**; the dataset publishes their outputs instead. Each record carries everything needed
+to audit it:
 
-Requires a local Ollama at `127.0.0.1:11434`. The script refuses to run if the corpus or
-state bank hashes differ from the frozen manifest: a run is only comparable if the inputs
-are identical.
+- `data/runs/<model>/<family>.json` — model name, digest, quantization, engine version,
+  temperature, seed (null when unset), context length, max tokens, the exact prompt and the
+  raw response, plus the parsed `candidate_sql`.
+- `data/evidence/<family>.json` — DBMS and version, the corpus and state-bank pins, and per
+  model: status, refuting states, the witness rows and the outcome of an independent replay
+  in a fresh schema.
+- `data/states/states.json` — the full rows of every allowed state, so a candidate can be
+  re-executed against the same instances.
 
-## 4. Re-evaluate on a DBMS
-
-```bash
-python scripts/evaluate.py --run data/runs/qwen2.5-coder_7b --dbms mysql
-```
-
-Starts from a clean database per state, applies the state rows, executes the reference
-query and the candidate, and records the first difference. For MySQL and PostgreSQL the
-connection parameters are documented in `scripts/requirements.txt` and `.env.example`.
+Re-running a model therefore requires reproducing the sampling protocol recorded in the
+run file and the state rows from the bank; the frozen hashes make a run comparable only if
+its inputs are identical.
 
 ## What must never change silently
 
@@ -51,8 +53,9 @@ and must not be mixed with new ones.
 
 | Pinned | Where |
 |---|---|
-| corpus sha256 | `manifest.json` |
-| state bank sha256 | `manifest.json` |
+| dataset version | `manifest.json`, `CITATION.cff`, each file under `data/` |
+| corpus sha256 | `manifest.json` and `protocol.corpus_sha256` of each evidence file |
+| state bank sha256 | `manifest.json` and `protocol.state_bank_sha256` of each evidence file |
 | model digest | each file in `data/runs/` |
 | DBMS version | each file in `data/evidence/` |
 | sampling parameters | each file in `data/runs/` |

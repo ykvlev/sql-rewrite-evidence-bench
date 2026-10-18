@@ -1,6 +1,6 @@
 # SREB summary tables
 
-Families: **12**. Generated from `data/evidence/` only.
+Families with evidence: **12** (corpus coverage is larger; see `manifest.json`). Generated from `data/evidence/` only.
 
 ## Outcomes per model
 

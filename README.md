@@ -19,16 +19,16 @@ reference [1,1,1,1]   candidate [1,1,1]   ->  multiplicity lost, 3 refuting stat
 | Cosette, VeriEQL | formal equivalence proofs | only for supported constructs |
 
 SREB keeps the evidence, not just the score. Every record is reproducible: DBMS version,
-model digest, sampling parameters, state profile, and a minimal counterexample.
+model digest, sampling parameters, state profile, and a counterexample.
 
 ## Dataset layout
 
 ```
 data/
-  corpus/    query families: schema DDL + reference SQL
+  corpus/    query families per schema: DDL + constraints + reference SQL
   states/    frozen state banks: profiles (empty, nullable, multiplicity, boundary, random)
   runs/      model outputs, one file per (model, query): raw response, parsed candidate
-  evidence/  per-query outcomes: status, refuting states, minimal witness rows
+  evidence/  per-query outcomes: status, refuting states, witness rows
 ```
 
 See [docs/DATASET_CARD.md](docs/DATASET_CARD.md) for the full format specification.
@@ -40,24 +40,27 @@ See [docs/DATASET_CARD.md](docs/DATASET_CARD.md) for the full format specificati
 - `candidate_sql` — the proposed rewrite, verbatim
 - `status` — `preserved` / `refuted` / `no_rewrite` / `unsupported` / `error`
 - `refuting_states` — state profiles that break the rewrite
-- `witness` — reference rows vs candidate rows on the minimal state
-- `protocol` — DBMS version, temperature, seed, context length
+- `witness` — reference rows vs candidate rows on a refuting state
+- `protocol` — DBMS version, temperature, seed, context length, input pins
 
 ## Reproducing
 
+Everything published here is verified and recomputed from the data alone:
+
 ```bash
 pip install -r scripts/requirements.txt
-python scripts/check_corpus.py        # validate corpus and state bank integrity
-python scripts/run_model.py --model qwen2.5-coder:7b --corpus data/corpus
-python scripts/evaluate.py --run data/runs/<run> --dbms mysql
+python scripts/check_corpus.py            # integrity, hashes, pins, schema constraints
+python scripts/recompute_tables.py        # rebuild docs/tables.md from data/evidence/
 ```
 
-Every script pins hashes: a run is only valid if the corpus and state bank hashes match
-the frozen manifest.
+Model collection and DBMS evaluation scripts are **not part of v0.2.0**: the dataset
+publishes their outputs in `data/runs/` and `data/evidence/`, and each record carries the
+engine version, model digest, sampling parameters and input hashes needed to audit it.
+See [docs/REPRODUCE.md](docs/REPRODUCE.md) for the exact protocol.
 
 ## Status
 
-Corpus **v0.2**: 136 query families on two synthetic schemas — 68 in the library (3
+Dataset version **0.2.0**. Corpus **v0.2.0**: 136 query families on two synthetic schemas — 68 in the library (3
 tables) and 68 in the shop (7 tables: categories, products, customers, orders,
 order_items, payments, reviews). Each family has 28 frozen states: 8 designed profiles
 (fixed, empty, no_rows, multiplicity, zero_value, nullable, boundary, ties) and 20

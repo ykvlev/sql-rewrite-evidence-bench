@@ -1,6 +1,6 @@
 {
   "schema": "library",
-  "dataset_version": "0.1.0",
+  "dataset_version": "0.2.0",
   "family": "zero_fee",
   "model": "phi3.5:3.8b",
   "model_slug": "phi3.5-3.8b",

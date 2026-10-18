@@ -1,6 +1,6 @@
 {
   "schema": "library",
-  "dataset_version": "0.1.0",
+  "dataset_version": "0.2.0",
   "family": "borrowers",
   "model": "qwen2.5-coder:7b",
   "model_slug": "qwen2.5-coder-7b",

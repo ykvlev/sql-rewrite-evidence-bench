@@ -16,7 +16,11 @@ Rules:
      and raw_response keys must be present.
   6. Every evidence record must have an allowed status; "refuted" requires refuting_states
      and a witness, and the witness state must be one of the refuting states.
-  7. If manifest.json declares counts, they must be recomputable from data/ alone.
+  7. Every evidence file must pin, in protocol.corpus_sha256 and
+     protocol.state_bank_sha256, the current sha256 of its schema corpus file and of
+     data/states/states.json. A stale pin is an error: published evidence would otherwise
+     refer to inputs that are no longer in the tree.
+  8. If manifest.json declares counts, they must be recomputable from data/ alone.
 Exits non-zero on any violation.
 """
 
@@ -96,6 +100,7 @@ def main() -> int:
 
     family_ids: set[str] = set()
     family_schema: dict[str, str] = {}
+    corpus_hashes: dict[str, str] = {}
     corpus_root = root / "data" / "corpus"
     corpus_files = sorted(corpus_root.glob("*.json")) if corpus_root.exists() else []
     for corpus_file in corpus_files:
@@ -108,6 +113,8 @@ def main() -> int:
         schema = corpus.get("schema")
         if not schema:
             errors.append(f"{rel}: no schema name")
+        else:
+            corpus_hashes[schema] = sha256(corpus_file)
         if not corpus.get("ddl"):
             errors.append(f"{rel}: no schema DDL")
         for fam in corpus.get("families", []):
@@ -132,6 +139,7 @@ def main() -> int:
     state_counts: dict[str, int] = {}
     state_pairs = 0
     state_file = root / "data" / "states" / "states.json"
+    states_hash: str | None = sha256(state_file) if state_file.exists() else None
     if state_file.exists():
         states = load(state_file)
         for st in states.get("states", []):
@@ -195,6 +203,25 @@ def main() -> int:
                 errors.append(f"{rel}: evidence for unknown family {ev.get('family')!r}")
             if ev.get("family") != path.stem:
                 errors.append(f"{rel}: family does not match file name")
+            protocol = ev.get("protocol") or {}
+            schema = ev.get("schema") or family_schema.get(ev.get("family"))
+            expected_corpus = corpus_hashes.get(schema)
+            pinned_corpus = protocol.get("corpus_sha256")
+            if not pinned_corpus:
+                errors.append(f"{rel}: protocol without corpus_sha256 pin")
+            elif expected_corpus is None:
+                errors.append(f"{rel}: cannot resolve corpus file for schema {schema!r}")
+            elif pinned_corpus != expected_corpus:
+                errors.append(f"{rel}: stale corpus_sha256 pin "
+                              f"({pinned_corpus[:12]}… != {expected_corpus[:12]}…)")
+            pinned_states = protocol.get("state_bank_sha256")
+            if not pinned_states:
+                errors.append(f"{rel}: protocol without state_bank_sha256 pin")
+            elif states_hash is None:
+                errors.append(f"{rel}: state bank file is missing")
+            elif pinned_states != states_hash:
+                errors.append(f"{rel}: stale state_bank_sha256 pin "
+                              f"({pinned_states[:12]}… != {states_hash[:12]}…)")
             records = ev.get("evidence")
             if isinstance(records, list):
                 for rec in records:
