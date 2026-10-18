@@ -3,11 +3,11 @@
   "title": "SQL Rewrite Evidence Benchmark",
   "version": "0.1.0",
   "schema": "library",
-  "created_utc": "2026-10-18T22:26:04+00:00",
+  "created_utc": "2026-10-18T22:29:31+00:00",
   "counts": {
     "families": 136,
     "states_per_family": 28,
-    "state_family_pairs": 336,
+    "state_family_pairs": 3808,
     "models": 3,
     "run_records": 36,
     "evidence_records": 36,
@@ -16,7 +16,7 @@
       "library": 68,
       "shop": 68
     },
-    "families_with_states": 12,
+    "families_with_states": 136,
     "evaluated_families": 12
   },
   "models": [
@@ -106,12 +106,12 @@
     "data/runs/qwen2.5-coder-7b/top_books.json": "6be0a2e5515505429d810bdbe39f7c2222502ecc7fe78dda640f7b35bad5a693",
     "data/runs/qwen2.5-coder-7b/union_bag.json": "8cb9856528e8107bfdd4dccc0fb75d4189c36c57f257519e05ddf6545c3956af",
     "data/runs/qwen2.5-coder-7b/zero_fee.json": "05fd629d07d6b36037a21d2c6dcc791e9676db3443895afb87cd30ab34ac38a3",
-    "data/states/states.json": "c4c0bb63f994b033fcbb8c0f76c16ff2f72ca699d8ab4517e174fb376b700470"
+    "data/states/states.json": "3809f11b6031ac4fd7594e0944a76c72ece9797588b3ce05d079266dafca38ee"
   },
   "dataset_version": "0.2.0",
   "staging": {
-    "stage": "corpus-expansion",
-    "note": "Корпус расширен до двух схем; замороженные состояния и прогоны моделей пока покрывают только 12 seed-семейств «Библиотеки».",
+    "stage": "states-generated-shop",
+    "note": "Состояния сгенерированы для семейств двух схем; прогоны моделей и улики пока покрывают только 12 seed-семейств «Библиотеки».",
     "corpus_files": [
       "data/corpus/families.json",
       "data/corpus/shop.json"

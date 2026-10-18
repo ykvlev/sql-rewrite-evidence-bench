@@ -57,9 +57,21 @@ the frozen manifest.
 
 ## Status
 
-Work in progress. Seed corpus: 12 query families from the library domain, 28 frozen states
-each (336 checks per model), three models evaluated. Scaling to 200+ families, 8 models,
-two DBMS engines.
+Corpus **v0.2**: 136 query families on two synthetic schemas — 68 in the library (3
+tables) and 68 in the shop (7 tables: categories, products, customers, orders,
+order_items, payments, reviews). Each family has 28 frozen states: 8 designed profiles
+(fixed, empty, no_rows, multiplicity, zero_value, nullable, boundary, ties) and 20
+pseudo-random states from fixed seeds — 3 808 family–state pairs in total. Every state
+was loaded into MySQL 8.4.11 with real foreign keys and CHECK constraints enabled, and
+every reference query was executed on it.
+
+Model runs and executable evidence currently cover the 12-family library seed: three
+models (`qwen2.5-coder:7b`, `qwen2.5:7b`, `phi3.5:3.8b`), 36 run records, 36 evidence
+records, 1 008 executed checks. Every data file is SHA-256 frozen in `manifest.json`;
+`python scripts/check_corpus.py` passes locally and in CI, and
+`python scripts/recompute_tables.py` reproduces `docs/tables.md` from `data/evidence/`.
+
+Next: model runs on the expanded corpus, a second DBMS engine, and more models.
 
 ## Licence
 

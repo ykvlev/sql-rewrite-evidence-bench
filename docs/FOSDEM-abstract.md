@@ -13,14 +13,14 @@ Large language models are increasingly used to propose SQL rewrites for performa
 
 This talk presents an approach that checks rewrites against the states a schema actually allows, and records the evidence rather than a score. For each candidate rewrite the approach executes the reference and the candidate on a bank of database states generated under the real constraints, and when the results differ it stores the refuting state and the concrete rows that prove the difference.
 
-Two findings from the pilot dataset. First, a model specialised in code was not safer than a general-purpose one: it rewrote more often and its rewrites were refuted more often. Second, three different models independently produced the same wrong rewrite, replacing `UNION ALL` with `UNION`: row multiplicities disappeared, and none of the randomly generated states caught it — only the states designed for multiplicity did.
+Two findings from the pilot dataset. First, a model specialised in code was not safer than a general-purpose one: it rewrote more often and its rewrites were refuted more often. Second, three different models independently produced the same wrong rewrite, replacing `UNION ALL` with a disjunction `OR`: row multiplicities disappeared, and none of the randomly generated states caught it — only the states built for multiplicity, NULL handling and ties did.
 
 The talk argues that practitioners adopting LLM-assisted rewriting need a validation step before trusting a speedup, and shows a reproducible protocol that runs against a real database.
 
 ## What the audience gets
 
 - A concrete failure mode that survives review because it is invisible in timing measurements.
-- A reproducible procedure: state profiles, execution, minimal counterexample.
+- A reproducible procedure: state profiles, execution, and the rows that prove the difference.
 - An open dataset and scripts where every published number can be recomputed.
 
 ## About the speaker

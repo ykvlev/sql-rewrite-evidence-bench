@@ -1,4 +1,4 @@
-# Dataset card — SREB v0.1
+# Dataset card — SREB v0.2
 
 ## Purpose
 
@@ -6,24 +6,32 @@ To make SQL rewrite quality measurable with executable evidence rather than decl
 success rates. A model that claims a rewrite preserves the result must survive the
 allowed states of the database; when it does not, the dataset records exactly where.
 
-## What the seed contains
+## What the dataset contains
 
 | Item | Count |
 |---|---|
-| Query families (library schema) | 12 |
+| Query families | 136 (68 library schema + 68 shop schema) |
 | Frozen states per family | 28 |
-| Family–state pairs | 336 |
-| Models | 3 (`qwen2.5-coder:7b`, `qwen2.5:7b`, `phi3.5:3.8b`) |
+| Family–state pairs | 3 808 |
+| Models with runs | 3 (`qwen2.5-coder:7b`, `qwen2.5:7b`, `phi3.5:3.8b`) |
 | Run records (model × family) | 36 |
 | Evidence records (model × family) | 36 |
 | Executed checks (model × family × state) | 1 008 |
+| Families with model runs | 12 (the library seed) |
+
+Coverage is staged: the corpus and the state banks cover all 136 families, while model
+runs and evidence currently cover the 12-family library seed. A family without runs is
+valid; a run may only exist for a family with frozen states (see integrity rules).
 
 ## Structure
 
-### corpus/families.json
+### corpus/families.json and corpus/shop.json
 
-Schema DDL, the constraints it enforces, and the query families with a query-shape
-profile. `profile` is derived from the reference SQL only, never from model answers.
+One file per schema. Each declares the schema DDL, the constraints it enforces, and the
+query families with a query-shape `profile` and a designed `breaking_profile`. `profile`
+is derived from the reference SQL only, never from model answers; `breaking_profile` is
+the state profile the family is designed to be challenged by (measured refutations live
+in `evidence/`).
 
 ```json
 {
@@ -31,16 +39,24 @@ profile. `profile` is derived from the reference SQL only, never from model answ
   "ddl": ["CREATE TABLE lib_readers (...)", "..."],
   "constraints": ["lib_readers.id PRIMARY KEY", "lib_loans.reader_id REFERENCES lib_readers(id)"],
   "families": [
-    {"id": "loan_count", "reference_sql": "SELECT ...", "profile": "outer_join_aggregate",
+    {"id": "loan_count", "schema": "library", "reference_sql": "SELECT ...",
+     "profile": "outer_join_aggregate", "breaking_profile": "empty",
      "intent": "Число выдач, включая ноль", "ordered": true}
   ]
 }
 ```
 
+`shop.json` has the same shape for the shop schema (`categories`, `products`, `customers`,
+`orders`, `order_items`, `payments`, `reviews`) with PK, FK, NOT NULL and CHECK
+constraints on non-negative amounts and quantities and on enumerated columns.
+
 ### states/states.json
 
-Frozen bank of database states. One bank of 28 states is applied to every family and
-expanded one record per (family, state) pair, so each record is self-contained:
+Two frozen banks, one per schema, each of 28 states: 8 designed profiles
+(`fixed`, `empty`, `no_rows`, `multiplicity`, `zero_value`, `nullable`, `boundary`,
+`ties`) and 20 pseudo-random states with fixed seeds 0…19. A bank is applied to every
+family of its schema and expanded one record per (family, state) pair, so each record is
+self-contained:
 
 ```json
 {"family": "loan_count", "profile": "multiplicity_0", "profile_family": "multiplicity",
@@ -52,6 +68,12 @@ expanded one record per (family, state) pair, so each record is self-contained:
 `random_uniform_0` … `random_uniform_19`); `profile_family` groups the ids
 (`fixed`, `empty`, `no_loans`, `multiplicity`, `zero_fee`, `nullable`, `boundary`,
 `ties`, `random_uniform`). Random states carry the generator seed.
+
+The library bank is the frozen seed bank: its domain-named `no_loans_0` and `zero_fee_0`
+implement the generic `no_rows` and `zero_value` profiles. The shop bank was generated
+deterministically (`random.Random(1000 + seed)`), and every state was loaded into
+MySQL in tables with real constraints — foreign keys and CHECK constraints enabled — before
+any query was executed on it. A state that violates the schema is not part of the dataset.
 
 ### runs/<model>/<family>.json
 
@@ -118,7 +140,9 @@ no data can escape the frozen hashes.
 4. `status: preserved` means no refuting state was found — it does **not** prove
    equivalence.
 5. Models are described by digest, not by name alone. Two runs of "the same" tag can differ.
-6. Every family must have a run record for every model directory and an evidence file.
+6. Every *evaluated* family must have a run record for every model directory and an
+   evidence file. A family may still have no runs (staged coverage), but a run record may
+   only exist for a family that has frozen states.
 
 ## Known limitations
 
@@ -129,3 +153,10 @@ no data can escape the frozen hashes.
   stored as produced but a rerun is not guaranteed to be byte-identical.
 - Candidate rewrites were executed on MySQL only in this seed; portability to other
   engines is not established.
+- The state bank is shared by all families of a schema: it stresses the schema, not every
+  individual query shape. Coverage of edge cases that are specific to one family is a
+  design target, not a guarantee.
+- `breaking_profile` is a design intent, not a measurement; only families with model runs
+  have measured refutations.
+- Model runs cover 12 of 136 families; no aggregate claim over the expanded corpus follows
+  from the current evidence.
