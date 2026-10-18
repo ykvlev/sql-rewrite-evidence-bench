@@ -9,10 +9,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Install
-        run: pip install jsonschema
+
+      - name: Syntax check of all scripts
+        run: |
+          set -e
+          for f in scripts/*.py; do
+            echo "checking $f"
+            python -m py_compile "$f"
+          done
+
       - name: Validate dataset integrity
         run: python scripts/check_corpus.py --repo-root .
+
+      - name: Recompute summary tables and compare with committed docs/tables.md
+        run: python scripts/recompute_tables.py --repo-root .
+
+      - name: Fail if generated tables differ from committed ones
+        run: |
+          set -e
+          python scripts/recompute_tables.py --repo-root . --write
+          if ! git diff --quiet -- docs/tables.md; then
+            echo "::error::docs/tables.md is stale: run scripts/recompute_tables.py --write and commit the result"
+            git --no-pager diff -- docs/tables.md
+            exit 1
+          fi
