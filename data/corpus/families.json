@@ -1,0 +1,162 @@
+{
+  "schema": "library",
+  "dataset": "SREB",
+  "dataset_version": "0.1.0",
+  "dialect": "mysql",
+  "dbms_tested": "MySQL 8.4.11",
+  "source": {
+    "corpus_sha256": "ff7d02331e7c5a4b650eff35742bb7d466753e7a2ed51d59310a6e8c3581ca58",
+    "source_file": "research/library_v1/corpus.json",
+    "frozen": "2026-10-15",
+    "note": "Frozen synthetic library corpus: 12 hand-written queries, 28 allowed states per family, 4 positive controls in the upstream corpus."
+  },
+  "ddl": [
+    "CREATE TABLE lib_readers(id INTEGER PRIMARY KEY, name VARCHAR(40) NOT NULL UNIQUE)",
+    "CREATE TABLE lib_books(id INTEGER PRIMARY KEY, title VARCHAR(40) NOT NULL UNIQUE, price INTEGER NOT NULL)",
+    "CREATE TABLE lib_loans(id INTEGER PRIMARY KEY, reader_id INTEGER NOT NULL, book_id INTEGER NOT NULL, day_no INTEGER NOT NULL, fee INTEGER NOT NULL, returned INTEGER, FOREIGN KEY(reader_id) REFERENCES lib_readers(id), FOREIGN KEY(book_id) REFERENCES lib_books(id))"
+  ],
+  "constraints": [
+    "lib_readers.id PRIMARY KEY",
+    "lib_readers.name NOT NULL UNIQUE",
+    "lib_books.id PRIMARY KEY",
+    "lib_books.title NOT NULL UNIQUE",
+    "lib_books.price NOT NULL",
+    "lib_loans.id PRIMARY KEY",
+    "lib_loans.reader_id NOT NULL",
+    "lib_loans.reader_id REFERENCES lib_readers(id)",
+    "lib_loans.book_id NOT NULL",
+    "lib_loans.book_id REFERENCES lib_books(id)",
+    "lib_loans.day_no NOT NULL",
+    "lib_loans.fee NOT NULL",
+    "lib_loans.returned NULL allowed (nullable column)"
+  ],
+  "families": [
+    {
+      "id": "no_loans",
+      "reference_sql": "SELECT r.id FROM lib_readers r WHERE NOT EXISTS (SELECT 1 FROM lib_loans l WHERE l.reader_id=r.id) ORDER BY r.id",
+      "profile": "anti_join_subquery",
+      "intent": "Читатели без выдач",
+      "ordered": true,
+      "tables": [
+        "lib_readers",
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "loan_count",
+      "reference_sql": "SELECT r.id,COUNT(l.id) AS n FROM lib_readers r LEFT JOIN lib_loans l ON l.reader_id=r.id GROUP BY r.id ORDER BY r.id",
+      "profile": "outer_join_aggregate",
+      "intent": "Число выдач, включая ноль",
+      "ordered": true,
+      "tables": [
+        "lib_readers",
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "zero_fee",
+      "reference_sql": "SELECT r.id FROM lib_readers r LEFT JOIN lib_loans l ON l.reader_id=r.id GROUP BY r.id HAVING COALESCE(SUM(l.fee),0)=0 ORDER BY r.id",
+      "profile": "aggregate_having",
+      "intent": "Читатели с нулевой суммой сборов",
+      "ordered": true,
+      "tables": [
+        "lib_readers",
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "returned_count",
+      "reference_sql": "SELECT reader_id,COUNT(CASE WHEN returned=1 THEN 1 END) AS n FROM lib_loans GROUP BY reader_id ORDER BY reader_id",
+      "profile": "aggregate_case",
+      "intent": "Число возвратов среди имеющих выдачи",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "borrowers",
+      "reference_sql": "SELECT DISTINCT r.id FROM lib_readers r JOIN lib_loans l ON l.reader_id=r.id JOIN lib_books b ON b.id=l.book_id WHERE b.price<=20 ORDER BY r.id",
+      "profile": "distinct_join",
+      "intent": "Читатели, бравшие недорогие книги",
+      "ordered": true,
+      "tables": [
+        "lib_readers",
+        "lib_books",
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "latest_ties",
+      "reference_sql": "SELECT l.id,l.reader_id,l.day_no FROM lib_loans l WHERE l.day_no=(SELECT MAX(x.day_no) FROM lib_loans x WHERE x.reader_id=l.reader_id) ORDER BY l.id",
+      "profile": "correlated_max",
+      "intent": "Все выдачи в последний день читателя",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "price_range",
+      "reference_sql": "SELECT id,price FROM lib_books WHERE price BETWEEN 10 AND 20 ORDER BY id",
+      "profile": "range_filter",
+      "intent": "Книги в замкнутом диапазоне цены",
+      "ordered": true,
+      "tables": [
+        "lib_books"
+      ]
+    },
+    {
+      "id": "not_returned",
+      "reference_sql": "SELECT id FROM lib_loans WHERE returned<>1 ORDER BY id",
+      "profile": "null_aware_filter",
+      "intent": "Выдачи с известным отсутствием возврата",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "active_outer",
+      "reference_sql": "SELECT r.id,l.id AS loan_id FROM lib_readers r LEFT JOIN lib_loans l ON l.reader_id=r.id AND l.returned=0 ORDER BY r.id,l.id",
+      "profile": "outer_join_predicate",
+      "intent": "Все читатели и невозвращённые выдачи",
+      "ordered": true,
+      "tables": [
+        "lib_readers",
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "union_bag",
+      "reference_sql": "SELECT reader_id FROM lib_loans WHERE returned=0 UNION ALL SELECT reader_id FROM lib_loans WHERE fee=0 ORDER BY reader_id",
+      "profile": "union_all",
+      "intent": "Объединение выдач с сохранением повторов",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "all_returned",
+      "reference_sql": "SELECT r.id FROM lib_readers r WHERE EXISTS (SELECT 1 FROM lib_loans l WHERE l.reader_id=r.id) AND NOT EXISTS (SELECT 1 FROM lib_loans l WHERE l.reader_id=r.id AND (l.returned<>1 OR l.returned IS NULL)) ORDER BY r.id",
+      "profile": "semi_anti_join",
+      "intent": "Читатели, у которых все выдачи возвращены",
+      "ordered": true,
+      "tables": [
+        "lib_readers",
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "top_books",
+      "reference_sql": "SELECT id,price FROM lib_books ORDER BY price DESC,id ASC LIMIT 2",
+      "profile": "top_n_ties",
+      "intent": "Две самые дорогие книги с разрешением равенств",
+      "ordered": true,
+      "tables": [
+        "lib_books"
+      ]
+    }
+  ]
+}

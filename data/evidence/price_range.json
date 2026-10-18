@@ -1,0 +1,51 @@
+{
+  "schema": "library",
+  "dataset_version": "0.1.0",
+  "family": "price_range",
+  "reference_sql": "SELECT id,price FROM lib_books WHERE price BETWEEN 10 AND 20 ORDER BY id",
+  "protocol": {
+    "dbms": "mysql",
+    "dbms_version": "8.4.11",
+    "checks_per_model": 28,
+    "corpus_sha256": "62e4c1614fc8abc4048366c4e4dfe45602cc00d4bf90ebf7c31b37c865b8e894",
+    "state_bank_sha256": "c4c0bb63f994b033fcbb8c0f76c16ff2f72ca699d8ab4517e174fb376b700470",
+    "evaluation": "reference and candidate executed on every frozen state in a private schema under a SELECT-only account; each refuting pair replayed in an independent fresh schema",
+    "evaluation_runs": {
+      "qwen2.5-coder:7b": "library_evaluation_20261019_qwen25",
+      "qwen2.5:7b": "library_evaluation_20261019_qwen25",
+      "phi3.5:3.8b": "library_evaluation_20261019_phi35_repro"
+    }
+  },
+  "evidence": [
+    {
+      "model": "qwen2.5-coder:7b",
+      "model_slug": "qwen2.5-coder-7b",
+      "model_digest": "dae161e27b0e90dd1856c8bb3209201fd6736d8eb66298e75ed87571486f4364",
+      "status": "no_rewrite",
+      "candidate_sql": "SELECT id, price FROM lib_books WHERE price BETWEEN 10 AND 20 ORDER BY id",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "qwen2.5:7b",
+      "model_slug": "qwen2.5-7b",
+      "model_digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e",
+      "status": "no_rewrite",
+      "candidate_sql": "SELECT id, price FROM lib_books WHERE price BETWEEN 10 AND 20 ORDER BY id",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "phi3.5:3.8b",
+      "model_slug": "phi3.5-3.8b",
+      "model_digest": "61819fb370a3c1a9be6694869331e5f85f867a079e9271d66cb223acb81d04ba",
+      "status": "no_rewrite",
+      "candidate_sql": "SELECT id, price FROM lib_books WHERE price BETWEEN 10 AND 20 ORDER BY id;",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28
+    }
+  ]
+}

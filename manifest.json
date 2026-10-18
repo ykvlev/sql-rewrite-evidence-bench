@@ -1,0 +1,104 @@
+{
+  "dataset": "SREB",
+  "title": "SQL Rewrite Evidence Benchmark",
+  "version": "0.1.0",
+  "schema": "library",
+  "created_utc": "2026-10-18T22:20:29+00:00",
+  "counts": {
+    "families": 12,
+    "states_per_family": 28,
+    "state_family_pairs": 336,
+    "models": 3,
+    "run_records": 36,
+    "evidence_records": 36,
+    "checks": 1008
+  },
+  "models": [
+    {
+      "name": "qwen2.5-coder:7b",
+      "slug": "qwen2.5-coder-7b",
+      "digest": "dae161e27b0e90dd1856c8bb3209201fd6736d8eb66298e75ed87571486f4364",
+      "quantization": "Q4_K_M",
+      "engine": "ollama 0.40.4"
+    },
+    {
+      "name": "qwen2.5:7b",
+      "slug": "qwen2.5-7b",
+      "digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e",
+      "quantization": "Q4_K_M",
+      "engine": "ollama 0.40.5"
+    },
+    {
+      "name": "phi3.5:3.8b",
+      "slug": "phi3.5-3.8b",
+      "digest": "61819fb370a3c1a9be6694869331e5f85f867a079e9271d66cb223acb81d04ba",
+      "quantization": "Q4_0",
+      "engine": "ollama 0.40.4"
+    }
+  ],
+  "provenance": {
+    "upstream_corpus": "research/library_v1/corpus.json (ff7d02331e7c5a4b650eff35742bb7d466753e7a2ed51d59310a6e8c3581ca58)",
+    "upstream_runs": {
+      "qwen2.5-coder:7b": "docs/articles/sql_rewrite_validation/runs/library_models_20261015",
+      "qwen2.5:7b": "docs/articles/sql_rewrite_validation/runs/library_models_20261019_qwen25",
+      "phi3.5:3.8b": "docs/articles/sql_rewrite_validation/runs/library_models_20261015"
+    },
+    "upstream_evaluations": {
+      "qwen2.5-coder:7b": "docs/articles/sql_rewrite_validation/runs/library_evaluation_20261019_qwen25",
+      "qwen2.5:7b": "docs/articles/sql_rewrite_validation/runs/library_evaluation_20261019_qwen25",
+      "phi3.5:3.8b": "docs/articles/sql_rewrite_validation/runs/library_evaluation_20261019_phi35_repro"
+    }
+  },
+  "files": {
+    "data/corpus/families.json": "62e4c1614fc8abc4048366c4e4dfe45602cc00d4bf90ebf7c31b37c865b8e894",
+    "data/evidence/active_outer.json": "1b1b20880710067816674baa53c50b251e4d83616e3a8185324c8447eb4b1f9f",
+    "data/evidence/all_returned.json": "f4907fc9ab427d278c9f9e39e154c2db6e11cfc4481b62810e5c526873332510",
+    "data/evidence/borrowers.json": "2268abe6e4e77ab502cb4ff79a1144275d49af3e7c0de062edaa527e0ae35bf5",
+    "data/evidence/latest_ties.json": "bb616b9a1b823506dd6dfbff542a9cab0e032433875dc85034400c38b3d013c4",
+    "data/evidence/loan_count.json": "6893476420ccd640252403c540dc36ecbb4bd555d175d936349e1db4000f5843",
+    "data/evidence/no_loans.json": "21caba0feea322cb2cd29716b7a42e113c1ca75f92a2ba69f886d867f0a06a40",
+    "data/evidence/not_returned.json": "1ccde318b92d2c9bec6fd672e859fa3c137862bb95b8363d6076c7a0b2e4c7c5",
+    "data/evidence/price_range.json": "00bedb50aa0054fbd2fe754e152241d9dcbebd85a827a1a5d734a7d698840348",
+    "data/evidence/returned_count.json": "047486c80b62e969ddea26ba7325a5a116ea37bc9bd7671d71b7013b81f3ac90",
+    "data/evidence/top_books.json": "7f10de86e824663b50531323f5d18151ae16d760a305cdf729bcf4ad596839cd",
+    "data/evidence/union_bag.json": "ee67255f894096ba7f19eb44e0420b02d3db78a5ed7ea9e893d88f07ad1fcc67",
+    "data/evidence/zero_fee.json": "f856f245c9eac15f18683a7407b175138ff9c98ca5bdf0e7c8167bfbd1ea0f63",
+    "data/runs/phi3.5-3.8b/active_outer.json": "4b77a780d22ad233ff5630373861cc55428dc13de6d2c6326a7a305e7ca2de3b",
+    "data/runs/phi3.5-3.8b/all_returned.json": "d41a52827355a81cff418d8c936109b60c540fb23bcb1af6a525c2e34f0415e4",
+    "data/runs/phi3.5-3.8b/borrowers.json": "e0da3fffc819c63320554064c6b08a6bd3044f5b69b8e1587a9db745e218a663",
+    "data/runs/phi3.5-3.8b/latest_ties.json": "9aa40299800c6a10f53fe8314321906c0469baebe8fc521b9ed76f35cdf7e7d7",
+    "data/runs/phi3.5-3.8b/loan_count.json": "ee997197aa95727f124fee454da36cd1b6f3fd0851d5237b1d816aba7ea22847",
+    "data/runs/phi3.5-3.8b/no_loans.json": "fd42e39af917aa245a9e83b1a0698a44cce381fa716d09dad9e293a2660804f1",
+    "data/runs/phi3.5-3.8b/not_returned.json": "dfb98335069d704800eb8b63f06da1a8e4624d575fab7c9b19cdf08f7854e35b",
+    "data/runs/phi3.5-3.8b/price_range.json": "896f64e0c49555cb96dc0e38a23260ae45c72cfe23750eb32f7bd992f0a6e6a9",
+    "data/runs/phi3.5-3.8b/returned_count.json": "a0fcf2f7d2dbba495fb15679b901af78504ae2a49a993c96b1caa3096df83d0d",
+    "data/runs/phi3.5-3.8b/top_books.json": "57113b254d105153abcb410d0342a28a9f4ef63538135c01b425c7cb2e873fe4",
+    "data/runs/phi3.5-3.8b/union_bag.json": "89e1232433907677b66b85ceb7b7d4fd33425a96164b9ff6ea826be43188b1ef",
+    "data/runs/phi3.5-3.8b/zero_fee.json": "f6fd3807cc55086e004567840d63ecaf4fbe6053386784032ab25139fcc218e8",
+    "data/runs/qwen2.5-7b/active_outer.json": "c6dbd56aa0a637e40348b8995a7c2fe66d5fe58f0c433cdaec033100e5f6c9af",
+    "data/runs/qwen2.5-7b/all_returned.json": "e51f57aac61b21201f92002ced85f674b87a3cb089578c236776e795ca984b83",
+    "data/runs/qwen2.5-7b/borrowers.json": "d3a51edde2cbc7f3ba42679cef04e07841e1e864a0c02e58629eaf2da91bdcd0",
+    "data/runs/qwen2.5-7b/latest_ties.json": "30fd7a148dc8e1b6942d8d8fb1cec95d680cab05796c98fc0276ecf2d9a48b83",
+    "data/runs/qwen2.5-7b/loan_count.json": "3c21c09b26602d5661b720f5f9d5e9fa6406ec46521daed983a26be8d6bcf671",
+    "data/runs/qwen2.5-7b/no_loans.json": "75003bb8f878d84536c7368b5dbb1b6a1f41acc1364d6c33db83f62134d09388",
+    "data/runs/qwen2.5-7b/not_returned.json": "7cd1c9551fe3b6bd7d36e40d9f91e428969c6a85c23ac59550c88484a9e82fe0",
+    "data/runs/qwen2.5-7b/price_range.json": "d358ac71c5757fc3ea4fc4ff27b88fdcd1fa5991ede1c61a906ed0766560ebbc",
+    "data/runs/qwen2.5-7b/returned_count.json": "44e9a70ba52f9020d5e8457b9f3b2579b9f4a1bbc0a988812dac14ad5c8664b0",
+    "data/runs/qwen2.5-7b/top_books.json": "f6da490e2b87c095d0fba9e3d262618e1383af54b0a769da9cadff4c47929ea9",
+    "data/runs/qwen2.5-7b/union_bag.json": "a2b4a50a674fd1e560e9f39cc332cb5754d31538e6ca46e92d291b4ea42366ec",
+    "data/runs/qwen2.5-7b/zero_fee.json": "f674f277de161502876704aad6b7e39883a5ac599f48213471463b4df43b6d7d",
+    "data/runs/qwen2.5-coder-7b/active_outer.json": "c04d8e970fc780b5b3bf1894a8d3201da24208f5d1f3a79dd2489813b961761e",
+    "data/runs/qwen2.5-coder-7b/all_returned.json": "f99930fe07faa97488728b608891258de2a1a9efc7ed6f2499f8eb210245bfa1",
+    "data/runs/qwen2.5-coder-7b/borrowers.json": "f7f91185eb27680cccfa5e358aa23a88c94471a806c13feffb8d340e51cb2dcf",
+    "data/runs/qwen2.5-coder-7b/latest_ties.json": "e0d9fc86434cb81c87e3fca63fdcc7a7160458cba2dfb6ffa5ca4775da5c8fb9",
+    "data/runs/qwen2.5-coder-7b/loan_count.json": "71205f90675493395ba9bc5a1b3bcae9d69e1501f629d93ad2e9085824e2269b",
+    "data/runs/qwen2.5-coder-7b/no_loans.json": "ae8e8b1232907df3021d44a0a84e89ed1ca6893c8df0fd1ee1411719c03f9499",
+    "data/runs/qwen2.5-coder-7b/not_returned.json": "f618433db5d4184cf86ca30e84976ac8b9296bed9ba299dfcf2a67300cfb52ce",
+    "data/runs/qwen2.5-coder-7b/price_range.json": "c8d8a24bcba48a6175ff24d23ba71bd8592d76cf74f6004b69b2ec21847ac234",
+    "data/runs/qwen2.5-coder-7b/returned_count.json": "1ea2976cac5357c7777ba78b4e80be0446ac8d66e4c14417663fb9bbbb2aff9d",
+    "data/runs/qwen2.5-coder-7b/top_books.json": "6be0a2e5515505429d810bdbe39f7c2222502ecc7fe78dda640f7b35bad5a693",
+    "data/runs/qwen2.5-coder-7b/union_bag.json": "8cb9856528e8107bfdd4dccc0fb75d4189c36c57f257519e05ddf6545c3956af",
+    "data/runs/qwen2.5-coder-7b/zero_fee.json": "05fd629d07d6b36037a21d2c6dcc791e9676db3443895afb87cd30ab34ac38a3",
+    "data/states/states.json": "c4c0bb63f994b033fcbb8c0f76c16ff2f72ca699d8ab4517e174fb376b700470"
+  }
+}
