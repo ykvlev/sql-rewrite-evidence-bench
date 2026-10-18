@@ -127,17 +127,25 @@ footer strong{color:var(--text)}
   .how-grid,.links ul{grid-template-columns:1fr}
   section{margin-bottom:44px}
   table{min-width:0}
-  .leaderboard thead{position:absolute;left:-9999px}
-  .leaderboard, .leaderboard tbody, .leaderboard tr, .leaderboard td{display:block;width:100%}
-  .leaderboard tr{border-bottom:1px solid var(--line);padding:14px 14px 12px}
-  .leaderboard tr:last-child{border-bottom:0}
-  .leaderboard td{border:0;padding:4px 0;display:flex;align-items:baseline;justify-content:space-between;gap:16px}
-  .leaderboard td:first-child{display:block;padding-bottom:8px}
-  .leaderboard td:not(:first-child)::before{content:attr(data-label);font-family:var(--mono);font-size:11px;
-    letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .table-wrap{overflow:visible}
+  .leaderboard,.families{display:block;width:100%}
+  .leaderboard caption,.families caption{display:block;width:100%}
+  .leaderboard thead,.families thead{position:absolute;left:-9999px}
+  .leaderboard tbody,.leaderboard tr,.leaderboard td,
+  .families tbody,.families tr,.families td{display:block;width:100%}
+  .leaderboard tr,.families tr{border-bottom:1px solid var(--line);padding:14px 14px 12px}
+  .leaderboard tr:last-child,.families tr:last-child{border-bottom:0}
+  .leaderboard td,.families td{border:0;padding:5px 0}
+  .leaderboard td:first-child,.families td:first-child{padding-bottom:9px}
+  .leaderboard td:not(:first-child),.families td:not(:first-child){display:flex;align-items:baseline;justify-content:space-between;gap:16px}
+  .leaderboard td:not(:first-child)::before,.families td:not(:first-child)::before{content:attr(data-label);
+    font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);flex:0 0 auto}
   .leaderboard .n{display:inline-block;font-size:18px}
   .leaderboard .sub,.leaderboard .denom{display:inline-block;margin:0 0 0 8px}
   .leaderboard td:first-child .sub{display:block}
+  .families td[data-label="Refuting states"]{display:block}
+  .families td[data-label="Refuting states"]::before{display:block;margin-bottom:6px}
+  .families details{display:block}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
@@ -255,7 +263,7 @@ footer strong{color:var(--text)}
         <tr>
           <td data-label="Family">
             <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/all_returned.json">all_returned</a>
-            <span class="sub">condition inversion / conjunction of conditions</span>
+            <span class="sub">set-level conditions on returned values collapsed into a row condition</span>
           </td>
           <td data-label="Model"><span class="mono tag-inline">qwen2.5-coder:7b</span></td>
           <td data-label="Refuting states">
@@ -269,7 +277,7 @@ footer strong{color:var(--text)}
         <tr>
           <td data-label="Family">
             <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/all_returned.json">all_returned</a>
-            <span class="sub">condition inversion / conjunction of conditions</span>
+            <span class="sub">set-level conditions on returned values collapsed into a row condition</span>
           </td>
           <td data-label="Model"><span class="mono tag-inline">qwen2.5:7b</span></td>
           <td data-label="Refuting states">
@@ -369,7 +377,7 @@ footer strong{color:var(--text)}
   <div class="wrap">
     <p><strong>License.</strong> Data and documentation: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Code in <code>scripts/</code> and <code>.github/</code>: MIT.</p>
     <p><strong>Author.</strong> Artem Yakovlev · <a href="https://orcid.org/0009-0006-8617-7895">ORCID 0009-0006-8617-7895</a></p>
-    <p>Dataset v0.2.0 · numbers on this page are for v0.2.0 (2026-10-18) and will grow with the dataset. Every figure is derived from <code>data/evidence/*.json</code>; verify with <code>python scripts/recompute_tables.py --repo-root .</code></p>
+    <p>Dataset v0.2.0 · numbers on this page are for v0.2.0 (2026-10-19) and will grow with the dataset. Every figure is derived from <code>data/evidence/*.json</code>; verify with <code>python scripts/recompute_tables.py --repo-root .</code></p>
   </div>
 </footer>
 </body>
