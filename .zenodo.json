@@ -1,0 +1,17 @@
+{
+  "title": "SREB: SQL Rewrite Evidence Benchmark",
+  "description": "A benchmark of executable evidence for SQL query rewrites proposed by language models. For every rewrite the dataset records the database state on which the result changes and the rows that prove it, together with the DBMS version, model digest, sampling parameters and a minimal counterexample.",
+  "upload_type": "dataset",
+  "access_right": "open",
+  "license": "cc-by-4.0",
+  "creators": [
+    {"name": "Yakovlev, Artem", "orcid": "0009-0006-8617-7895"}
+  ],
+  "keywords": [
+    "SQL", "query rewriting", "query optimization", "language models",
+    "counterexamples", "database testing", "benchmark", "reproducibility"
+  ],
+  "related_identifiers": [
+    {"identifier": "https://github.com/ykvlev/sql-rewrite-evidence-bench", "relation": "isSupplementTo", "scheme": "url"}
+  ]
+}
