@@ -3,15 +3,21 @@
   "title": "SQL Rewrite Evidence Benchmark",
   "version": "0.1.0",
   "schema": "library",
-  "created_utc": "2026-10-18T22:20:29+00:00",
+  "created_utc": "2026-10-18T22:26:04+00:00",
   "counts": {
-    "families": 12,
+    "families": 136,
     "states_per_family": 28,
     "state_family_pairs": 336,
     "models": 3,
     "run_records": 36,
     "evidence_records": 36,
-    "checks": 1008
+    "checks": 1008,
+    "families_by_schema": {
+      "library": 68,
+      "shop": 68
+    },
+    "families_with_states": 12,
+    "evaluated_families": 12
   },
   "models": [
     {
@@ -50,7 +56,8 @@
     }
   },
   "files": {
-    "data/corpus/families.json": "62e4c1614fc8abc4048366c4e4dfe45602cc00d4bf90ebf7c31b37c865b8e894",
+    "data/corpus/families.json": "c701d53e42d24070054b837cbefeb047c907021d198f36165844c642a80b5144",
+    "data/corpus/shop.json": "5ef775c9c8257933ba4c6db3b3f2fda2d07915439d6615974cef4508526b0b97",
     "data/evidence/active_outer.json": "1b1b20880710067816674baa53c50b251e4d83616e3a8185324c8447eb4b1f9f",
     "data/evidence/all_returned.json": "f4907fc9ab427d278c9f9e39e154c2db6e11cfc4481b62810e5c526873332510",
     "data/evidence/borrowers.json": "2268abe6e4e77ab502cb4ff79a1144275d49af3e7c0de062edaa527e0ae35bf5",
@@ -100,5 +107,14 @@
     "data/runs/qwen2.5-coder-7b/union_bag.json": "8cb9856528e8107bfdd4dccc0fb75d4189c36c57f257519e05ddf6545c3956af",
     "data/runs/qwen2.5-coder-7b/zero_fee.json": "05fd629d07d6b36037a21d2c6dcc791e9676db3443895afb87cd30ab34ac38a3",
     "data/states/states.json": "c4c0bb63f994b033fcbb8c0f76c16ff2f72ca699d8ab4517e174fb376b700470"
+  },
+  "dataset_version": "0.2.0",
+  "staging": {
+    "stage": "corpus-expansion",
+    "note": "Корпус расширен до двух схем; замороженные состояния и прогоны моделей пока покрывают только 12 seed-семейств «Библиотеки».",
+    "corpus_files": [
+      "data/corpus/families.json",
+      "data/corpus/shop.json"
+    ]
   }
 }

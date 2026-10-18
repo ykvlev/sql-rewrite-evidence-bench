@@ -1,0 +1,956 @@
+{
+  "schema": "shop",
+  "dataset": "SREB",
+  "dataset_version": "0.2.0",
+  "dialect": "mysql",
+  "dbms_tested": "MySQL 8.4.11",
+  "schema_description": "Синтетический интернет-магазин: категории, товары, клиенты, заказы, позиции заказов, платежи, отзывы. NULL допускается в categories.parent_id, customers.city, orders.channel, reviews.body.",
+  "profile_legend": {
+    "aggregate": "одна агрегатная функция или несколько по одной группировке",
+    "aggregate_case": "агрегат с условным выражением CASE",
+    "aggregate_having": "группировка с условием HAVING",
+    "outer_join_aggregate": "внешнее соединение с агрегатом (включая нулевые группы)",
+    "join": "соединение без агрегата",
+    "join_aggregate": "соединение с агрегатом",
+    "join_multiplicity": "счётчик строк соединения (кратности)",
+    "distinct_join": "соединение с DISTINCT",
+    "self_join": "соединение таблицы с собой",
+    "anti_join_null": "анти-соединение через LEFT JOIN ... IS NULL",
+    "anti_join_exists": "анти-соединение через NOT EXISTS",
+    "semi_join_exists": "полусоединение через EXISTS",
+    "in_subquery": "предикат IN с подзапросом",
+    "not_in_subquery": "предикат NOT IN с подзапросом",
+    "correlated_scalar": "коррелированный скалярный подзапрос",
+    "scalar_subquery": "скалярный подзапрос без корреляции",
+    "correlated_max": "коррелированный подзапрос с максимумом",
+    "derived_table": "производная таблица в FROM",
+    "cte": "общее табличное выражение (CTE)",
+    "recursive_cte": "рекурсивное общее табличное выражение",
+    "outer_join_predicate": "внешнее соединение с предикатом в ON",
+    "semi_anti_join": "комбинация EXISTS и NOT EXISTS в одном запросе",
+    "anti_join_subquery": "анти-соединение через NOT EXISTS в подзапросе",
+    "range_filter": "фильтр по диапазону или списку",
+    "pattern_filter": "фильтр по образцу строки",
+    "null_aware_filter": "фильтр с учётом NULL",
+    "or_filter": "фильтр с веткой OR",
+    "boundary_filter": "фильтр на граничном значении",
+    "group_by_expression": "группировка по выражению",
+    "order_limit": "сортировка и/или LIMIT",
+    "top_n_ties": "сортировка с LIMIT при возможных равенствах",
+    "distinct_filter": "DISTINCT без соединения",
+    "union_all": "UNION ALL с сохранением кратностей",
+    "union_distinct": "UNION с удалением повторов",
+    "count_star_vs_column": "COUNT(*) против COUNT(столбец)",
+    "window_row_number": "оконная функция ROW_NUMBER",
+    "window_rank": "оконная функция RANK / DENSE_RANK",
+    "window_running": "оконная сумма с накоплением"
+  },
+  "breaking_profile_legend": {
+    "multiplicity": "состояние с повторяющимися строками и кратностями",
+    "nullable": "состояние с NULL в необязательном столбце",
+    "empty": "пустое состояние или пустой результат",
+    "boundary": "состояние с ровно граничным значением",
+    "ties": "состояние с равными ключами сортировки",
+    "zero_value": "состояние с нулевой суммой или нулевым счётом",
+    "random": "псевдослучайное состояние с фиксированным seed"
+  },
+  "ddl": [
+    "CREATE TABLE categories(id INTEGER PRIMARY KEY, name VARCHAR(60) NOT NULL UNIQUE, parent_id INTEGER NULL, FOREIGN KEY(parent_id) REFERENCES categories(id))",
+    "CREATE TABLE products(id INTEGER PRIMARY KEY, sku VARCHAR(32) NOT NULL UNIQUE, name VARCHAR(120) NOT NULL, category_id INTEGER NOT NULL, price DECIMAL(10,2) NOT NULL, cost DECIMAL(10,2) NOT NULL, stock INTEGER NOT NULL, active INTEGER NOT NULL DEFAULT 1, created_at DATE NOT NULL, FOREIGN KEY(category_id) REFERENCES categories(id), CHECK(price >= 0), CHECK(cost >= 0), CHECK(stock >= 0))",
+    "CREATE TABLE customers(id INTEGER PRIMARY KEY, email VARCHAR(120) NOT NULL UNIQUE, name VARCHAR(80) NOT NULL, city VARCHAR(60) NULL, segment VARCHAR(20) NOT NULL, created_at DATE NOT NULL, CHECK(segment IN ('retail','wholesale','vip')))",
+    "CREATE TABLE orders(id INTEGER PRIMARY KEY, customer_id INTEGER NOT NULL, created_at DATE NOT NULL, status VARCHAR(20) NOT NULL, channel VARCHAR(20) NULL, FOREIGN KEY(customer_id) REFERENCES customers(id), CHECK(status IN ('new','paid','shipped','cancelled','returned')))",
+    "CREATE TABLE order_items(id INTEGER PRIMARY KEY, order_id INTEGER NOT NULL, product_id INTEGER NOT NULL, quantity INTEGER NOT NULL, unit_price DECIMAL(10,2) NOT NULL, discount DECIMAL(10,2) NOT NULL DEFAULT 0, FOREIGN KEY(order_id) REFERENCES orders(id), FOREIGN KEY(product_id) REFERENCES products(id), CHECK(quantity > 0), CHECK(unit_price >= 0), CHECK(discount >= 0), CHECK(discount <= unit_price))",
+    "CREATE TABLE payments(id INTEGER PRIMARY KEY, order_id INTEGER NOT NULL, paid_at DATE NOT NULL, amount DECIMAL(10,2) NOT NULL, method VARCHAR(20) NOT NULL, FOREIGN KEY(order_id) REFERENCES orders(id), CHECK(amount >= 0), CHECK(method IN ('card','cash','transfer')))",
+    "CREATE TABLE reviews(id INTEGER PRIMARY KEY, product_id INTEGER NOT NULL, customer_id INTEGER NOT NULL, rating INTEGER NOT NULL, body VARCHAR(200) NULL, created_at DATE NOT NULL, FOREIGN KEY(product_id) REFERENCES products(id), FOREIGN KEY(customer_id) REFERENCES customers(id), CHECK(rating BETWEEN 1 AND 5))"
+  ],
+  "constraints": [
+    "categories.id PRIMARY KEY",
+    "categories.name NOT NULL UNIQUE",
+    "categories.parent_id NULL allowed, REFERENCES categories(id)",
+    "products.id PRIMARY KEY",
+    "products.sku NOT NULL UNIQUE",
+    "products.name NOT NULL",
+    "products.category_id NOT NULL, REFERENCES categories(id)",
+    "products.price NOT NULL, CHECK(price >= 0)",
+    "products.cost NOT NULL, CHECK(cost >= 0)",
+    "products.stock NOT NULL, CHECK(stock >= 0)",
+    "products.active NOT NULL",
+    "products.created_at NOT NULL",
+    "customers.id PRIMARY KEY",
+    "customers.email NOT NULL UNIQUE",
+    "customers.name NOT NULL",
+    "customers.city NULL allowed",
+    "customers.segment NOT NULL, CHECK(segment IN (retail, wholesale, vip))",
+    "customers.created_at NOT NULL",
+    "orders.id PRIMARY KEY",
+    "orders.customer_id NOT NULL, REFERENCES customers(id)",
+    "orders.created_at NOT NULL",
+    "orders.status NOT NULL, CHECK(status IN (new, paid, shipped, cancelled, returned))",
+    "orders.channel NULL allowed",
+    "order_items.id PRIMARY KEY",
+    "order_items.order_id NOT NULL, REFERENCES orders(id)",
+    "order_items.product_id NOT NULL, REFERENCES products(id)",
+    "order_items.quantity NOT NULL, CHECK(quantity > 0)",
+    "order_items.unit_price NOT NULL, CHECK(unit_price >= 0)",
+    "order_items.discount NOT NULL, CHECK(discount >= 0), CHECK(discount <= unit_price)",
+    "payments.id PRIMARY KEY",
+    "payments.order_id NOT NULL, REFERENCES orders(id)",
+    "payments.paid_at NOT NULL",
+    "payments.amount NOT NULL, CHECK(amount >= 0)",
+    "payments.method NOT NULL, CHECK(method IN (card, cash, transfer))",
+    "reviews.id PRIMARY KEY",
+    "reviews.product_id NOT NULL, REFERENCES products(id)",
+    "reviews.customer_id NOT NULL, REFERENCES customers(id)",
+    "reviews.rating NOT NULL, CHECK(rating BETWEEN 1 AND 5)",
+    "reviews.body NULL allowed",
+    "reviews.created_at NOT NULL"
+  ],
+  "families": [
+    {
+      "id": "shop_customer_order_count",
+      "schema": "shop",
+      "reference_sql": "SELECT c.id, COUNT(o.id) AS n FROM customers c LEFT JOIN orders o ON o.customer_id=c.id GROUP BY c.id ORDER BY c.id",
+      "profile": "outer_join_aggregate",
+      "breaking_profile": "empty",
+      "intent": "Число заказов клиента, включая ноль",
+      "ordered": true,
+      "tables": [
+        "customers",
+        "orders"
+      ]
+    },
+    {
+      "id": "shop_customer_order_total",
+      "schema": "shop",
+      "reference_sql": "SELECT c.id, COALESCE(SUM(oi.quantity*oi.unit_price - oi.discount),0) AS total FROM customers c LEFT JOIN orders o ON o.customer_id=c.id LEFT JOIN order_items oi ON oi.order_id=o.id GROUP BY c.id ORDER BY c.id",
+      "profile": "outer_join_aggregate",
+      "breaking_profile": "zero_value",
+      "intent": "Сумма заказов клиента, включая ноль",
+      "ordered": true,
+      "tables": [
+        "customers",
+        "orders",
+        "order_items"
+      ]
+    },
+    {
+      "id": "shop_category_product_count",
+      "schema": "shop",
+      "reference_sql": "SELECT cat.id, COUNT(p.id) AS n FROM categories cat LEFT JOIN products p ON p.category_id=cat.id GROUP BY cat.id ORDER BY cat.id",
+      "profile": "outer_join_aggregate",
+      "breaking_profile": "empty",
+      "intent": "Число товаров в категории, включая пустые",
+      "ordered": true,
+      "tables": [
+        "categories",
+        "products"
+      ]
+    },
+    {
+      "id": "shop_category_avg_price",
+      "schema": "shop",
+      "reference_sql": "SELECT p.category_id, AVG(p.price) AS avg_price FROM products p GROUP BY p.category_id ORDER BY p.category_id",
+      "profile": "aggregate",
+      "breaking_profile": "zero_value",
+      "intent": "Средняя цена товара по категориям",
+      "ordered": true,
+      "tables": [
+        "products"
+      ]
+    },
+    {
+      "id": "shop_order_item_count",
+      "schema": "shop",
+      "reference_sql": "SELECT o.id, COUNT(oi.id) AS n FROM orders o LEFT JOIN order_items oi ON oi.order_id=o.id GROUP BY o.id ORDER BY o.id",
+      "profile": "outer_join_aggregate",
+      "breaking_profile": "empty",
+      "intent": "Число позиций в заказе, включая пустые",
+      "ordered": true,
+      "tables": [
+        "orders",
+        "order_items"
+      ]
+    },
+    {
+      "id": "shop_product_units_sold",
+      "schema": "shop",
+      "reference_sql": "SELECT oi.product_id, SUM(oi.quantity) AS units FROM order_items oi GROUP BY oi.product_id ORDER BY oi.product_id",
+      "profile": "aggregate",
+      "breaking_profile": "multiplicity",
+      "intent": "Проданное количество по товарам",
+      "ordered": true,
+      "tables": [
+        "order_items"
+      ]
+    },
+    {
+      "id": "shop_order_gross",
+      "schema": "shop",
+      "reference_sql": "SELECT o.id, SUM(oi.quantity*oi.unit_price) AS gross FROM orders o JOIN order_items oi ON oi.order_id=o.id GROUP BY o.id ORDER BY o.id",
+      "profile": "join_aggregate",
+      "breaking_profile": "multiplicity",
+      "intent": "Сумма заказа без скидок",
+      "ordered": true,
+      "tables": [
+        "orders",
+        "order_items"
+      ]
+    },
+    {
+      "id": "shop_product_revenue",
+      "schema": "shop",
+      "reference_sql": "SELECT p.id, SUM(oi.quantity*oi.unit_price - oi.discount) AS revenue FROM products p JOIN order_items oi ON oi.product_id=p.id GROUP BY p.id ORDER BY p.id",
+      "profile": "join_aggregate",
+      "breaking_profile": "multiplicity",
+      "intent": "Выручка по товару с учётом скидок",
+      "ordered": true,
+      "tables": [
+        "products",
+        "order_items"
+      ]
+    },
+    {
+      "id": "shop_order_items_avg_discount",
+      "schema": "shop",
+      "reference_sql": "SELECT order_id, AVG(discount) AS avg_discount FROM order_items GROUP BY order_id ORDER BY order_id",
+      "profile": "aggregate",
+      "breaking_profile": "zero_value",
+      "intent": "Средняя скидка по позициям заказа",
+      "ordered": true,
+      "tables": [
+        "order_items"
+      ]
+    },
+    {
+      "id": "shop_status_order_count",
+      "schema": "shop",
+      "reference_sql": "SELECT status, COUNT(*) AS n FROM orders GROUP BY status ORDER BY status",
+      "profile": "aggregate",
+      "breaking_profile": "multiplicity",
+      "intent": "Число заказов по статусам",
+      "ordered": true,
+      "tables": [
+        "orders"
+      ]
+    },
+    {
+      "id": "shop_customer_max_line",
+      "schema": "shop",
+      "reference_sql": "SELECT o.customer_id, MAX(oi.quantity*oi.unit_price) AS max_line FROM orders o JOIN order_items oi ON oi.order_id=o.id GROUP BY o.customer_id ORDER BY o.customer_id",
+      "profile": "join_aggregate",
+      "breaking_profile": "multiplicity",
+      "intent": "Максимальная стоимость позиции у клиента",
+      "ordered": true,
+      "tables": [
+        "orders",
+        "order_items"
+      ]
+    },
+    {
+      "id": "shop_global_orders",
+      "schema": "shop",
+      "reference_sql": "SELECT COUNT(*) AS payments, SUM(amount) AS paid FROM payments",
+      "profile": "aggregate",
+      "breaking_profile": "empty",
+      "intent": "Общая статистика платежей",
+      "ordered": false,
+      "tables": [
+        "payments"
+      ]
+    },
+    {
+      "id": "shop_order_customer",
+      "schema": "shop",
+      "reference_sql": "SELECT o.id, c.email FROM orders o JOIN customers c ON c.id=o.customer_id ORDER BY o.id",
+      "profile": "join",
+      "breaking_profile": "multiplicity",
+      "intent": "Заказы с почтовым адресом клиента",
+      "ordered": true,
+      "tables": [
+        "customers",
+        "orders"
+      ]
+    },
+    {
+      "id": "shop_item_product_name",
+      "schema": "shop",
+      "reference_sql": "SELECT oi.id, p.name FROM order_items oi JOIN products p ON p.id=oi.product_id ORDER BY oi.id",
+      "profile": "join",
+      "breaking_profile": "multiplicity",
+      "intent": "Позиции заказов с названием товара",
+      "ordered": true,
+      "tables": [
+        "products",
+        "order_items"
+      ]
+    },
+    {
+      "id": "shop_three_way",
+      "schema": "shop",
+      "reference_sql": "SELECT o.id, p.name FROM orders o JOIN order_items oi ON oi.order_id=o.id JOIN products p ON p.id=oi.product_id ORDER BY o.id, p.name",
+      "profile": "join",
+      "breaking_profile": "multiplicity",
+      "intent": "Заказы и названия товаров в них",
+      "ordered": true,
+      "tables": [
+        "products",
+        "orders",
+        "order_items"
+      ]
+    },
+    {
+      "id": "shop_left_orders_no_items",
+      "schema": "shop",
+      "reference_sql": "SELECT o.id FROM orders o LEFT JOIN order_items oi ON oi.order_id=o.id WHERE oi.id IS NULL ORDER BY o.id",
+      "profile": "anti_join_null",
+      "breaking_profile": "empty",
+      "intent": "Заказы без позиций",
+      "ordered": true,
+      "tables": [
+        "orders",
+        "order_items"
+      ]
+    },
+    {
+      "id": "shop_product_category_name",
+      "schema": "shop",
+      "reference_sql": "SELECT p.id, cat.name FROM products p JOIN categories cat ON cat.id=p.category_id ORDER BY p.id",
+      "profile": "join",
+      "breaking_profile": "multiplicity",
+      "intent": "Товары с названием категории",
+      "ordered": true,
+      "tables": [
+        "categories",
+        "products"
+      ]
+    },
+    {
+      "id": "shop_order_payments",
+      "schema": "shop",
+      "reference_sql": "SELECT o.id, pay.amount FROM orders o LEFT JOIN payments pay ON pay.order_id=o.id ORDER BY o.id, pay.id",
+      "profile": "outer_join_predicate",
+      "breaking_profile": "empty",
+      "intent": "Заказы и суммы платежей, включая отсутствующие",
+      "ordered": true,
+      "tables": [
+        "orders",
+        "payments"
+      ]
+    },
+    {
+      "id": "shop_customer_city_orders",
+      "schema": "shop",
+      "reference_sql": "SELECT DISTINCT c.id FROM customers c JOIN orders o ON o.customer_id=c.id WHERE c.city='Moscow' ORDER BY c.id",
+      "profile": "distinct_join",
+      "breaking_profile": "multiplicity",
+      "intent": "Клиенты из города с заказами",
+      "ordered": true,
+      "tables": [
+        "customers",
+        "orders"
+      ]
+    },
+    {
+      "id": "shop_category_self",
+      "schema": "shop",
+      "reference_sql": "SELECT child.id, parent.id AS parent_id FROM categories child JOIN categories parent ON parent.id=child.parent_id ORDER BY child.id",
+      "profile": "self_join",
+      "breaking_profile": "multiplicity",
+      "intent": "Пары категорий родитель-потомок",
+      "ordered": true,
+      "tables": [
+        "categories"
+      ]
+    },
+    {
+      "id": "shop_join_agg_derived",
+      "schema": "shop",
+      "reference_sql": "SELECT x.customer_id, x.total FROM (SELECT o.customer_id, SUM(oi.quantity*oi.unit_price) AS total FROM orders o JOIN order_items oi ON oi.order_id=o.id GROUP BY o.customer_id) x WHERE x.total > 100 ORDER BY x.customer_id",
+      "profile": "derived_table",
+      "breaking_profile": "zero_value",
+      "intent": "Клиенты с суммой заказов больше 100",
+      "ordered": true,
+      "tables": [
+        "orders",
+        "order_items"
+      ]
+    },
+    {
+      "id": "shop_customer_without_orders",
+      "schema": "shop",
+      "reference_sql": "SELECT c.id FROM customers c LEFT JOIN orders o ON o.customer_id=c.id WHERE o.id IS NULL ORDER BY c.id",
+      "profile": "anti_join_null",
+      "breaking_profile": "empty",
+      "intent": "Клиенты без заказов",
+      "ordered": true,
+      "tables": [
+        "customers",
+        "orders"
+      ]
+    },
+    {
+      "id": "shop_order_max_quantity_items",
+      "schema": "shop",
+      "reference_sql": "SELECT oi.id FROM order_items oi JOIN (SELECT order_id, MAX(quantity) AS mq FROM order_items GROUP BY order_id) m ON oi.order_id=m.order_id AND oi.quantity=m.mq ORDER BY oi.id",
+      "profile": "join_aggregate",
+      "breaking_profile": "ties",
+      "intent": "Позиции с максимальным количеством в заказе",
+      "ordered": true,
+      "tables": [
+        "order_items"
+      ]
+    },
+    {
+      "id": "shop_latest_order_per_customer",
+      "schema": "shop",
+      "reference_sql": "SELECT o.id, o.customer_id FROM orders o WHERE o.created_at=(SELECT MAX(x.created_at) FROM orders x WHERE x.customer_id=o.customer_id) ORDER BY o.id",
+      "profile": "correlated_max",
+      "breaking_profile": "ties",
+      "intent": "Последние заказы клиентов",
+      "ordered": true,
+      "tables": [
+        "orders"
+      ]
+    },
+    {
+      "id": "shop_products_price_range",
+      "schema": "shop",
+      "reference_sql": "SELECT id, price FROM products WHERE price BETWEEN 10 AND 20 ORDER BY id",
+      "profile": "range_filter",
+      "breaking_profile": "boundary",
+      "intent": "Товары с ценой в замкнутом диапазоне",
+      "ordered": true,
+      "tables": [
+        "products"
+      ]
+    },
+    {
+      "id": "shop_products_stock_positive",
+      "schema": "shop",
+      "reference_sql": "SELECT id FROM products WHERE stock > 0 ORDER BY id",
+      "profile": "boundary_filter",
+      "breaking_profile": "boundary",
+      "intent": "Товары с положительным остатком",
+      "ordered": true,
+      "tables": [
+        "products"
+      ]
+    },
+    {
+      "id": "shop_orders_status_in",
+      "schema": "shop",
+      "reference_sql": "SELECT id FROM orders WHERE status IN ('paid','shipped') ORDER BY id",
+      "profile": "range_filter",
+      "breaking_profile": "boundary",
+      "intent": "Заказы в оплаченном или отправленном статусе",
+      "ordered": true,
+      "tables": [
+        "orders"
+      ]
+    },
+    {
+      "id": "shop_orders_status_not_in",
+      "schema": "shop",
+      "reference_sql": "SELECT id FROM orders WHERE status NOT IN ('cancelled','returned') ORDER BY id",
+      "profile": "not_in_subquery",
+      "breaking_profile": "nullable",
+      "intent": "Заказы вне отменённых и возвращённых",
+      "ordered": true,
+      "tables": [
+        "orders"
+      ]
+    },
+    {
+      "id": "shop_customers_city_null",
+      "schema": "shop",
+      "reference_sql": "SELECT id FROM customers WHERE city IS NULL ORDER BY id",
+      "profile": "null_aware_filter",
+      "breaking_profile": "nullable",
+      "intent": "Клиенты без указанного города",
+      "ordered": true,
+      "tables": [
+        "customers"
+      ]
+    },
+    {
+      "id": "shop_customers_city_not_null",
+      "schema": "shop",
+      "reference_sql": "SELECT id FROM customers WHERE city IS NOT NULL ORDER BY id",
+      "profile": "null_aware_filter",
+      "breaking_profile": "nullable",
+      "intent": "Клиенты с указанным городом",
+      "ordered": true,
+      "tables": [
+        "customers"
+      ]
+    },
+    {
+      "id": "shop_products_active_flag",
+      "schema": "shop",
+      "reference_sql": "SELECT id FROM products WHERE active = 1 ORDER BY id",
+      "profile": "boundary_filter",
+      "breaking_profile": "boundary",
+      "intent": "Активные товары",
+      "ordered": true,
+      "tables": [
+        "products"
+      ]
+    },
+    {
+      "id": "shop_orders_channel_or",
+      "schema": "shop",
+      "reference_sql": "SELECT id FROM orders WHERE channel IS NULL OR channel = 'web' ORDER BY id",
+      "profile": "or_filter",
+      "breaking_profile": "nullable",
+      "intent": "Заказы веб-канала или без канала",
+      "ordered": true,
+      "tables": [
+        "orders"
+      ]
+    },
+    {
+      "id": "shop_reviews_rating_boundary",
+      "schema": "shop",
+      "reference_sql": "SELECT id FROM reviews WHERE rating >= 4 ORDER BY id",
+      "profile": "boundary_filter",
+      "breaking_profile": "boundary",
+      "intent": "Отзывы с высокой оценкой",
+      "ordered": true,
+      "tables": [
+        "reviews"
+      ]
+    },
+    {
+      "id": "shop_payments_method_equal",
+      "schema": "shop",
+      "reference_sql": "SELECT id FROM payments WHERE method = 'card' ORDER BY id",
+      "profile": "pattern_filter",
+      "breaking_profile": "random",
+      "intent": "Платежи картой",
+      "ordered": true,
+      "tables": [
+        "payments"
+      ]
+    },
+    {
+      "id": "shop_products_sku_like",
+      "schema": "shop",
+      "reference_sql": "SELECT id, sku FROM products WHERE sku LIKE 'SKU-%' ORDER BY id",
+      "profile": "pattern_filter",
+      "breaking_profile": "random",
+      "intent": "Товары с артикулом по образцу",
+      "ordered": true,
+      "tables": [
+        "products"
+      ]
+    },
+    {
+      "id": "shop_customers_with_orders",
+      "schema": "shop",
+      "reference_sql": "SELECT c.id FROM customers c WHERE EXISTS (SELECT 1 FROM orders o WHERE o.customer_id=c.id) ORDER BY c.id",
+      "profile": "semi_join_exists",
+      "breaking_profile": "empty",
+      "intent": "Клиенты с хотя бы одним заказом",
+      "ordered": true,
+      "tables": [
+        "customers",
+        "orders"
+      ]
+    },
+    {
+      "id": "shop_customers_without_orders",
+      "schema": "shop",
+      "reference_sql": "SELECT c.id FROM customers c WHERE NOT EXISTS (SELECT 1 FROM orders o WHERE o.customer_id=c.id) ORDER BY c.id",
+      "profile": "anti_join_exists",
+      "breaking_profile": "empty",
+      "intent": "Клиенты без заказов через анти-соединение",
+      "ordered": true,
+      "tables": [
+        "customers",
+        "orders"
+      ]
+    },
+    {
+      "id": "shop_products_ordered_in",
+      "schema": "shop",
+      "reference_sql": "SELECT p.id FROM products p WHERE p.id IN (SELECT oi.product_id FROM order_items oi) ORDER BY p.id",
+      "profile": "in_subquery",
+      "breaking_profile": "nullable",
+      "intent": "Товары, входящие в множество заказанных",
+      "ordered": true,
+      "tables": [
+        "products",
+        "order_items"
+      ]
+    },
+    {
+      "id": "shop_products_not_ordered_in",
+      "schema": "shop",
+      "reference_sql": "SELECT p.id FROM products p WHERE p.id NOT IN (SELECT oi.product_id FROM order_items oi) ORDER BY p.id",
+      "profile": "not_in_subquery",
+      "breaking_profile": "nullable",
+      "intent": "Товары, не входящие в множество заказанных",
+      "ordered": true,
+      "tables": [
+        "products",
+        "order_items"
+      ]
+    },
+    {
+      "id": "shop_orders_above_avg",
+      "schema": "shop",
+      "reference_sql": "SELECT o.id FROM orders o WHERE (SELECT COALESCE(SUM(oi.quantity*oi.unit_price),0) FROM order_items oi WHERE oi.order_id=o.id) > (SELECT AVG(oi.quantity*oi.unit_price) FROM order_items oi) ORDER BY o.id",
+      "profile": "scalar_subquery",
+      "breaking_profile": "zero_value",
+      "intent": "Заказы дороже средней позиции",
+      "ordered": true,
+      "tables": [
+        "orders",
+        "order_items"
+      ]
+    },
+    {
+      "id": "shop_customer_order_count_scalar",
+      "schema": "shop",
+      "reference_sql": "SELECT c.id, (SELECT COUNT(*) FROM orders o WHERE o.customer_id=c.id) AS n FROM customers c ORDER BY c.id",
+      "profile": "correlated_scalar",
+      "breaking_profile": "empty",
+      "intent": "Число заказов клиента скалярным подзапросом",
+      "ordered": true,
+      "tables": [
+        "customers",
+        "orders"
+      ]
+    },
+    {
+      "id": "shop_product_rating_avg",
+      "schema": "shop",
+      "reference_sql": "SELECT p.id, (SELECT AVG(r.rating) FROM reviews r WHERE r.product_id=p.id) AS avg_rating FROM products p ORDER BY p.id",
+      "profile": "correlated_scalar",
+      "breaking_profile": "nullable",
+      "intent": "Средняя оценка товара скалярным подзапросом",
+      "ordered": true,
+      "tables": [
+        "products",
+        "reviews"
+      ]
+    },
+    {
+      "id": "shop_customers_cte",
+      "schema": "shop",
+      "reference_sql": "WITH active_orders AS (SELECT id, customer_id FROM orders WHERE status = 'paid') SELECT id FROM active_orders ORDER BY id",
+      "profile": "cte",
+      "breaking_profile": "empty",
+      "intent": "Оплаченные заказы через общее табличное выражение",
+      "ordered": true,
+      "tables": [
+        "orders"
+      ]
+    },
+    {
+      "id": "shop_products_order_price_desc",
+      "schema": "shop",
+      "reference_sql": "SELECT id FROM products ORDER BY price DESC, id",
+      "profile": "order_limit",
+      "breaking_profile": "ties",
+      "intent": "Товары по убыванию цены",
+      "ordered": true,
+      "tables": [
+        "products"
+      ]
+    },
+    {
+      "id": "shop_orders_limit5",
+      "schema": "shop",
+      "reference_sql": "SELECT id FROM orders ORDER BY id LIMIT 5",
+      "profile": "order_limit",
+      "breaking_profile": "ties",
+      "intent": "Первые пять заказов по идентификатору",
+      "ordered": true,
+      "tables": [
+        "orders"
+      ]
+    },
+    {
+      "id": "shop_customers_order_email",
+      "schema": "shop",
+      "reference_sql": "SELECT id, email FROM customers ORDER BY email",
+      "profile": "order_limit",
+      "breaking_profile": "random",
+      "intent": "Клиенты, упорядоченные по адресу",
+      "ordered": true,
+      "tables": [
+        "customers"
+      ]
+    },
+    {
+      "id": "shop_products_top_price",
+      "schema": "shop",
+      "reference_sql": "SELECT id FROM products ORDER BY price DESC, id ASC LIMIT 1",
+      "profile": "top_n_ties",
+      "breaking_profile": "ties",
+      "intent": "Самый дорогой товар с разрешением равенств",
+      "ordered": true,
+      "tables": [
+        "products"
+      ]
+    },
+    {
+      "id": "shop_payments_order_amount",
+      "schema": "shop",
+      "reference_sql": "SELECT id, amount FROM payments ORDER BY amount, id",
+      "profile": "order_limit",
+      "breaking_profile": "ties",
+      "intent": "Платежи, упорядоченные по сумме",
+      "ordered": true,
+      "tables": [
+        "payments"
+      ]
+    },
+    {
+      "id": "shop_orders_order_status_created",
+      "schema": "shop",
+      "reference_sql": "SELECT id FROM orders ORDER BY status, created_at, id",
+      "profile": "order_limit",
+      "breaking_profile": "ties",
+      "intent": "Заказы, упорядоченные по статусу и дате",
+      "ordered": true,
+      "tables": [
+        "orders"
+      ]
+    },
+    {
+      "id": "shop_union_bag_items",
+      "schema": "shop",
+      "reference_sql": "SELECT product_id FROM order_items WHERE quantity >= 2 UNION ALL SELECT product_id FROM order_items WHERE discount > 0 ORDER BY product_id",
+      "profile": "union_all",
+      "breaking_profile": "multiplicity",
+      "intent": "Объединение товаров из двух условий с сохранением повторов",
+      "ordered": true,
+      "tables": [
+        "order_items"
+      ]
+    },
+    {
+      "id": "shop_union_distinct_customers",
+      "schema": "shop",
+      "reference_sql": "SELECT customer_id FROM orders WHERE status='paid' UNION SELECT customer_id FROM orders WHERE status='shipped' ORDER BY customer_id",
+      "profile": "union_distinct",
+      "breaking_profile": "multiplicity",
+      "intent": "Объединение клиентов двух статусов без повторов",
+      "ordered": true,
+      "tables": [
+        "orders"
+      ]
+    },
+    {
+      "id": "shop_count_star_vs_col",
+      "schema": "shop",
+      "reference_sql": "SELECT product_id, COUNT(*) AS star_cnt, COUNT(discount) AS discount_cnt FROM order_items GROUP BY product_id ORDER BY product_id",
+      "profile": "count_star_vs_column",
+      "breaking_profile": "nullable",
+      "intent": "Число строк против числа известных скидок",
+      "ordered": true,
+      "tables": [
+        "order_items"
+      ]
+    },
+    {
+      "id": "shop_join_multiplicity",
+      "schema": "shop",
+      "reference_sql": "SELECT o.customer_id, COUNT(*) AS n FROM orders o JOIN order_items oi ON oi.order_id=o.id GROUP BY o.customer_id ORDER BY o.customer_id",
+      "profile": "join_multiplicity",
+      "breaking_profile": "multiplicity",
+      "intent": "Число строк соединения заказ-позиция по клиентам",
+      "ordered": true,
+      "tables": [
+        "orders",
+        "order_items"
+      ]
+    },
+    {
+      "id": "shop_payments_zero_amount",
+      "schema": "shop",
+      "reference_sql": "SELECT id FROM payments WHERE amount = 0 ORDER BY id",
+      "profile": "boundary_filter",
+      "breaking_profile": "zero_value",
+      "intent": "Платежи с нулевой суммой",
+      "ordered": true,
+      "tables": [
+        "payments"
+      ]
+    },
+    {
+      "id": "shop_orders_zero_total",
+      "schema": "shop",
+      "reference_sql": "SELECT o.id FROM orders o JOIN order_items oi ON oi.order_id=o.id GROUP BY o.id HAVING SUM(oi.quantity*oi.unit_price - oi.discount) = 0 ORDER BY o.id",
+      "profile": "aggregate_having",
+      "breaking_profile": "zero_value",
+      "intent": "Заказы с нулевой суммой позиций",
+      "ordered": true,
+      "tables": [
+        "orders",
+        "order_items"
+      ]
+    },
+    {
+      "id": "shop_products_stock_boundary",
+      "schema": "shop",
+      "reference_sql": "SELECT id FROM products WHERE stock >= 10 ORDER BY id",
+      "profile": "boundary_filter",
+      "breaking_profile": "boundary",
+      "intent": "Товары с остатком не меньше границы",
+      "ordered": true,
+      "tables": [
+        "products"
+      ]
+    },
+    {
+      "id": "shop_discount_full",
+      "schema": "shop",
+      "reference_sql": "SELECT id FROM order_items WHERE discount = unit_price ORDER BY id",
+      "profile": "boundary_filter",
+      "breaking_profile": "zero_value",
+      "intent": "Позиции с полной скидкой",
+      "ordered": true,
+      "tables": [
+        "order_items"
+      ]
+    },
+    {
+      "id": "shop_orders_null_channel_group",
+      "schema": "shop",
+      "reference_sql": "SELECT COALESCE(channel, 'unknown') AS channel_key, COUNT(*) AS n FROM orders GROUP BY channel_key ORDER BY channel_key",
+      "profile": "group_by_expression",
+      "breaking_profile": "nullable",
+      "intent": "Число заказов по каналу, включая отсутствующий",
+      "ordered": true,
+      "tables": [
+        "orders"
+      ]
+    },
+    {
+      "id": "shop_reviews_null_body",
+      "schema": "shop",
+      "reference_sql": "SELECT id FROM reviews WHERE body IS NULL ORDER BY id",
+      "profile": "null_aware_filter",
+      "breaking_profile": "nullable",
+      "intent": "Отзывы без текста",
+      "ordered": true,
+      "tables": [
+        "reviews"
+      ]
+    },
+    {
+      "id": "shop_items_row_number",
+      "schema": "shop",
+      "reference_sql": "SELECT id, ROW_NUMBER() OVER (ORDER BY id) AS rn FROM order_items ORDER BY id",
+      "profile": "window_row_number",
+      "breaking_profile": "ties",
+      "intent": "Порядковые номера позиций",
+      "ordered": true,
+      "tables": [
+        "order_items"
+      ]
+    },
+    {
+      "id": "shop_customer_order_rank",
+      "schema": "shop",
+      "reference_sql": "SELECT customer_id, id, RANK() OVER (PARTITION BY customer_id ORDER BY created_at DESC, id) AS rnk FROM orders ORDER BY customer_id, rnk, id",
+      "profile": "window_rank",
+      "breaking_profile": "ties",
+      "intent": "Ранг заказов клиента по дате",
+      "ordered": true,
+      "tables": [
+        "orders"
+      ]
+    },
+    {
+      "id": "shop_product_units_running",
+      "schema": "shop",
+      "reference_sql": "SELECT product_id, id, SUM(quantity) OVER (PARTITION BY product_id ORDER BY id) AS running FROM order_items ORDER BY product_id, id",
+      "profile": "window_running",
+      "breaking_profile": "ties",
+      "intent": "Нарастающее проданное количество по товару",
+      "ordered": true,
+      "tables": [
+        "order_items"
+      ]
+    },
+    {
+      "id": "shop_product_price_rank",
+      "schema": "shop",
+      "reference_sql": "SELECT id, DENSE_RANK() OVER (ORDER BY price DESC) AS price_rank FROM products ORDER BY id",
+      "profile": "window_rank",
+      "breaking_profile": "ties",
+      "intent": "Плотный ранг цены товара",
+      "ordered": true,
+      "tables": [
+        "products"
+      ]
+    },
+    {
+      "id": "shop_recursive_category_depth",
+      "schema": "shop",
+      "reference_sql": "WITH RECURSIVE tree AS (SELECT id, parent_id, 0 AS depth FROM categories WHERE parent_id IS NULL UNION ALL SELECT c.id, c.parent_id, t.depth+1 FROM categories c JOIN tree t ON c.parent_id=t.id) SELECT id, depth FROM tree ORDER BY id, depth",
+      "profile": "recursive_cte",
+      "breaking_profile": "empty",
+      "intent": "Глубина категории в дереве",
+      "ordered": true,
+      "tables": [
+        "categories"
+      ]
+    },
+    {
+      "id": "shop_order_item_qty_ratio",
+      "schema": "shop",
+      "reference_sql": "SELECT oi.id, oi.quantity / NULLIF((SELECT AVG(quantity) FROM order_items),0) AS ratio FROM order_items oi ORDER BY oi.id",
+      "profile": "correlated_scalar",
+      "breaking_profile": "zero_value",
+      "intent": "Отношение количества позиции к среднему",
+      "ordered": true,
+      "tables": [
+        "order_items"
+      ]
+    },
+    {
+      "id": "shop_customer_orders_per_status",
+      "schema": "shop",
+      "reference_sql": "SELECT c.id, o.status, COUNT(*) AS n FROM customers c JOIN orders o ON o.customer_id=c.id GROUP BY c.id, o.status ORDER BY c.id, o.status",
+      "profile": "aggregate",
+      "breaking_profile": "multiplicity",
+      "intent": "Число заказов клиента по статусам",
+      "ordered": true,
+      "tables": [
+        "customers",
+        "orders"
+      ]
+    },
+    {
+      "id": "shop_product_reviews_count",
+      "schema": "shop",
+      "reference_sql": "SELECT p.id, COUNT(r.id) AS n FROM products p LEFT JOIN reviews r ON r.product_id=p.id GROUP BY p.id ORDER BY p.id",
+      "profile": "outer_join_aggregate",
+      "breaking_profile": "empty",
+      "intent": "Число отзывов по товарам, включая ноль",
+      "ordered": true,
+      "tables": [
+        "products",
+        "reviews"
+      ]
+    },
+    {
+      "id": "shop_orders_customer_city",
+      "schema": "shop",
+      "reference_sql": "SELECT o.id, c.city FROM orders o JOIN customers c ON c.id=o.customer_id WHERE c.city IS NOT NULL ORDER BY o.id",
+      "profile": "join",
+      "breaking_profile": "nullable",
+      "intent": "Заказы клиентов с известным городом",
+      "ordered": true,
+      "tables": [
+        "customers",
+        "orders"
+      ]
+    }
+  ]
+}

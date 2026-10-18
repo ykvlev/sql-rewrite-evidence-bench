@@ -1,7 +1,7 @@
 {
   "schema": "library",
   "dataset": "SREB",
-  "dataset_version": "0.1.0",
+  "dataset_version": "0.2.0",
   "dialect": "mysql",
   "dbms_tested": "MySQL 8.4.11",
   "source": {
@@ -40,7 +40,9 @@
       "tables": [
         "lib_readers",
         "lib_loans"
-      ]
+      ],
+      "schema": "library",
+      "breaking_profile": "nullable"
     },
     {
       "id": "loan_count",
@@ -51,7 +53,9 @@
       "tables": [
         "lib_readers",
         "lib_loans"
-      ]
+      ],
+      "schema": "library",
+      "breaking_profile": "empty"
     },
     {
       "id": "zero_fee",
@@ -62,7 +66,9 @@
       "tables": [
         "lib_readers",
         "lib_loans"
-      ]
+      ],
+      "schema": "library",
+      "breaking_profile": "zero_value"
     },
     {
       "id": "returned_count",
@@ -72,7 +78,9 @@
       "ordered": true,
       "tables": [
         "lib_loans"
-      ]
+      ],
+      "schema": "library",
+      "breaking_profile": "nullable"
     },
     {
       "id": "borrowers",
@@ -84,7 +92,9 @@
         "lib_readers",
         "lib_books",
         "lib_loans"
-      ]
+      ],
+      "schema": "library",
+      "breaking_profile": "multiplicity"
     },
     {
       "id": "latest_ties",
@@ -94,7 +104,9 @@
       "ordered": true,
       "tables": [
         "lib_loans"
-      ]
+      ],
+      "schema": "library",
+      "breaking_profile": "ties"
     },
     {
       "id": "price_range",
@@ -104,7 +116,9 @@
       "ordered": true,
       "tables": [
         "lib_books"
-      ]
+      ],
+      "schema": "library",
+      "breaking_profile": "boundary"
     },
     {
       "id": "not_returned",
@@ -114,7 +128,9 @@
       "ordered": true,
       "tables": [
         "lib_loans"
-      ]
+      ],
+      "schema": "library",
+      "breaking_profile": "nullable"
     },
     {
       "id": "active_outer",
@@ -125,7 +141,9 @@
       "tables": [
         "lib_readers",
         "lib_loans"
-      ]
+      ],
+      "schema": "library",
+      "breaking_profile": "multiplicity"
     },
     {
       "id": "union_bag",
@@ -135,7 +153,9 @@
       "ordered": true,
       "tables": [
         "lib_loans"
-      ]
+      ],
+      "schema": "library",
+      "breaking_profile": "multiplicity"
     },
     {
       "id": "all_returned",
@@ -146,7 +166,9 @@
       "tables": [
         "lib_readers",
         "lib_loans"
-      ]
+      ],
+      "schema": "library",
+      "breaking_profile": "nullable"
     },
     {
       "id": "top_books",
@@ -156,7 +178,751 @@
       "ordered": true,
       "tables": [
         "lib_books"
+      ],
+      "schema": "library",
+      "breaking_profile": "ties"
+    },
+    {
+      "id": "lib_reader_loan_sum",
+      "schema": "library",
+      "reference_sql": "SELECT r.id, COALESCE(SUM(l.fee),0) AS total FROM lib_readers r LEFT JOIN lib_loans l ON l.reader_id=r.id GROUP BY r.id ORDER BY r.id",
+      "profile": "outer_join_aggregate",
+      "breaking_profile": "zero_value",
+      "intent": "Сумма сборов по читателям, включая ноль",
+      "ordered": true,
+      "tables": [
+        "lib_readers",
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_reader_avg_fee",
+      "schema": "library",
+      "reference_sql": "SELECT l.reader_id, AVG(l.fee) AS avg_fee FROM lib_loans l GROUP BY l.reader_id ORDER BY l.reader_id",
+      "profile": "aggregate",
+      "breaking_profile": "zero_value",
+      "intent": "Средний сбор по читателям",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_reader_max_fee",
+      "schema": "library",
+      "reference_sql": "SELECT l.reader_id, MAX(l.fee) AS max_fee FROM lib_loans l GROUP BY l.reader_id ORDER BY l.reader_id",
+      "profile": "aggregate",
+      "breaking_profile": "zero_value",
+      "intent": "Максимальный сбор по читателям",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_reader_distinct_books",
+      "schema": "library",
+      "reference_sql": "SELECT l.reader_id, COUNT(DISTINCT l.book_id) AS n FROM lib_loans l GROUP BY l.reader_id ORDER BY l.reader_id",
+      "profile": "aggregate",
+      "breaking_profile": "multiplicity",
+      "intent": "Число разных книг у читателя",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_reader_loan_rows",
+      "schema": "library",
+      "reference_sql": "SELECT l.reader_id, COUNT(*) AS n FROM lib_loans l GROUP BY l.reader_id ORDER BY l.reader_id",
+      "profile": "aggregate",
+      "breaking_profile": "multiplicity",
+      "intent": "Число выдач по читателям",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_reader_returned_sum",
+      "schema": "library",
+      "reference_sql": "SELECT l.reader_id, SUM(CASE WHEN l.returned=1 THEN 1 ELSE 0 END) AS returned_cnt FROM lib_loans l GROUP BY l.reader_id ORDER BY l.reader_id",
+      "profile": "aggregate_case",
+      "breaking_profile": "nullable",
+      "intent": "Число возвратов по читателям",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_reader_fee_positive",
+      "schema": "library",
+      "reference_sql": "SELECT l.reader_id, SUM(l.fee) AS total FROM lib_loans l GROUP BY l.reader_id HAVING SUM(l.fee) > 10 ORDER BY l.reader_id",
+      "profile": "aggregate_having",
+      "breaking_profile": "zero_value",
+      "intent": "Читатели с суммой сборов больше 10",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_reader_multiple_loans",
+      "schema": "library",
+      "reference_sql": "SELECT l.reader_id FROM lib_loans l GROUP BY l.reader_id HAVING COUNT(*) >= 2 ORDER BY l.reader_id",
+      "profile": "aggregate_having",
+      "breaking_profile": "multiplicity",
+      "intent": "Читатели с двумя и более выдачами",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_book_loan_sum",
+      "schema": "library",
+      "reference_sql": "SELECT b.id, SUM(l.fee) AS total FROM lib_books b LEFT JOIN lib_loans l ON l.book_id=b.id GROUP BY b.id ORDER BY b.id",
+      "profile": "outer_join_aggregate",
+      "breaking_profile": "zero_value",
+      "intent": "Сумма сборов по книгам, включая ноль",
+      "ordered": true,
+      "tables": [
+        "lib_books",
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_global_stats",
+      "schema": "library",
+      "reference_sql": "SELECT COUNT(*) AS loans, SUM(fee) AS total_fee, AVG(fee) AS avg_fee FROM lib_loans",
+      "profile": "aggregate",
+      "breaking_profile": "empty",
+      "intent": "Общая статистика по выдачам",
+      "ordered": false,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_reader_book_titles",
+      "schema": "library",
+      "reference_sql": "SELECT r.id, b.title FROM lib_readers r JOIN lib_loans l ON l.reader_id=r.id JOIN lib_books b ON b.id=l.book_id ORDER BY r.id, b.title",
+      "profile": "join",
+      "breaking_profile": "multiplicity",
+      "intent": "Читатели и названия взятых книг",
+      "ordered": true,
+      "tables": [
+        "lib_readers",
+        "lib_books",
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_reader_no_fee_loans",
+      "schema": "library",
+      "reference_sql": "SELECT DISTINCT r.id FROM lib_readers r JOIN lib_loans l ON l.reader_id=r.id WHERE l.fee=0 ORDER BY r.id",
+      "profile": "distinct_join",
+      "breaking_profile": "multiplicity",
+      "intent": "Читатели, бравшие книги без сбора",
+      "ordered": true,
+      "tables": [
+        "lib_readers",
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_reader_left_with_flag",
+      "schema": "library",
+      "reference_sql": "SELECT r.id, l.id AS loan_id FROM lib_readers r LEFT JOIN lib_loans l ON l.reader_id=r.id ORDER BY r.id, l.id",
+      "profile": "outer_join_predicate",
+      "breaking_profile": "empty",
+      "intent": "Все читатели и их выдачи, включая отсутствующие",
+      "ordered": true,
+      "tables": [
+        "lib_readers",
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_loan_book_price",
+      "schema": "library",
+      "reference_sql": "SELECT l.id, b.price FROM lib_loans l JOIN lib_books b ON b.id=l.book_id WHERE b.price > 15 ORDER BY l.id",
+      "profile": "join",
+      "breaking_profile": "boundary",
+      "intent": "Выдачи книг дороже 15",
+      "ordered": true,
+      "tables": [
+        "lib_books",
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_reader_cheapest_book",
+      "schema": "library",
+      "reference_sql": "SELECT r.id, MIN(b.price) AS min_price FROM lib_readers r JOIN lib_loans l ON l.reader_id=r.id JOIN lib_books b ON b.id=l.book_id GROUP BY r.id ORDER BY r.id",
+      "profile": "join_aggregate",
+      "breaking_profile": "boundary",
+      "intent": "Минимальная цена книги у читателя",
+      "ordered": true,
+      "tables": [
+        "lib_readers",
+        "lib_books",
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_same_day_pairs",
+      "schema": "library",
+      "reference_sql": "SELECT a.id, b.id FROM lib_loans a JOIN lib_loans b ON a.day_no=b.day_no AND a.id < b.id ORDER BY a.id, b.id",
+      "profile": "self_join",
+      "breaking_profile": "multiplicity",
+      "intent": "Пары выдач в один день",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_reader_same_book_twice",
+      "schema": "library",
+      "reference_sql": "SELECT DISTINCT l1.reader_id FROM lib_loans l1 JOIN lib_loans l2 ON l1.reader_id=l2.reader_id AND l1.book_id=l2.book_id AND l1.id<l2.id ORDER BY l1.reader_id",
+      "profile": "self_join",
+      "breaking_profile": "multiplicity",
+      "intent": "Читатели, бравшие одну книгу дважды",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_book_cheaper_than_other",
+      "schema": "library",
+      "reference_sql": "SELECT DISTINCT b.id FROM lib_books b JOIN lib_books o ON o.id<>b.id AND o.price>b.price ORDER BY b.id",
+      "profile": "self_join",
+      "breaking_profile": "boundary",
+      "intent": "Книги дешевле хотя бы одной другой",
+      "ordered": true,
+      "tables": [
+        "lib_books"
+      ]
+    },
+    {
+      "id": "lib_reader_loan_join_agg",
+      "schema": "library",
+      "reference_sql": "SELECT r.id, COUNT(l.id) AS n, SUM(l.fee) AS total FROM lib_readers r LEFT JOIN lib_loans l ON l.reader_id=r.id GROUP BY r.id ORDER BY r.id",
+      "profile": "outer_join_aggregate",
+      "breaking_profile": "zero_value",
+      "intent": "Число выдач и сумма сборов по читателям",
+      "ordered": true,
+      "tables": [
+        "lib_readers",
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_reader_last_book_title",
+      "schema": "library",
+      "reference_sql": "SELECT l.id, b.title FROM lib_loans l JOIN lib_books b ON b.id=l.book_id WHERE l.day_no=(SELECT MAX(x.day_no) FROM lib_loans x WHERE x.reader_id=l.reader_id) ORDER BY l.id",
+      "profile": "correlated_max",
+      "breaking_profile": "ties",
+      "intent": "Названия книг из последней выдачи читателя",
+      "ordered": true,
+      "tables": [
+        "lib_books",
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_loans_fee_range",
+      "schema": "library",
+      "reference_sql": "SELECT id, fee FROM lib_loans WHERE fee BETWEEN 0 AND 2 ORDER BY id",
+      "profile": "range_filter",
+      "breaking_profile": "boundary",
+      "intent": "Выдачи со сбором в замкнутом диапазоне",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_loans_fee_in",
+      "schema": "library",
+      "reference_sql": "SELECT id FROM lib_loans WHERE fee IN (0,1,2) ORDER BY id",
+      "profile": "range_filter",
+      "breaking_profile": "boundary",
+      "intent": "Выдачи с одним из перечисленных сборов",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_loans_returned_null",
+      "schema": "library",
+      "reference_sql": "SELECT id FROM lib_loans WHERE returned IS NULL ORDER BY id",
+      "profile": "null_aware_filter",
+      "breaking_profile": "nullable",
+      "intent": "Выдачи без отметки о возврате",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_loans_fee_or_returned",
+      "schema": "library",
+      "reference_sql": "SELECT id FROM lib_loans WHERE fee=0 OR returned=0 ORDER BY id",
+      "profile": "or_filter",
+      "breaking_profile": "nullable",
+      "intent": "Выдачи с нулевым сбором или активные",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_books_title_like",
+      "schema": "library",
+      "reference_sql": "SELECT id, title FROM lib_books WHERE title LIKE 'Book%' ORDER BY id",
+      "profile": "pattern_filter",
+      "breaking_profile": "random",
+      "intent": "Книги с названием по образцу",
+      "ordered": true,
+      "tables": [
+        "lib_books"
+      ]
+    },
+    {
+      "id": "lib_loans_day_range",
+      "schema": "library",
+      "reference_sql": "SELECT id FROM lib_loans WHERE day_no BETWEEN 1 AND 3 ORDER BY id",
+      "profile": "range_filter",
+      "breaking_profile": "boundary",
+      "intent": "Выдачи в первые дни",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_books_price_or",
+      "schema": "library",
+      "reference_sql": "SELECT id FROM lib_books WHERE price < 10 OR price > 20 ORDER BY id",
+      "profile": "or_filter",
+      "breaking_profile": "boundary",
+      "intent": "Книги вне среднего диапазона цен",
+      "ordered": true,
+      "tables": [
+        "lib_books"
+      ]
+    },
+    {
+      "id": "lib_loans_returned_in",
+      "schema": "library",
+      "reference_sql": "SELECT id FROM lib_loans WHERE returned IN (0,1) ORDER BY id",
+      "profile": "null_aware_filter",
+      "breaking_profile": "nullable",
+      "intent": "Выдачи с известным состоянием возврата",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_books_never_loaned",
+      "schema": "library",
+      "reference_sql": "SELECT b.id FROM lib_books b WHERE NOT EXISTS (SELECT 1 FROM lib_loans l WHERE l.book_id=b.id) ORDER BY b.id",
+      "profile": "anti_join_exists",
+      "breaking_profile": "nullable",
+      "intent": "Книги, которые ни разу не выдавались",
+      "ordered": true,
+      "tables": [
+        "lib_books",
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_readers_with_loans",
+      "schema": "library",
+      "reference_sql": "SELECT r.id FROM lib_readers r WHERE EXISTS (SELECT 1 FROM lib_loans l WHERE l.reader_id=r.id) ORDER BY r.id",
+      "profile": "semi_join_exists",
+      "breaking_profile": "empty",
+      "intent": "Читатели, у которых есть выдачи",
+      "ordered": true,
+      "tables": [
+        "lib_readers",
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_books_loaned_in",
+      "schema": "library",
+      "reference_sql": "SELECT b.id FROM lib_books b WHERE b.id IN (SELECT l.book_id FROM lib_loans l) ORDER BY b.id",
+      "profile": "in_subquery",
+      "breaking_profile": "nullable",
+      "intent": "Книги, входящие в множество выданных",
+      "ordered": true,
+      "tables": [
+        "lib_books",
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_books_not_loaned_in",
+      "schema": "library",
+      "reference_sql": "SELECT b.id FROM lib_books b WHERE b.id NOT IN (SELECT l.book_id FROM lib_loans l) ORDER BY b.id",
+      "profile": "not_in_subquery",
+      "breaking_profile": "nullable",
+      "intent": "Книги, не входящие в множество выданных",
+      "ordered": true,
+      "tables": [
+        "lib_books",
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_reader_loan_count_scalar",
+      "schema": "library",
+      "reference_sql": "SELECT r.id, (SELECT COUNT(*) FROM lib_loans l WHERE l.reader_id=r.id) AS n FROM lib_readers r ORDER BY r.id",
+      "profile": "correlated_scalar",
+      "breaking_profile": "multiplicity",
+      "intent": "Число выдач читателя скалярным подзапросом",
+      "ordered": true,
+      "tables": [
+        "lib_readers",
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_loans_above_avg",
+      "schema": "library",
+      "reference_sql": "SELECT id FROM lib_loans WHERE fee > (SELECT AVG(fee) FROM lib_loans) ORDER BY id",
+      "profile": "scalar_subquery",
+      "breaking_profile": "zero_value",
+      "intent": "Выдачи со сбором выше среднего",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_reader_derived_counts",
+      "schema": "library",
+      "reference_sql": "SELECT x.reader_id, x.n FROM (SELECT l.reader_id, COUNT(*) AS n FROM lib_loans l GROUP BY l.reader_id) x WHERE x.n >= 2 ORDER BY x.reader_id",
+      "profile": "derived_table",
+      "breaking_profile": "multiplicity",
+      "intent": "Читатели с двумя и более выдачами через производную таблицу",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_loans_cte",
+      "schema": "library",
+      "reference_sql": "WITH ranked AS (SELECT id, day_no FROM lib_loans) SELECT id FROM ranked WHERE day_no = 1 ORDER BY id",
+      "profile": "cte",
+      "breaking_profile": "boundary",
+      "intent": "Выдачи первого дня через общее табличное выражение",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_loans_order_fee",
+      "schema": "library",
+      "reference_sql": "SELECT id, fee FROM lib_loans ORDER BY fee, id",
+      "profile": "order_limit",
+      "breaking_profile": "ties",
+      "intent": "Выдачи, упорядоченные по сбору",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_books_order_price_desc",
+      "schema": "library",
+      "reference_sql": "SELECT id FROM lib_books ORDER BY price DESC, id",
+      "profile": "order_limit",
+      "breaking_profile": "ties",
+      "intent": "Книги по убыванию цены",
+      "ordered": true,
+      "tables": [
+        "lib_books"
+      ]
+    },
+    {
+      "id": "lib_loans_limit3",
+      "schema": "library",
+      "reference_sql": "SELECT id FROM lib_loans ORDER BY id LIMIT 3",
+      "profile": "order_limit",
+      "breaking_profile": "ties",
+      "intent": "Первые три выдачи по идентификатору",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_readers_order_name",
+      "schema": "library",
+      "reference_sql": "SELECT id, name FROM lib_readers ORDER BY name",
+      "profile": "order_limit",
+      "breaking_profile": "random",
+      "intent": "Читатели, упорядоченные по имени",
+      "ordered": true,
+      "tables": [
+        "lib_readers"
+      ]
+    },
+    {
+      "id": "lib_books_distinct_prices",
+      "schema": "library",
+      "reference_sql": "SELECT DISTINCT price FROM lib_books ORDER BY price",
+      "profile": "distinct_filter",
+      "breaking_profile": "multiplicity",
+      "intent": "Различные цены книг",
+      "ordered": true,
+      "tables": [
+        "lib_books"
+      ]
+    },
+    {
+      "id": "lib_loans_count_by_day_order",
+      "schema": "library",
+      "reference_sql": "SELECT day_no, COUNT(*) AS n FROM lib_loans GROUP BY day_no ORDER BY n DESC, day_no",
+      "profile": "order_limit",
+      "breaking_profile": "ties",
+      "intent": "Число выдач по дням, упорядоченное по счётчику",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_union_bag_books",
+      "schema": "library",
+      "reference_sql": "SELECT book_id FROM lib_loans WHERE returned=0 UNION ALL SELECT book_id FROM lib_loans WHERE fee=0 ORDER BY book_id",
+      "profile": "union_all",
+      "breaking_profile": "multiplicity",
+      "intent": "Объединение выданных книг с сохранением повторов",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_union_distinct_readers",
+      "schema": "library",
+      "reference_sql": "SELECT reader_id FROM lib_loans WHERE returned=0 UNION SELECT reader_id FROM lib_loans WHERE fee=0 ORDER BY reader_id",
+      "profile": "union_distinct",
+      "breaking_profile": "multiplicity",
+      "intent": "Объединение читателей без повторов",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_count_star_vs_col",
+      "schema": "library",
+      "reference_sql": "SELECT reader_id, COUNT(*) AS star_cnt, COUNT(returned) AS returned_cnt FROM lib_loans GROUP BY reader_id ORDER BY reader_id",
+      "profile": "count_star_vs_column",
+      "breaking_profile": "nullable",
+      "intent": "Число строк против числа известных отметок возврата",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_reader_book_multiplicity",
+      "schema": "library",
+      "reference_sql": "SELECT r.id, COUNT(*) AS n FROM lib_readers r JOIN lib_loans l ON l.reader_id=r.id JOIN lib_books b ON b.id=l.book_id GROUP BY r.id ORDER BY r.id",
+      "profile": "join_multiplicity",
+      "breaking_profile": "multiplicity",
+      "intent": "Число строк соединения читатель-выдача-книга",
+      "ordered": true,
+      "tables": [
+        "lib_readers",
+        "lib_books",
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_books_price_boundary",
+      "schema": "library",
+      "reference_sql": "SELECT id FROM lib_books WHERE price >= 20 ORDER BY id",
+      "profile": "boundary_filter",
+      "breaking_profile": "boundary",
+      "intent": "Книги не дешевле граничного значения",
+      "ordered": true,
+      "tables": [
+        "lib_books"
+      ]
+    },
+    {
+      "id": "lib_books_price_open_range",
+      "schema": "library",
+      "reference_sql": "SELECT id FROM lib_books WHERE price > 10 AND price < 20 ORDER BY id",
+      "profile": "boundary_filter",
+      "breaking_profile": "boundary",
+      "intent": "Книги в открытом диапазоне цен",
+      "ordered": true,
+      "tables": [
+        "lib_books"
+      ]
+    },
+    {
+      "id": "lib_loans_fee_zero_sum",
+      "schema": "library",
+      "reference_sql": "SELECT reader_id FROM lib_loans GROUP BY reader_id HAVING SUM(fee) = 0 ORDER BY reader_id",
+      "profile": "aggregate_having",
+      "breaking_profile": "zero_value",
+      "intent": "Читатели с нулевой суммой сборов",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_reader_left_join_null",
+      "schema": "library",
+      "reference_sql": "SELECT r.id FROM lib_readers r LEFT JOIN lib_loans l ON l.reader_id=r.id WHERE l.id IS NULL ORDER BY r.id",
+      "profile": "anti_join_null",
+      "breaking_profile": "empty",
+      "intent": "Читатели без единой выдачи через соединение",
+      "ordered": true,
+      "tables": [
+        "lib_readers",
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_reader_all_null_returned",
+      "schema": "library",
+      "reference_sql": "SELECT r.id FROM lib_readers r WHERE EXISTS (SELECT 1 FROM lib_loans l WHERE l.reader_id=r.id AND l.returned IS NULL) ORDER BY r.id",
+      "profile": "semi_join_exists",
+      "breaking_profile": "nullable",
+      "intent": "Читатели с выдачей без отметки возврата",
+      "ordered": true,
+      "tables": [
+        "lib_readers",
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_reader_count_returned_equal",
+      "schema": "library",
+      "reference_sql": "SELECT l.reader_id FROM lib_loans l GROUP BY l.reader_id HAVING COUNT(*) = COUNT(returned) ORDER BY l.reader_id",
+      "profile": "aggregate_having",
+      "breaking_profile": "nullable",
+      "intent": "Читатели, у которых у всех выдач есть отметка возврата",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_loans_row_number",
+      "schema": "library",
+      "reference_sql": "SELECT id, ROW_NUMBER() OVER (ORDER BY id) AS rn FROM lib_loans ORDER BY id",
+      "profile": "window_row_number",
+      "breaking_profile": "ties",
+      "intent": "Порядковые номера выдач",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_reader_fee_rank",
+      "schema": "library",
+      "reference_sql": "SELECT reader_id, fee, RANK() OVER (PARTITION BY reader_id ORDER BY fee DESC) AS rnk FROM lib_loans ORDER BY reader_id, rnk, fee DESC, id",
+      "profile": "window_rank",
+      "breaking_profile": "ties",
+      "intent": "Ранг сбора в рамках читателя",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_reader_running_fee",
+      "schema": "library",
+      "reference_sql": "SELECT reader_id, id, SUM(fee) OVER (PARTITION BY reader_id ORDER BY id) AS running FROM lib_loans ORDER BY reader_id, id",
+      "profile": "window_running",
+      "breaking_profile": "ties",
+      "intent": "Нарастающая сумма сборов по выдачам читателя",
+      "ordered": true,
+      "tables": [
+        "lib_loans"
+      ]
+    },
+    {
+      "id": "lib_books_price_rank",
+      "schema": "library",
+      "reference_sql": "SELECT id, DENSE_RANK() OVER (ORDER BY price DESC) AS price_rank FROM lib_books ORDER BY id",
+      "profile": "window_rank",
+      "breaking_profile": "ties",
+      "intent": "Плотный ранг цены книги",
+      "ordered": true,
+      "tables": [
+        "lib_books"
       ]
     }
-  ]
+  ],
+  "schema_description": "Синтетическая библиотека: читатели, книги, выдачи. NULL допускается только в lib_loans.returned.",
+  "profile_legend": {
+    "aggregate": "одна агрегатная функция или несколько по одной группировке",
+    "aggregate_case": "агрегат с условным выражением CASE",
+    "aggregate_having": "группировка с условием HAVING",
+    "outer_join_aggregate": "внешнее соединение с агрегатом (включая нулевые группы)",
+    "join": "соединение без агрегата",
+    "join_aggregate": "соединение с агрегатом",
+    "join_multiplicity": "счётчик строк соединения (кратности)",
+    "distinct_join": "соединение с DISTINCT",
+    "self_join": "соединение таблицы с собой",
+    "anti_join_null": "анти-соединение через LEFT JOIN ... IS NULL",
+    "anti_join_exists": "анти-соединение через NOT EXISTS",
+    "semi_join_exists": "полусоединение через EXISTS",
+    "in_subquery": "предикат IN с подзапросом",
+    "not_in_subquery": "предикат NOT IN с подзапросом",
+    "correlated_scalar": "коррелированный скалярный подзапрос",
+    "scalar_subquery": "скалярный подзапрос без корреляции",
+    "correlated_max": "коррелированный подзапрос с максимумом",
+    "derived_table": "производная таблица в FROM",
+    "cte": "общее табличное выражение (CTE)",
+    "recursive_cte": "рекурсивное общее табличное выражение",
+    "outer_join_predicate": "внешнее соединение с предикатом в ON",
+    "semi_anti_join": "комбинация EXISTS и NOT EXISTS в одном запросе",
+    "anti_join_subquery": "анти-соединение через NOT EXISTS в подзапросе",
+    "range_filter": "фильтр по диапазону или списку",
+    "pattern_filter": "фильтр по образцу строки",
+    "null_aware_filter": "фильтр с учётом NULL",
+    "or_filter": "фильтр с веткой OR",
+    "boundary_filter": "фильтр на граничном значении",
+    "group_by_expression": "группировка по выражению",
+    "order_limit": "сортировка и/или LIMIT",
+    "top_n_ties": "сортировка с LIMIT при возможных равенствах",
+    "distinct_filter": "DISTINCT без соединения",
+    "union_all": "UNION ALL с сохранением кратностей",
+    "union_distinct": "UNION с удалением повторов",
+    "count_star_vs_column": "COUNT(*) против COUNT(столбец)",
+    "window_row_number": "оконная функция ROW_NUMBER",
+    "window_rank": "оконная функция RANK / DENSE_RANK",
+    "window_running": "оконная сумма с накоплением"
+  },
+  "breaking_profile_legend": {
+    "multiplicity": "состояние с повторяющимися строками и кратностями",
+    "nullable": "состояние с NULL в необязательном столбце",
+    "empty": "пустое состояние или пустой результат",
+    "boundary": "состояние с ровно граничным значением",
+    "ties": "состояние с равными ключами сортировки",
+    "zero_value": "состояние с нулевой суммой или нулевым счётом",
+    "random": "псевдослучайное состояние с фиксированным seed"
+  }
 }

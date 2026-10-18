@@ -5,10 +5,15 @@
 Rules:
   1. If manifest.json exists, every listed file must match its sha256, and every file
      under data/ must be listed (so no data file escapes the frozen hashes).
-  2. Every family in corpus/families.json must have a reference SQL, a profile and a schema.
+  2. Every corpus file in data/corpus/*.json must declare a schema, a DDL and families;
+     every family must have a reference SQL, a profile, a breaking_profile and a schema.
+     Family ids are unique across all corpus files.
   3. Every state in states/states.json must reference an existing family.
-  4. Every family must have a run record for every model directory and an evidence file.
-  5. Every run record must name its model, digest and sampling protocol.
+  4. Every family must have a run record for every model directory and an evidence file
+     once it is evaluated; a family without runs yet is allowed (staged dataset), but a
+     run record may only exist for a family that has frozen states.
+  5. Every run record must name its model, digest and sampling protocol; candidate_sql
+     and raw_response keys must be present.
   6. Every evidence record must have an allowed status; "refuted" requires refuting_states
      and a witness, and the witness state must be one of the refuting states.
   7. If manifest.json declares counts, they must be recomputable from data/ alone.
@@ -24,6 +29,7 @@ import sys
 from pathlib import Path
 
 STATUSES = {"preserved", "refuted", "no_rewrite", "unsupported", "error"}
+BREAKING_PROFILES = {"multiplicity", "nullable", "empty", "boundary", "ties", "zero_value", "random"}
 
 
 def sha256(path: Path) -> str:
@@ -88,30 +94,44 @@ def main() -> int:
                     if rel not in listed:
                         errors.append(f"data file is not frozen in manifest.json: {rel}")
 
-    families_file = root / "data" / "corpus" / "families.json"
-    state_file = root / "data" / "states" / "states.json"
     family_ids: set[str] = set()
-
-    if families_file.exists():
-        corpus = load(families_file)
+    family_schema: dict[str, str] = {}
+    corpus_root = root / "data" / "corpus"
+    corpus_files = sorted(corpus_root.glob("*.json")) if corpus_root.exists() else []
+    for corpus_file in corpus_files:
+        rel = corpus_file.relative_to(root).as_posix()
+        try:
+            corpus = load(corpus_file)
+        except Exception as exc:  # noqa: BLE001
+            errors.append(f"{rel}: cannot parse ({exc})")
+            continue
+        schema = corpus.get("schema")
+        if not schema:
+            errors.append(f"{rel}: no schema name")
+        if not corpus.get("ddl"):
+            errors.append(f"{rel}: no schema DDL")
         for fam in corpus.get("families", []):
             fid = fam.get("id")
             if not fid:
-                errors.append("family without id")
+                errors.append(f"{rel}: family without id")
                 continue
             if fid in family_ids:
                 errors.append(f"duplicate family id: {fid}")
             family_ids.add(fid)
+            family_schema[fid] = fam.get("schema") or schema
+            if (fam.get("schema") or schema) != schema:
+                errors.append(f"family {fid}: schema differs from {rel}")
             if not fam.get("reference_sql"):
                 errors.append(f"family {fid}: no reference_sql")
             if not fam.get("profile"):
                 errors.append(f"family {fid}: no profile")
-        if not corpus.get("ddl"):
-            errors.append("corpus: no schema DDL")
+            if fam.get("breaking_profile") not in BREAKING_PROFILES:
+                errors.append(f"family {fid}: bad breaking_profile {fam.get('breaking_profile')!r}")
         checked += 1
 
-    states_per_family: dict[str, int] = {}
+    state_counts: dict[str, int] = {}
     state_pairs = 0
+    state_file = root / "data" / "states" / "states.json"
     if state_file.exists():
         states = load(state_file)
         for st in states.get("states", []):
@@ -123,22 +143,30 @@ def main() -> int:
                 errors.append(f"state of {fid}: no profile")
             if st.get("rows") is None:
                 errors.append(f"state {st.get('profile')} of {fid}: no rows")
-            states_per_family[fid] = states_per_family.get(fid, 0) + 1
+            state_counts[fid] = state_counts.get(fid, 0) + 1
         checked += 1
 
     runs_root = root / "data" / "runs"
     run_slugs = sorted(p.name for p in runs_root.iterdir() if p.is_dir()) if runs_root.exists() else []
     run_records = 0
+    evaluated: set[str] = set()
+    checks = 0
     if runs_root.exists():
         for path in sorted(runs_root.glob("*/*.json")):
             rel = path.relative_to(root).as_posix()
             rec = load(path)
             run_records += 1
             checked += 1
-            if rec.get("family") not in family_ids:
-                errors.append(f"{rel}: run for unknown family {rec.get('family')!r}")
-            if rec.get("family") != path.stem:
+            fid = rec.get("family")
+            if fid not in family_ids:
+                errors.append(f"{rel}: run for unknown family {fid!r}")
+            else:
+                evaluated.add(fid)
+                checks += state_counts.get(fid, 0)
+            if fid != path.stem:
                 errors.append(f"{rel}: family does not match file name")
+            if "schema" in rec and rec["schema"] != family_schema.get(fid):
+                errors.append(f"{rel}: run schema does not match corpus schema")
             if not rec.get("model"):
                 errors.append(f"{rel}: run without model name")
             if not rec.get("model_digest"):
@@ -153,10 +181,8 @@ def main() -> int:
                 errors.append(f"{rel}: run without candidate_sql key")
             if "raw_response" not in rec:
                 errors.append(f"{rel}: run without raw_response")
-        for slug in run_slugs:
-            for fid in sorted(family_ids):
-                if not (runs_root / slug / f"{fid}.json").exists():
-                    errors.append(f"missing run record: {slug}/{fid}.json")
+            if state_counts.get(fid, 0) == 0:
+                errors.append(f"{rel}: run record for a family without frozen states")
 
     evidence_root = root / "data" / "evidence"
     evidence_records = 0
@@ -179,26 +205,39 @@ def main() -> int:
             else:  # одна запись на файл (формат из первой редакции карточки)
                 evidence_records += 1
                 check_evidence_record(rel, ev, errors, family_ids)
-        for fid in sorted(family_ids):
-            if not (evidence_root / f"{fid}.json").exists():
-                errors.append(f"missing evidence file for family: {fid}")
+
+    for fid in sorted(evaluated):
+        if state_counts.get(fid, 0) == 0:
+            errors.append(f"evaluated family without states: {fid}")
+        for slug in run_slugs:
+            if not (runs_root / slug / f"{fid}.json").exists():
+                errors.append(f"missing run record: {slug}/{fid}.json")
+        if not (evidence_root / f"{fid}.json").exists():
+            errors.append(f"missing evidence file for evaluated family: {fid}")
 
     counts = (load(manifest).get("counts") or {}) if manifest.exists() else {}
     if counts:
-        per_family = set(states_per_family.values())
+        per_family = {state_counts[f] for f in state_counts}
         spf = per_family.pop() if len(per_family) == 1 else -1
+        by_schema: dict[str, int] = {}
+        for fid in family_ids:
+            schema = family_schema.get(fid, "")
+            by_schema[schema] = by_schema.get(schema, 0) + 1
         derived = {
             "families": len(family_ids),
+            "families_by_schema": by_schema,
+            "families_with_states": len(state_counts),
+            "evaluated_families": len(evaluated),
             "states_per_family": spf,
             "state_family_pairs": state_pairs,
             "models": len(run_slugs),
             "run_records": run_records,
             "evidence_records": evidence_records,
-            "checks": run_records * spf,
+            "checks": checks,
         }
         for key, value in derived.items():
             if key in counts and counts[key] != value:
-                errors.append(f"manifest count {key}={counts[key]} does not match data ({value})")
+                errors.append(f"manifest count {key}={counts[key]!r} does not match data ({value!r})")
 
     if errors:
         print("VALIDATION FAILED")
