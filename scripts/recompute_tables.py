@@ -64,7 +64,8 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--repo-root", type=Path, default=Path("."))
     ap.add_argument("--write", action="store_true")
-    root = ap.parse_args().repo_root.resolve()
+    args = ap.parse_args()
+    root = args.repo_root.resolve()
 
     data = gather(root)
     text = render(data)
@@ -74,7 +75,7 @@ def main() -> int:
         print("no evidence files found; nothing to recompute")
         return 1
 
-    if ap.write:
+    if args.write:
         target.write_text(text, encoding="utf-8", newline="\n")
         print(f"written: {target}")
         return 0
