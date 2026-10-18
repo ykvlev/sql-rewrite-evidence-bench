@@ -1,0 +1,4 @@
+pymysql
+psycopg[binary]
+httpx
+jsonschema
