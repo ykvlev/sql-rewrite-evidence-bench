@@ -34,7 +34,7 @@ SREB dataset.
 
 - **Track:** databases / query optimisation / tooling around query rewriting.
 - **Travel and visa support:** a visa invitation letter would be needed for travel from Russia. The invitation policy mentions a valid paid registration while selected speakers receive a free ticket; please advise how to proceed in that case, and confirm when registration opens — the visa process has to start well before January.
-- **Dataset:** the talk is based on a public dataset with a DOI (assigned on release) and on open scripts; the versioned release link will be included once published. A live demonstration of one counterexample takes about two minutes and needs only a laptop.
+- **Dataset:** the talk is based on a public dataset with DOI 10.5281/zenodo.23472642 and on open scripts. A live demonstration of one counterexample takes about two minutes and needs only a laptop.
 - **Recording:** please confirm whether the talk is recorded and published.
 - **Materials:** slides can be provided before the event if recordings are made.
 

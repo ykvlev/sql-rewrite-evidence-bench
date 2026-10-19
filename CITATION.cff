@@ -7,5 +7,7 @@ authors:
     given-names: Artem
     orcid: "https://orcid.org/0009-0006-8617-7895"
 version: "0.3.0"
+doi: "10.5281/zenodo.23472642"
+url: "https://doi.org/10.5281/zenodo.23472642"
 date-released: "2026-10-19"
 license: CC-BY-4.0

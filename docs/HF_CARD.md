@@ -104,6 +104,8 @@ university schema has not been ported yet.
 
 Data and documentation: CC BY 4.0. Code: MIT.
 
+DOI: https://doi.org/10.5281/zenodo.23472642
+
 ## Citation
 
 ```bibtex
@@ -112,6 +114,7 @@ Data and documentation: CC BY 4.0. Code: MIT.
   author = {Yakovlev, Artem},
   year   = {2026},
   note   = {ORCID 0009-0006-8617-7895},
-  url    = {https://github.com/ykvlev/sql-rewrite-evidence-bench}
+  doi    = {10.5281/zenodo.23472642},
+  url    = {https://doi.org/10.5281/zenodo.23472642}
 }
 ```

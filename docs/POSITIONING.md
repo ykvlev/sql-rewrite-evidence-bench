@@ -47,3 +47,7 @@ If counterexample evidence is not new, the defensible contribution is **adequacy
 given a bank of allowed states, what fraction of wrong rewrites does it refute? That is a
 mutation-adequacy question for SQL queries, and it is the direction the paper should take
 instead of claiming priority on "evidence".
+
+## Release
+
+First public release with DOI: https://doi.org/10.5281/zenodo.23472642
