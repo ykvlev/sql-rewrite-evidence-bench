@@ -76,16 +76,19 @@ Every published number is recomputable from `data/` without rerunning a model.
 
 ## Scale (v0.2.0)
 
-- query families: **136** across two schemas (library, online shop)
-- frozen states: **3808** (28 profiles per family)
-- model runs: **544** (4 models × 136 families)
+- query families: **204** across three schemas (library, online shop, university)
+- frozen states: **5 712** (28 profiles per family)
+- model runs: **544** (4 models × 136 evaluated families)
 - evidence: **136 families**, evaluated on MySQL 8.4.11
 - total checks: **15 232** (model × family × state)
 - models: Qwen2.5-Coder-7B, Qwen2.5-7B, Phi-3.5-mini-3.8B, DeepSeek-Coder-V2
 
-Cross-DBMS check: the schema and all 136 reference queries execute on PostgreSQL 16.15
-without modification; on the 12 seed families the reference results and candidate
-classifications match MySQL exactly (0 divergences over 336 state pairs).
+The 68 university families have frozen states but are not yet evaluated by models.
+
+Cross-DBMS check: the schema and the 136 reference queries of the evaluated families execute
+on PostgreSQL 16.15 without modification; on the 12 seed families the reference results and
+candidate classifications match MySQL exactly (0 divergences over 336 state pairs). The
+university schema has not been ported yet.
 
 ## Limitations
 
@@ -94,6 +97,7 @@ classifications match MySQL exactly (0 divergences over 336 state pairs).
 - Witnesses are **not minimised**: the recorded state is the first one that refuted the
   candidate, not the smallest possible.
 - Model behaviour changes across engine versions; the engine version is part of the record.
+- 68 of 204 families have no model runs yet.
 
 ## Licence
 

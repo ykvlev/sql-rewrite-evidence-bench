@@ -72,9 +72,10 @@ For each (family, model):
 
 ## 6. Pilot results (v0.2.0, numbers from `data/`)
 
-The v0.2.0 corpus has 136 families on two schemas; the evidence covers all 136 families,
-28 states each, four models and 15 232 executed checks on MySQL 8.4.11 (45 refuted rewrites
-in 29 families).
+The v0.2.0 corpus has 204 families on three schemas (library, shop, university); the
+evidence covers the 136 library and shop families, 28 states each, four models and 15 232
+executed checks on MySQL 8.4.11 (45 refuted rewrites in 29 families). The 68 university
+families have frozen states but no model runs yet.
 
 - The code-specialised models rewrote more often and were refuted more often than the
   general-purpose ones. `deepseek-coder-v2` proposed 50 rewrites (21 refuted),

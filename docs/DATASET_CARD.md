@@ -10,31 +10,35 @@ allowed states of the database; when it does not, the dataset records exactly wh
 
 | Item | Count |
 |---|---|
-| Query families | 136 (68 library schema + 68 shop schema) |
+| Query families | 204 (68 library + 68 shop + 68 university) |
 | Frozen states per family | 28 |
-| Family–state pairs | 3 808 |
+| Family–state pairs | 5 712 |
 | Models with runs | 4 (`qwen2.5-coder:7b`, `qwen2.5:7b`, `phi3.5:3.8b`, `deepseek-coder-v2:latest`) |
 | Run records (model × family) | 544 |
 | Evidence records (model × family) | 544 |
 | Executed checks (model × family × state) | 15 232 |
-| Families with model runs | 136 (all) |
+| Families with frozen states | 204 (all) |
+| Families with model runs | 136 (library and shop) |
 
-Coverage is complete for the current corpus: every family has 28 frozen states, one answer
-per model per family, and one evidence record per model. Two planned participants are
-missing. `gemma4:26b` is resource-blocked on the collection machine: the 25.2B Q4_K_M model
-is 17.3 GB, the machine has 15.7 GB of RAM and no GPU, and a single request did not complete
-within 18 minutes. A deterministic rules baseline is not published because the rule module in
-the source application is an analyser, not a rewrite generator; it produces findings and
-suggestions rather than executable candidate SQL.
+Coverage is complete for the corpus and the state banks: every family has 28 frozen states.
+Every library/shop family has one answer per model and one evidence record per model; the 68
+university families have frozen states but no model runs yet — a family without runs is valid
+(staged coverage, see the integrity rules and `manifest.staging`). Two planned participants
+are missing. `gemma4:26b` is resource-blocked on the collection machine: the 25.2B Q4_K_M
+model is 17.3 GB, the machine has 15.7 GB of RAM and no GPU, and a single request did not
+complete within 18 minutes. A deterministic rules baseline is not published because the rule
+module in the source application is an analyser, not a rewrite generator; it produces
+findings and suggestions rather than executable candidate SQL.
 
 The primary execution engine is MySQL 8.4.11. The evaluation mechanism was additionally
 cross-checked on PostgreSQL 16.15 for the 12 seed families (1 008 candidate checks, no status
 mismatches, no DDL changes); see [CROSS_DBMS.md](CROSS_DBMS.md). PostgreSQL evidence is not
-yet first-class in the dataset format.
+yet first-class in the dataset format; the university schema has not been ported to
+PostgreSQL yet.
 
 ## Structure
 
-### corpus/families.json and corpus/shop.json
+### corpus/families.json, corpus/shop.json and corpus/university.json
 
 One file per schema. Each declares the schema DDL, the constraints it enforces, and the
 query families with a query-shape `profile` and a designed `breaking_profile`. `profile`
@@ -147,8 +151,9 @@ no data can escape the frozen hashes.
 
 `manifest.counts` is the machine-readable statement of coverage; `check_corpus.py` recomputes
 every value from `data/`. `manifest.staging` records the current stage of the dataset —
-for v0.2.0 it is `full-corpus-runs`: corpus, state banks, model runs and evidence now cover
-all 136 families; the PostgreSQL cross-check covers the 12 seed families (see
+for v0.2.0 it is `university-states`: the corpus has 204 families on three schemas and the
+frozen state banks cover all 204, while model runs and evidence cover the 136 library/shop
+families; the PostgreSQL cross-check covers the 12 seed families (see
 [CROSS_DBMS.md](CROSS_DBMS.md)). The same note is repeated in the manifest and the dataset
 card so that coverage claims stay machine-checkable.
 
@@ -175,7 +180,10 @@ card so that coverage claims stay machine-checkable.
 - One response per (model, family), temperature 0, no explicit seed: the raw text is
   stored as produced but a rerun is not guaranteed to be byte-identical.
 - Candidate rewrites were executed on MySQL only; the PostgreSQL cross-check covers the 12
-  seed families and is not first-class evidence.
+  seed families and is not first-class evidence. The university schema has not been ported
+  to PostgreSQL yet.
+- The 68 university families have frozen states but no model runs; no aggregate claim over
+  them follows from the current evidence.
 - The state bank is shared by all families of a schema: it stresses the schema, not every
   individual query shape. Coverage of edge cases that are specific to one family is a
   design target, not a guarantee.

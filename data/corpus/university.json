@@ -1,0 +1,966 @@
+{
+  "schema": "university",
+  "dataset": "SREB",
+  "dataset_version": "0.2.0",
+  "dialect": "mysql",
+  "dbms_tested": "MySQL 8.4.11",
+  "schema_description": "Синтетический университет: подразделения, преподаватели, студенты, семестры, курсы, записи на курсы и оценки. NULL допускается в teachers.salary, students.birth_date, grades.score, grades.grade_letter, grades.graded_on; уникальность (student_id, course_id, semester_id) в enrollments; CHECK на допустимые оценки, статусы и диапазон дат семестра.",
+  "profile_legend": {
+    "aggregate": "одна агрегатная функция или несколько по одной группировке",
+    "aggregate_case": "агрегат с условным выражением CASE",
+    "aggregate_having": "группировка с условием HAVING",
+    "outer_join_aggregate": "внешнее соединение с агрегатом (включая нулевые группы)",
+    "join": "соединение без агрегата",
+    "join_aggregate": "соединение с агрегатом",
+    "join_multiplicity": "счётчик строк соединения (кратности)",
+    "distinct_join": "соединение с DISTINCT",
+    "self_join": "соединение таблицы с собой",
+    "anti_join_null": "анти-соединение через LEFT JOIN ... IS NULL",
+    "anti_join_exists": "анти-соединение через NOT EXISTS",
+    "semi_join_exists": "полусоединение через EXISTS",
+    "in_subquery": "предикат IN с подзапросом",
+    "not_in_subquery": "предикат NOT IN с подзапросом",
+    "correlated_scalar": "коррелированный скалярный подзапрос",
+    "scalar_subquery": "скалярный подзапрос без корреляции",
+    "correlated_max": "коррелированный подзапрос с максимумом",
+    "derived_table": "производная таблица в FROM",
+    "cte": "общее табличное выражение (CTE)",
+    "recursive_cte": "рекурсивное общее табличное выражение",
+    "outer_join_predicate": "внешнее соединение с предикатом в ON",
+    "semi_anti_join": "комбинация EXISTS и NOT EXISTS в одном запросе",
+    "anti_join_subquery": "анти-соединение через NOT EXISTS в подзапросе",
+    "range_filter": "фильтр по диапазону или списку",
+    "pattern_filter": "фильтр по образцу строки",
+    "null_aware_filter": "фильтр с учётом NULL",
+    "or_filter": "фильтр с веткой OR",
+    "boundary_filter": "фильтр на граничном значении",
+    "group_by_expression": "группировка по выражению",
+    "order_limit": "сортировка и/или LIMIT",
+    "top_n_ties": "сортировка с LIMIT при возможных равенствах",
+    "distinct_filter": "DISTINCT без соединения",
+    "union_all": "UNION ALL с сохранением кратностей",
+    "union_distinct": "UNION с удалением повторов",
+    "count_star_vs_column": "COUNT(*) против COUNT(столбец)",
+    "window_row_number": "оконная функция ROW_NUMBER",
+    "window_rank": "оконная функция RANK / DENSE_RANK",
+    "window_running": "оконная сумма с накоплением",
+    "date_function": "функция над датой без агрегата"
+  },
+  "breaking_profile_legend": {
+    "multiplicity": "состояние с повторяющимися строками и кратностями",
+    "nullable": "состояние с NULL в необязательном столбце",
+    "empty": "пустое состояние или пустой результат",
+    "boundary": "состояние с ровно граничным значением",
+    "ties": "состояние с равными ключами сортировки",
+    "zero_value": "состояние с нулевой суммой или нулевым счётом",
+    "random": "псевдослучайное состояние с фиксированным seed"
+  },
+  "ddl": [
+    "CREATE TABLE departments(id INTEGER PRIMARY KEY, name VARCHAR(80) NOT NULL UNIQUE, faculty VARCHAR(80) NOT NULL, budget DECIMAL(12,2) NOT NULL, CHECK(budget >= 0))",
+    "CREATE TABLE teachers(id INTEGER PRIMARY KEY, name VARCHAR(80) NOT NULL, department_id INTEGER NOT NULL, title VARCHAR(30) NOT NULL, hired_at DATE NOT NULL, salary DECIMAL(10,2) NULL, FOREIGN KEY(department_id) REFERENCES departments(id), CHECK(title IN ('assistant','lecturer','senior_lecturer','professor')), CHECK(salary IS NULL OR salary >= 0))",
+    "CREATE TABLE students(id INTEGER PRIMARY KEY, name VARCHAR(80) NOT NULL, email VARCHAR(120) NOT NULL UNIQUE, department_id INTEGER NOT NULL, enrolled_at DATE NOT NULL, status VARCHAR(20) NOT NULL, birth_date DATE NULL, FOREIGN KEY(department_id) REFERENCES departments(id), CHECK(status IN ('active','graduated','expelled','leave')))",
+    "CREATE TABLE semesters(id INTEGER PRIMARY KEY, name VARCHAR(20) NOT NULL UNIQUE, starts_on DATE NOT NULL, ends_on DATE NOT NULL, CHECK(ends_on > starts_on))",
+    "CREATE TABLE courses(id INTEGER PRIMARY KEY, code VARCHAR(16) NOT NULL UNIQUE, title VARCHAR(120) NOT NULL, department_id INTEGER NOT NULL, credits INTEGER NOT NULL, FOREIGN KEY(department_id) REFERENCES departments(id), CHECK(credits BETWEEN 1 AND 30))",
+    "CREATE TABLE enrollments(id INTEGER PRIMARY KEY, student_id INTEGER NOT NULL, course_id INTEGER NOT NULL, semester_id INTEGER NOT NULL, teacher_id INTEGER NOT NULL, enrolled_on DATE NOT NULL, status VARCHAR(20) NOT NULL, FOREIGN KEY(student_id) REFERENCES students(id), FOREIGN KEY(course_id) REFERENCES courses(id), FOREIGN KEY(semester_id) REFERENCES semesters(id), FOREIGN KEY(teacher_id) REFERENCES teachers(id), UNIQUE(student_id, course_id, semester_id), CHECK(status IN ('enrolled','passed','failed','dropped')))",
+    "CREATE TABLE grades(id INTEGER PRIMARY KEY, enrollment_id INTEGER NOT NULL UNIQUE, score DECIMAL(5,2) NULL, grade_letter VARCHAR(2) NULL, graded_on DATE NULL, FOREIGN KEY(enrollment_id) REFERENCES enrollments(id), CHECK(score IS NULL OR (score >= 0 AND score <= 100)), CHECK(grade_letter IS NULL OR grade_letter IN ('A','B','C','D','E','F')))"
+  ],
+  "constraints": [
+    "departments.id PRIMARY KEY",
+    "departments.name NOT NULL UNIQUE",
+    "departments.faculty NOT NULL",
+    "departments.budget NOT NULL, CHECK(budget >= 0)",
+    "teachers.id PRIMARY KEY",
+    "teachers.name NOT NULL",
+    "teachers.department_id NOT NULL, REFERENCES departments(id)",
+    "teachers.title NOT NULL, CHECK(title IN (assistant, lecturer, senior_lecturer, professor))",
+    "teachers.hired_at NOT NULL",
+    "teachers.salary NULL allowed, CHECK(salary IS NULL OR salary >= 0)",
+    "students.id PRIMARY KEY",
+    "students.name NOT NULL",
+    "students.email NOT NULL UNIQUE",
+    "students.department_id NOT NULL, REFERENCES departments(id)",
+    "students.enrolled_at NOT NULL",
+    "students.status NOT NULL, CHECK(status IN (active, graduated, expelled, leave))",
+    "students.birth_date NULL allowed",
+    "semesters.id PRIMARY KEY",
+    "semesters.name NOT NULL UNIQUE",
+    "semesters.starts_on NOT NULL, semesters.ends_on NOT NULL, CHECK(ends_on > starts_on)",
+    "courses.id PRIMARY KEY",
+    "courses.code NOT NULL UNIQUE",
+    "courses.title NOT NULL",
+    "courses.department_id NOT NULL, REFERENCES departments(id)",
+    "courses.credits NOT NULL, CHECK(credits BETWEEN 1 AND 30)",
+    "enrollments.id PRIMARY KEY",
+    "enrollments.student_id NOT NULL, REFERENCES students(id)",
+    "enrollments.course_id NOT NULL, REFERENCES courses(id)",
+    "enrollments.semester_id NOT NULL, REFERENCES semesters(id)",
+    "enrollments.teacher_id NOT NULL, REFERENCES teachers(id)",
+    "enrollments.enrolled_on NOT NULL",
+    "enrollments.status NOT NULL, CHECK(status IN (enrolled, passed, failed, dropped))",
+    "UNIQUE(enrollments.student_id, enrollments.course_id, enrollments.semester_id)",
+    "grades.id PRIMARY KEY",
+    "grades.enrollment_id NOT NULL UNIQUE, REFERENCES enrollments(id)",
+    "grades.score NULL allowed, CHECK(score IS NULL OR (score BETWEEN 0 AND 100))",
+    "grades.grade_letter NULL allowed, CHECK(grade_letter IS NULL OR grade_letter IN (A, B, C, D, E, F))",
+    "grades.graded_on NULL allowed"
+  ],
+  "families": [
+    {
+      "id": "uni_department_student_count",
+      "schema": "university",
+      "reference_sql": "SELECT d.id, COUNT(s.id) AS n FROM departments d LEFT JOIN students s ON s.department_id=d.id GROUP BY d.id ORDER BY d.id",
+      "profile": "outer_join_aggregate",
+      "breaking_profile": "empty",
+      "intent": "Число студентов в подразделении, включая пустые",
+      "ordered": true,
+      "tables": [
+        "departments",
+        "students"
+      ]
+    },
+    {
+      "id": "uni_department_payroll",
+      "schema": "university",
+      "reference_sql": "SELECT d.id, COALESCE(SUM(t.salary),0) AS payroll FROM departments d LEFT JOIN teachers t ON t.department_id=d.id GROUP BY d.id ORDER BY d.id",
+      "profile": "outer_join_aggregate",
+      "breaking_profile": "zero_value",
+      "intent": "Фонд зарплат подразделения, включая отсутствие преподавателей",
+      "ordered": true,
+      "tables": [
+        "departments",
+        "teachers"
+      ]
+    },
+    {
+      "id": "uni_department_teacher_count",
+      "schema": "university",
+      "reference_sql": "SELECT d.id, COUNT(t.id) AS n FROM departments d LEFT JOIN teachers t ON t.department_id=d.id GROUP BY d.id ORDER BY d.id",
+      "profile": "outer_join_aggregate",
+      "breaking_profile": "empty",
+      "intent": "Число преподавателей в подразделении",
+      "ordered": true,
+      "tables": [
+        "departments",
+        "teachers"
+      ]
+    },
+    {
+      "id": "uni_course_enrollment_count",
+      "schema": "university",
+      "reference_sql": "SELECT c.id, COUNT(e.id) AS n FROM courses c LEFT JOIN enrollments e ON e.course_id=c.id GROUP BY c.id ORDER BY c.id",
+      "profile": "outer_join_aggregate",
+      "breaking_profile": "empty",
+      "intent": "Число записей на курс, включая курсы без записей",
+      "ordered": true,
+      "tables": [
+        "courses",
+        "enrollments"
+      ]
+    },
+    {
+      "id": "uni_student_enrollment_count",
+      "schema": "university",
+      "reference_sql": "SELECT s.id, COUNT(e.id) AS n FROM students s LEFT JOIN enrollments e ON e.student_id=s.id GROUP BY s.id ORDER BY s.id",
+      "profile": "outer_join_aggregate",
+      "breaking_profile": "empty",
+      "intent": "Число курсов у студента, включая ноль",
+      "ordered": true,
+      "tables": [
+        "students",
+        "enrollments"
+      ]
+    },
+    {
+      "id": "uni_semester_enrollment_count",
+      "schema": "university",
+      "reference_sql": "SELECT se.id, COUNT(e.id) AS n FROM semesters se LEFT JOIN enrollments e ON e.semester_id=se.id GROUP BY se.id ORDER BY se.id",
+      "profile": "aggregate",
+      "breaking_profile": "empty",
+      "intent": "Число записей по семестрам",
+      "ordered": true,
+      "tables": [
+        "semesters",
+        "enrollments"
+      ]
+    },
+    {
+      "id": "uni_course_avg_score",
+      "schema": "university",
+      "reference_sql": "SELECT c.id, AVG(g.score) AS avg_score FROM courses c JOIN enrollments e ON e.course_id=c.id JOIN grades g ON g.enrollment_id=e.id GROUP BY c.id ORDER BY c.id",
+      "profile": "aggregate",
+      "breaking_profile": "zero_value",
+      "intent": "Средний балл по курсу",
+      "ordered": true,
+      "tables": [
+        "courses",
+        "enrollments",
+        "grades"
+      ]
+    },
+    {
+      "id": "uni_student_avg_score",
+      "schema": "university",
+      "reference_sql": "SELECT e.student_id, AVG(g.score) AS avg_score FROM enrollments e JOIN grades g ON g.enrollment_id=e.id GROUP BY e.student_id ORDER BY e.student_id",
+      "profile": "aggregate",
+      "breaking_profile": "zero_value",
+      "intent": "Средний балл по студенту",
+      "ordered": true,
+      "tables": [
+        "enrollments",
+        "grades"
+      ]
+    },
+    {
+      "id": "uni_teacher_student_count",
+      "schema": "university",
+      "reference_sql": "SELECT t.id, COUNT(DISTINCT e.student_id) AS n FROM teachers t LEFT JOIN enrollments e ON e.teacher_id=t.id GROUP BY t.id ORDER BY t.id",
+      "profile": "aggregate",
+      "breaking_profile": "multiplicity",
+      "intent": "Число разных студентов у преподавателя",
+      "ordered": true,
+      "tables": [
+        "teachers",
+        "enrollments"
+      ]
+    },
+    {
+      "id": "uni_status_student_count",
+      "schema": "university",
+      "reference_sql": "SELECT status, COUNT(*) AS n FROM students GROUP BY status ORDER BY status",
+      "profile": "aggregate",
+      "breaking_profile": "multiplicity",
+      "intent": "Число студентов по статусам",
+      "ordered": true,
+      "tables": [
+        "students"
+      ]
+    },
+    {
+      "id": "uni_department_max_salary",
+      "schema": "university",
+      "reference_sql": "SELECT d.id, MAX(t.salary) AS max_salary FROM departments d LEFT JOIN teachers t ON t.department_id=d.id GROUP BY d.id ORDER BY d.id",
+      "profile": "aggregate",
+      "breaking_profile": "nullable",
+      "intent": "Максимальная зарплата в подразделении",
+      "ordered": true,
+      "tables": [
+        "departments",
+        "teachers"
+      ]
+    },
+    {
+      "id": "uni_global_stats",
+      "schema": "university",
+      "reference_sql": "SELECT COUNT(*) AS enrollments, AVG(credits) AS avg_credits FROM courses",
+      "profile": "aggregate",
+      "breaking_profile": "empty",
+      "intent": "Общая статистика по курсам",
+      "ordered": false,
+      "tables": [
+        "courses",
+        "enrollments"
+      ]
+    },
+    {
+      "id": "uni_enrollment_student_course",
+      "schema": "university",
+      "reference_sql": "SELECT e.id, s.name, c.title FROM enrollments e JOIN students s ON s.id=e.student_id JOIN courses c ON c.id=e.course_id ORDER BY e.id",
+      "profile": "join",
+      "breaking_profile": "multiplicity",
+      "intent": "Записи с именем студента и названием курса",
+      "ordered": true,
+      "tables": [
+        "students",
+        "courses",
+        "enrollments"
+      ]
+    },
+    {
+      "id": "uni_teacher_department",
+      "schema": "university",
+      "reference_sql": "SELECT t.id, d.name FROM teachers t JOIN departments d ON d.id=t.department_id ORDER BY t.id",
+      "profile": "join",
+      "breaking_profile": "multiplicity",
+      "intent": "Преподаватели с названием подразделения",
+      "ordered": true,
+      "tables": [
+        "departments",
+        "teachers"
+      ]
+    },
+    {
+      "id": "uni_three_way_grades",
+      "schema": "university",
+      "reference_sql": "SELECT e.id, s.name, g.score FROM enrollments e JOIN students s ON s.id=e.student_id JOIN grades g ON g.enrollment_id=e.id ORDER BY e.id",
+      "profile": "join",
+      "breaking_profile": "multiplicity",
+      "intent": "Записи с баллами через три таблицы",
+      "ordered": true,
+      "tables": [
+        "students",
+        "enrollments",
+        "grades"
+      ]
+    },
+    {
+      "id": "uni_course_department",
+      "schema": "university",
+      "reference_sql": "SELECT c.id, d.name FROM courses c JOIN departments d ON d.id=c.department_id ORDER BY c.id",
+      "profile": "join",
+      "breaking_profile": "multiplicity",
+      "intent": "Курсы с названием подразделения",
+      "ordered": true,
+      "tables": [
+        "departments",
+        "courses"
+      ]
+    },
+    {
+      "id": "uni_student_no_enrollment",
+      "schema": "university",
+      "reference_sql": "SELECT s.id FROM students s LEFT JOIN enrollments e ON e.student_id=s.id WHERE e.id IS NULL ORDER BY s.id",
+      "profile": "anti_join_null",
+      "breaking_profile": "empty",
+      "intent": "Студенты без единой записи на курс",
+      "ordered": true,
+      "tables": [
+        "students",
+        "enrollments"
+      ]
+    },
+    {
+      "id": "uni_teacher_no_enrollment",
+      "schema": "university",
+      "reference_sql": "SELECT t.id FROM teachers t LEFT JOIN enrollments e ON e.teacher_id=t.id WHERE e.id IS NULL ORDER BY t.id",
+      "profile": "anti_join_null",
+      "breaking_profile": "empty",
+      "intent": "Преподаватели без нагрузки",
+      "ordered": true,
+      "tables": [
+        "teachers",
+        "enrollments"
+      ]
+    },
+    {
+      "id": "uni_student_course_pairs",
+      "schema": "university",
+      "reference_sql": "SELECT a.student_id, a.course_id, b.course_id AS other_course FROM enrollments a JOIN enrollments b ON a.student_id=b.student_id AND a.course_id<b.course_id ORDER BY a.student_id, a.course_id, other_course",
+      "profile": "self_join",
+      "breaking_profile": "multiplicity",
+      "intent": "Пары разных курсов одного студента",
+      "ordered": true,
+      "tables": [
+        "enrollments"
+      ]
+    },
+    {
+      "id": "uni_teacher_same_department_pairs",
+      "schema": "university",
+      "reference_sql": "SELECT a.id, b.id FROM teachers a JOIN teachers b ON a.department_id=b.department_id AND a.id<b.id ORDER BY a.id, b.id",
+      "profile": "self_join",
+      "breaking_profile": "multiplicity",
+      "intent": "Пары преподавателей одного подразделения",
+      "ordered": true,
+      "tables": [
+        "teachers"
+      ]
+    },
+    {
+      "id": "uni_course_more_credits",
+      "schema": "university",
+      "reference_sql": "SELECT DISTINCT c.id FROM courses c JOIN courses o ON o.department_id=c.department_id AND o.credits>c.credits ORDER BY c.id",
+      "profile": "self_join",
+      "breaking_profile": "boundary",
+      "intent": "Курсы, у которых в подразделении есть более ёмкий курс",
+      "ordered": true,
+      "tables": [
+        "courses"
+      ]
+    },
+    {
+      "id": "uni_course_avg_join",
+      "schema": "university",
+      "reference_sql": "SELECT c.id, x.avg_score FROM courses c JOIN (SELECT e.course_id, AVG(g.score) AS avg_score FROM enrollments e JOIN grades g ON g.enrollment_id=e.id GROUP BY e.course_id) x ON x.course_id=c.id ORDER BY c.id",
+      "profile": "join_aggregate",
+      "breaking_profile": "multiplicity",
+      "intent": "Средний балл курса через соединение с агрегатом",
+      "ordered": true,
+      "tables": [
+        "courses",
+        "enrollments",
+        "grades"
+      ]
+    },
+    {
+      "id": "uni_enrollment_teacher_student",
+      "schema": "university",
+      "reference_sql": "SELECT e.id, t.name, s.name FROM enrollments e JOIN teachers t ON t.id=e.teacher_id JOIN students s ON s.id=e.student_id ORDER BY e.id",
+      "profile": "join",
+      "breaking_profile": "multiplicity",
+      "intent": "Записи с преподавателем и студентом",
+      "ordered": true,
+      "tables": [
+        "teachers",
+        "students",
+        "enrollments"
+      ]
+    },
+    {
+      "id": "uni_latest_semester_enrollments",
+      "schema": "university",
+      "reference_sql": "SELECT e.id FROM enrollments e WHERE e.semester_id=(SELECT x.id FROM semesters x ORDER BY x.starts_on DESC, x.id LIMIT 1) ORDER BY e.id",
+      "profile": "scalar_subquery",
+      "breaking_profile": "ties",
+      "intent": "Записи в последнем по дате начала семестре",
+      "ordered": true,
+      "tables": [
+        "semesters",
+        "enrollments"
+      ]
+    },
+    {
+      "id": "uni_courses_credits_range",
+      "schema": "university",
+      "reference_sql": "SELECT id, credits FROM courses WHERE credits BETWEEN 3 AND 5 ORDER BY id",
+      "profile": "range_filter",
+      "breaking_profile": "boundary",
+      "intent": "Курсы с трудоёмкостью в замкнутом диапазоне",
+      "ordered": true,
+      "tables": [
+        "courses"
+      ]
+    },
+    {
+      "id": "uni_courses_credits_in",
+      "schema": "university",
+      "reference_sql": "SELECT id FROM courses WHERE credits IN (3,4,5) ORDER BY id",
+      "profile": "range_filter",
+      "breaking_profile": "boundary",
+      "intent": "Курсы с одной из перечисленных трудоёмкостей",
+      "ordered": true,
+      "tables": [
+        "courses"
+      ]
+    },
+    {
+      "id": "uni_teachers_salary_null",
+      "schema": "university",
+      "reference_sql": "SELECT id FROM teachers WHERE salary IS NULL ORDER BY id",
+      "profile": "null_aware_filter",
+      "breaking_profile": "nullable",
+      "intent": "Преподаватели без указанной зарплаты",
+      "ordered": true,
+      "tables": [
+        "teachers"
+      ]
+    },
+    {
+      "id": "uni_teachers_salary_not_null",
+      "schema": "university",
+      "reference_sql": "SELECT id FROM teachers WHERE salary IS NOT NULL ORDER BY id",
+      "profile": "null_aware_filter",
+      "breaking_profile": "nullable",
+      "intent": "Преподаватели с указанной зарплатой",
+      "ordered": true,
+      "tables": [
+        "teachers"
+      ]
+    },
+    {
+      "id": "uni_students_birth_null",
+      "schema": "university",
+      "reference_sql": "SELECT id FROM students WHERE birth_date IS NULL ORDER BY id",
+      "profile": "null_aware_filter",
+      "breaking_profile": "nullable",
+      "intent": "Студенты без даты рождения",
+      "ordered": true,
+      "tables": [
+        "students"
+      ]
+    },
+    {
+      "id": "uni_enrollments_status_or",
+      "schema": "university",
+      "reference_sql": "SELECT id FROM enrollments WHERE status='passed' OR status='failed' ORDER BY id",
+      "profile": "or_filter",
+      "breaking_profile": "boundary",
+      "intent": "Записи с завершённым исходом",
+      "ordered": true,
+      "tables": [
+        "enrollments"
+      ]
+    },
+    {
+      "id": "uni_grades_score_boundary",
+      "schema": "university",
+      "reference_sql": "SELECT id FROM grades WHERE score >= 60 ORDER BY id",
+      "profile": "boundary_filter",
+      "breaking_profile": "boundary",
+      "intent": "Оценки не ниже граничного балла",
+      "ordered": true,
+      "tables": [
+        "grades"
+      ]
+    },
+    {
+      "id": "uni_students_status_in",
+      "schema": "university",
+      "reference_sql": "SELECT id FROM students WHERE status IN ('active','leave') ORDER BY id",
+      "profile": "range_filter",
+      "breaking_profile": "boundary",
+      "intent": "Студенты в активном статусе или в отпуске",
+      "ordered": true,
+      "tables": [
+        "students"
+      ]
+    },
+    {
+      "id": "uni_students_email_like",
+      "schema": "university",
+      "reference_sql": "SELECT id, email FROM students WHERE email LIKE '%@example.test' ORDER BY id",
+      "profile": "pattern_filter",
+      "breaking_profile": "random",
+      "intent": "Студенты с адресом по образцу",
+      "ordered": true,
+      "tables": [
+        "students"
+      ]
+    },
+    {
+      "id": "uni_grades_score_open_range",
+      "schema": "university",
+      "reference_sql": "SELECT id FROM grades WHERE score > 60 AND score < 90 ORDER BY id",
+      "profile": "boundary_filter",
+      "breaking_profile": "boundary",
+      "intent": "Оценки в открытом диапазоне баллов",
+      "ordered": true,
+      "tables": [
+        "grades"
+      ]
+    },
+    {
+      "id": "uni_teachers_title_equal",
+      "schema": "university",
+      "reference_sql": "SELECT id FROM teachers WHERE title='professor' ORDER BY id",
+      "profile": "pattern_filter",
+      "breaking_profile": "random",
+      "intent": "Преподаватели в звании профессора",
+      "ordered": true,
+      "tables": [
+        "teachers"
+      ]
+    },
+    {
+      "id": "uni_students_with_enrollments",
+      "schema": "university",
+      "reference_sql": "SELECT s.id FROM students s WHERE EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id=s.id) ORDER BY s.id",
+      "profile": "semi_join_exists",
+      "breaking_profile": "empty",
+      "intent": "Студенты с хотя бы одной записью на курс",
+      "ordered": true,
+      "tables": [
+        "students",
+        "enrollments"
+      ]
+    },
+    {
+      "id": "uni_students_without_enrollments",
+      "schema": "university",
+      "reference_sql": "SELECT s.id FROM students s WHERE NOT EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id=s.id) ORDER BY s.id",
+      "profile": "anti_join_exists",
+      "breaking_profile": "empty",
+      "intent": "Студенты без записей на курсы",
+      "ordered": true,
+      "tables": [
+        "students",
+        "enrollments"
+      ]
+    },
+    {
+      "id": "uni_courses_enrolled_in",
+      "schema": "university",
+      "reference_sql": "SELECT c.id FROM courses c WHERE c.id IN (SELECT e.course_id FROM enrollments e) ORDER BY c.id",
+      "profile": "in_subquery",
+      "breaking_profile": "nullable",
+      "intent": "Курсы, входящие в множество записей",
+      "ordered": true,
+      "tables": [
+        "courses",
+        "enrollments"
+      ]
+    },
+    {
+      "id": "uni_courses_not_enrolled_in",
+      "schema": "university",
+      "reference_sql": "SELECT c.id FROM courses c WHERE c.id NOT IN (SELECT e.course_id FROM enrollments e) ORDER BY c.id",
+      "profile": "not_in_subquery",
+      "breaking_profile": "nullable",
+      "intent": "Курсы, не входящие в множество записей",
+      "ordered": true,
+      "tables": [
+        "courses",
+        "enrollments"
+      ]
+    },
+    {
+      "id": "uni_students_above_avg_count",
+      "schema": "university",
+      "reference_sql": "SELECT s.id FROM students s WHERE (SELECT COUNT(*) FROM enrollments e WHERE e.student_id=s.id) > (SELECT AVG(cnt) FROM (SELECT COUNT(*) AS cnt FROM enrollments e GROUP BY e.student_id) x) ORDER BY s.id",
+      "profile": "correlated_scalar",
+      "breaking_profile": "multiplicity",
+      "intent": "Студенты с числом курсов выше среднего",
+      "ordered": true,
+      "tables": [
+        "students",
+        "enrollments"
+      ]
+    },
+    {
+      "id": "uni_course_top_score",
+      "schema": "university",
+      "reference_sql": "SELECT e.course_id, e.id FROM enrollments e JOIN grades g ON g.enrollment_id=e.id WHERE g.score=(SELECT MAX(x.score) FROM grades x) ORDER BY e.course_id, e.id",
+      "profile": "scalar_subquery",
+      "breaking_profile": "ties",
+      "intent": "Записи с глобально максимальным баллом",
+      "ordered": true,
+      "tables": [
+        "enrollments",
+        "grades"
+      ]
+    },
+    {
+      "id": "uni_department_derived_counts",
+      "schema": "university",
+      "reference_sql": "SELECT x.department_id, x.n FROM (SELECT s.department_id, COUNT(*) AS n FROM students s GROUP BY s.department_id) x WHERE x.n >= 2 ORDER BY x.department_id",
+      "profile": "derived_table",
+      "breaking_profile": "multiplicity",
+      "intent": "Подразделения с двумя и более студентами",
+      "ordered": true,
+      "tables": [
+        "students"
+      ]
+    },
+    {
+      "id": "uni_students_cte",
+      "schema": "university",
+      "reference_sql": "WITH active AS (SELECT id, name FROM students WHERE status='active') SELECT id FROM active ORDER BY id",
+      "profile": "cte",
+      "breaking_profile": "empty",
+      "intent": "Активные студенты через общее табличное выражение",
+      "ordered": true,
+      "tables": [
+        "students"
+      ]
+    },
+    {
+      "id": "uni_teachers_order_salary",
+      "schema": "university",
+      "reference_sql": "SELECT id, salary FROM teachers ORDER BY salary, id",
+      "profile": "order_limit",
+      "breaking_profile": "nullable",
+      "intent": "Преподаватели по возрастанию зарплаты",
+      "ordered": true,
+      "tables": [
+        "teachers"
+      ]
+    },
+    {
+      "id": "uni_students_order_email",
+      "schema": "university",
+      "reference_sql": "SELECT id, email FROM students ORDER BY email",
+      "profile": "order_limit",
+      "breaking_profile": "random",
+      "intent": "Студенты по адресу",
+      "ordered": true,
+      "tables": [
+        "students"
+      ]
+    },
+    {
+      "id": "uni_courses_order_credits",
+      "schema": "university",
+      "reference_sql": "SELECT id FROM courses ORDER BY credits DESC, id",
+      "profile": "order_limit",
+      "breaking_profile": "ties",
+      "intent": "Курсы по убыванию трудоёмкости",
+      "ordered": true,
+      "tables": [
+        "courses"
+      ]
+    },
+    {
+      "id": "uni_enrollments_limit5",
+      "schema": "university",
+      "reference_sql": "SELECT id FROM enrollments ORDER BY id LIMIT 5",
+      "profile": "order_limit",
+      "breaking_profile": "ties",
+      "intent": "Первые пять записей по идентификатору",
+      "ordered": true,
+      "tables": [
+        "enrollments"
+      ]
+    },
+    {
+      "id": "uni_grades_order_score",
+      "schema": "university",
+      "reference_sql": "SELECT id, score FROM grades ORDER BY score, id",
+      "profile": "order_limit",
+      "breaking_profile": "nullable",
+      "intent": "Оценки по возрастанию балла",
+      "ordered": true,
+      "tables": [
+        "grades"
+      ]
+    },
+    {
+      "id": "uni_department_order_name",
+      "schema": "university",
+      "reference_sql": "SELECT id, name FROM departments ORDER BY name",
+      "profile": "order_limit",
+      "breaking_profile": "random",
+      "intent": "Подразделения по названию",
+      "ordered": true,
+      "tables": [
+        "departments"
+      ]
+    },
+    {
+      "id": "uni_union_bag_students",
+      "schema": "university",
+      "reference_sql": "SELECT student_id FROM enrollments WHERE status='passed' UNION ALL SELECT student_id FROM enrollments WHERE status='failed' ORDER BY student_id",
+      "profile": "union_all",
+      "breaking_profile": "multiplicity",
+      "intent": "Объединение студентов двух исходов с сохранением повторов",
+      "ordered": true,
+      "tables": [
+        "enrollments"
+      ]
+    },
+    {
+      "id": "uni_union_distinct_students",
+      "schema": "university",
+      "reference_sql": "SELECT student_id FROM enrollments WHERE status='passed' UNION SELECT student_id FROM enrollments WHERE status='failed' ORDER BY student_id",
+      "profile": "union_distinct",
+      "breaking_profile": "multiplicity",
+      "intent": "Объединение студентов двух исходов без повторов",
+      "ordered": true,
+      "tables": [
+        "enrollments"
+      ]
+    },
+    {
+      "id": "uni_count_star_vs_score",
+      "schema": "university",
+      "reference_sql": "SELECT e.course_id, COUNT(*) AS rows_cnt, COUNT(g.score) AS scored_cnt FROM enrollments e LEFT JOIN grades g ON g.enrollment_id=e.id GROUP BY e.course_id ORDER BY e.course_id",
+      "profile": "count_star_vs_column",
+      "breaking_profile": "nullable",
+      "intent": "Число строк против числа выставленных баллов",
+      "ordered": true,
+      "tables": [
+        "enrollments",
+        "grades"
+      ]
+    },
+    {
+      "id": "uni_department_enrollment_multiplicity",
+      "schema": "university",
+      "reference_sql": "SELECT s.department_id, COUNT(*) AS n FROM students s JOIN enrollments e ON e.student_id=s.id GROUP BY s.department_id ORDER BY s.department_id",
+      "profile": "join_multiplicity",
+      "breaking_profile": "multiplicity",
+      "intent": "Число строк соединения студент-запись по подразделениям",
+      "ordered": true,
+      "tables": [
+        "students",
+        "enrollments"
+      ]
+    },
+    {
+      "id": "uni_semester_duration",
+      "schema": "university",
+      "reference_sql": "SELECT id, DATEDIFF(ends_on, starts_on) AS days FROM semesters ORDER BY id",
+      "profile": "date_function",
+      "breaking_profile": "boundary",
+      "intent": "Длительность семестра в днях",
+      "ordered": true,
+      "tables": [
+        "semesters"
+      ]
+    },
+    {
+      "id": "uni_empty_departments",
+      "schema": "university",
+      "reference_sql": "SELECT d.id FROM departments d LEFT JOIN students s ON s.department_id=d.id WHERE s.id IS NULL ORDER BY d.id",
+      "profile": "anti_join_null",
+      "breaking_profile": "empty",
+      "intent": "Подразделения без студентов",
+      "ordered": true,
+      "tables": [
+        "departments",
+        "students"
+      ]
+    },
+    {
+      "id": "uni_min_credits_courses",
+      "schema": "university",
+      "reference_sql": "SELECT id FROM courses WHERE credits = 1 ORDER BY id",
+      "profile": "boundary_filter",
+      "breaking_profile": "boundary",
+      "intent": "Курсы с минимальной граничной трудоёмкостью",
+      "ordered": true,
+      "tables": [
+        "courses"
+      ]
+    },
+    {
+      "id": "uni_passed_without_grade",
+      "schema": "university",
+      "reference_sql": "SELECT e.id FROM enrollments e LEFT JOIN grades g ON g.enrollment_id=e.id WHERE e.status='passed' AND g.id IS NULL ORDER BY e.id",
+      "profile": "anti_join_null",
+      "breaking_profile": "nullable",
+      "intent": "Записи с исходом «сдано», но без выставленной оценки",
+      "ordered": true,
+      "tables": [
+        "enrollments",
+        "grades"
+      ]
+    },
+    {
+      "id": "uni_teacher_title_group",
+      "schema": "university",
+      "reference_sql": "SELECT COALESCE(title,'unknown') AS title_key, COUNT(*) AS n FROM teachers GROUP BY title_key ORDER BY title_key",
+      "profile": "group_by_expression",
+      "breaking_profile": "nullable",
+      "intent": "Число преподавателей по званиям, включая отсутствующие",
+      "ordered": true,
+      "tables": [
+        "teachers"
+      ]
+    },
+    {
+      "id": "uni_department_status_group",
+      "schema": "university",
+      "reference_sql": "SELECT d.id, s.status, COUNT(*) AS n FROM departments d JOIN students s ON s.department_id=d.id GROUP BY d.id, s.status ORDER BY d.id, s.status",
+      "profile": "aggregate",
+      "breaking_profile": "multiplicity",
+      "intent": "Число студентов по подразделениям и статусам",
+      "ordered": true,
+      "tables": [
+        "departments",
+        "students"
+      ]
+    },
+    {
+      "id": "uni_students_row_number",
+      "schema": "university",
+      "reference_sql": "SELECT id, ROW_NUMBER() OVER (ORDER BY id) AS rn FROM students ORDER BY id",
+      "profile": "window_row_number",
+      "breaking_profile": "ties",
+      "intent": "Порядковые номера студентов",
+      "ordered": true,
+      "tables": [
+        "students"
+      ]
+    },
+    {
+      "id": "uni_course_score_rank",
+      "schema": "university",
+      "reference_sql": "SELECT e.course_id, g.score, RANK() OVER (PARTITION BY e.course_id ORDER BY g.score DESC) AS rnk FROM enrollments e JOIN grades g ON g.enrollment_id=e.id ORDER BY e.course_id, rnk, g.score DESC, e.id",
+      "profile": "window_rank",
+      "breaking_profile": "ties",
+      "intent": "Ранг балла в рамках курса",
+      "ordered": true,
+      "tables": [
+        "enrollments",
+        "grades"
+      ]
+    },
+    {
+      "id": "uni_student_running_credits",
+      "schema": "university",
+      "reference_sql": "SELECT e.student_id, e.id, SUM(c.credits) OVER (PARTITION BY e.student_id ORDER BY e.id) AS running_credits FROM enrollments e JOIN courses c ON c.id=e.course_id ORDER BY e.student_id, e.id",
+      "profile": "window_running",
+      "breaking_profile": "ties",
+      "intent": "Нарастающая трудоёмкость записей студента",
+      "ordered": true,
+      "tables": [
+        "courses",
+        "enrollments"
+      ]
+    },
+    {
+      "id": "uni_course_enrollment_rank",
+      "schema": "university",
+      "reference_sql": "SELECT c.id, COUNT(e.id) AS n, RANK() OVER (ORDER BY COUNT(e.id) DESC) AS rnk FROM courses c LEFT JOIN enrollments e ON e.course_id=c.id GROUP BY c.id ORDER BY rnk, c.id",
+      "profile": "window_rank",
+      "breaking_profile": "ties",
+      "intent": "Ранг курса по числу записей",
+      "ordered": true,
+      "tables": [
+        "courses",
+        "enrollments"
+      ]
+    },
+    {
+      "id": "uni_department_student_share",
+      "schema": "university",
+      "reference_sql": "SELECT d.id, COUNT(s.id) / NULLIF((SELECT COUNT(*) FROM students),0) AS share FROM departments d LEFT JOIN students s ON s.department_id=d.id GROUP BY d.id ORDER BY d.id",
+      "profile": "derived_table",
+      "breaking_profile": "zero_value",
+      "intent": "Доля студентов подразделения от общего числа",
+      "ordered": true,
+      "tables": [
+        "departments",
+        "students"
+      ]
+    },
+    {
+      "id": "uni_grade_letter_count",
+      "schema": "university",
+      "reference_sql": "SELECT g.grade_letter, COUNT(*) AS n FROM grades g WHERE g.grade_letter IS NOT NULL GROUP BY g.grade_letter ORDER BY g.grade_letter",
+      "profile": "aggregate",
+      "breaking_profile": "nullable",
+      "intent": "Число оценок по буквам",
+      "ordered": true,
+      "tables": [
+        "grades"
+      ]
+    },
+    {
+      "id": "uni_course_passed_failed",
+      "schema": "university",
+      "reference_sql": "SELECT c.id, SUM(CASE WHEN e.status='passed' THEN 1 ELSE 0 END) AS passed, COUNT(*) AS total FROM courses c JOIN enrollments e ON e.course_id=c.id GROUP BY c.id ORDER BY c.id",
+      "profile": "aggregate_case",
+      "breaking_profile": "multiplicity",
+      "intent": "Число сдавших и общее число записей по курсу",
+      "ordered": true,
+      "tables": [
+        "courses",
+        "enrollments"
+      ]
+    },
+    {
+      "id": "uni_teacher_latest_hired",
+      "schema": "university",
+      "reference_sql": "SELECT t.id FROM teachers t WHERE t.hired_at=(SELECT MAX(x.hired_at) FROM teachers x) ORDER BY t.id",
+      "profile": "scalar_subquery",
+      "breaking_profile": "ties",
+      "intent": "Последние принятые преподаватели",
+      "ordered": true,
+      "tables": [
+        "teachers"
+      ]
+    },
+    {
+      "id": "uni_course_credits_above_avg",
+      "schema": "university",
+      "reference_sql": "SELECT id FROM courses WHERE credits > (SELECT AVG(credits) FROM courses) ORDER BY id",
+      "profile": "scalar_subquery",
+      "breaking_profile": "boundary",
+      "intent": "Курсы с трудоёмкостью выше средней",
+      "ordered": true,
+      "tables": [
+        "courses"
+      ]
+    }
+  ]
+}

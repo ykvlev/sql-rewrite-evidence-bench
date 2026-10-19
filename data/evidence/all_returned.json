@@ -8,7 +8,7 @@
     "dbms_version": "8.4.11",
     "checks_per_model": 28,
     "corpus_sha256": "c701d53e42d24070054b837cbefeb047c907021d198f36165844c642a80b5144",
-    "state_bank_sha256": "3809f11b6031ac4fd7594e0944a76c72ece9797588b3ce05d079266dafca38ee",
+    "state_bank_sha256": "6943d9b515202ea1538bf4868fbb2c97463c9a56c2589340c0acaee333b35ff5",
     "evaluation": "reference and candidate executed on every frozen state in a private schema under a SELECT-only account; each refuting pair replayed in an independent fresh schema",
     "evaluation_runs": {
       "qwen2.5-coder:7b": "library_evaluation_20261019_qwen25",

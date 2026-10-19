@@ -60,19 +60,20 @@ See [docs/REPRODUCE.md](docs/REPRODUCE.md) for the exact protocol.
 
 ## Status
 
-Dataset version **0.2.0**. Corpus: 136 query families on two synthetic schemas — 68 in the
-library (3 tables) and 68 in the shop (7 tables: categories, products, customers, orders,
-order_items, payments, reviews). Each family has 28 frozen states: 8 designed profiles
-(fixed, empty, no_rows, multiplicity, zero_value, nullable, boundary, ties) and 20
-pseudo-random states from fixed seeds — 3 808 family–state pairs. Every state was loaded
-into MySQL 8.4.11 with real foreign keys and CHECK constraints enabled, and every reference
-query was executed on it.
+Dataset version **0.2.0**. Corpus: **204 query families on three synthetic schemas** — 68
+library (3 tables), 68 shop (7 tables) and 68 university (departments, teachers, students,
+semesters, courses, enrollments, grades). Each family has 28 frozen states: 8 designed
+profiles (fixed, empty, no_rows, multiplicity, zero_value, nullable, boundary, ties) and 20
+pseudo-random states from fixed seeds — **5 712 family–state pairs**. Every state was loaded
+into MySQL 8.4.11 with real foreign keys, UNIQUE and CHECK constraints enabled, and every
+reference query was executed on it.
 
-Model answers and executable evidence cover **all 136 families**: four models
-(`qwen2.5-coder:7b`, `qwen2.5:7b`, `phi3.5:3.8b`, `deepseek-coder-v2`), 544 run records,
-544 evidence records and **15 232 executed checks** on MySQL 8.4.11. Outcomes per model are
-in [docs/tables.md](docs/tables.md): 45 rewrites were refuted, in 29 families, and
-`union_bag` / `lib_union_bag_books` were broken by all four models.
+Model answers and executable evidence cover **136 families** (library and shop): four
+models (`qwen2.5-coder:7b`, `qwen2.5:7b`, `phi3.5:3.8b`, `deepseek-coder-v2`), 544 run
+records, 544 evidence records and **15 232 executed checks** on MySQL 8.4.11. Outcomes per
+model are in [docs/tables.md](docs/tables.md): 45 rewrites were refuted, in 29 families, and
+`union_bag` / `lib_union_bag_books` were broken by all four models. The 68 university
+families have frozen states but are not yet evaluated by models.
 
 The evaluation mechanism was cross-checked on PostgreSQL 16.15 on the 12 seed families:
 identical outcomes in all 1 008 candidate checks and no DDL changes
@@ -87,7 +88,8 @@ Every data file is SHA-256 frozen in `manifest.json`; `python scripts/check_corp
 passes locally and in CI, and `python scripts/recompute_tables.py` reproduces
 `docs/tables.md` from `data/evidence/`.
 
-Next: PostgreSQL evaluation on the full corpus, more models, and a third schema.
+Next: model runs on the university schema, PostgreSQL evaluation on the full corpus, and
+more models.
 
 ## Licence
 
