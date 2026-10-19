@@ -1,15 +1,15 @@
 # SREB summary tables
 
-Families with evidence: **136**. Generated from `data/evidence/` only.
+Families with evidence: **204**. Generated from `data/evidence/` only.
 
 ## Outcomes per model
 
 | Model | Proposed | Refuted | Preserved | No_rewrite | Unsupported | Error | Checks |
 |---|---|---|---|---|---|---|---|
-| deepseek-coder-v2:latest | 50 | 21 | 29 | 85 | 0 | 1 | 3808 |
-| phi3.5:3.8b | 21 | 7 | 14 | 108 | 5 | 2 | 3808 |
-| qwen2.5-coder:7b | 21 | 10 | 11 | 115 | 0 | 0 | 3808 |
-| qwen2.5:7b | 21 | 7 | 14 | 114 | 0 | 1 | 3808 |
+| deepseek-coder-v2:latest | 77 | 27 | 50 | 126 | 0 | 1 | 5712 |
+| phi3.5:3.8b | 30 | 8 | 22 | 156 | 15 | 3 | 5712 |
+| qwen2.5-coder:7b | 30 | 12 | 18 | 173 | 1 | 0 | 5712 |
+| qwen2.5:7b | 32 | 8 | 24 | 169 | 0 | 3 | 5712 |
 
 ## Refuted families
 
@@ -55,6 +55,16 @@ Families with evidence: **136**. Generated from `data/evidence/` only.
 | shop_union_bag_items | phi3.5:3.8b | nullable_0,random_uniform_0,random_uniform_1,random_uniform_3,random_uniform_4,random_uniform_5,random_uniform_6,random_uniform_8,random_uniform_9,random_uniform_10,random_uniform_11,random_uniform_12,random_uniform_13,random_uniform_14,random_uniform_15,random_uniform_16,random_uniform_17,random_uniform_18,random_uniform_19 |
 | shop_union_distinct_customers | qwen2.5:7b | multiplicity_0,random_uniform_3,random_uniform_8,random_uniform_9,random_uniform_14,random_uniform_15,random_uniform_16,random_uniform_17 |
 | shop_union_distinct_customers | qwen2.5-coder:7b | multiplicity_0,random_uniform_3,random_uniform_8,random_uniform_9,random_uniform_14,random_uniform_15,random_uniform_16,random_uniform_17 |
+| uni_courses_enrolled_in | deepseek-coder-v2:latest | fixed_0,multiplicity_0,random_uniform_0,random_uniform_1,random_uniform_2,random_uniform_3,random_uniform_4,random_uniform_5,random_uniform_7,random_uniform_8,random_uniform_10,random_uniform_11,random_uniform_12,random_uniform_13,random_uniform_14,random_uniform_15,random_uniform_16,random_uniform_17,random_uniform_18,random_uniform_19 |
+| uni_courses_enrolled_in | qwen2.5-coder:7b | fixed_0,multiplicity_0,random_uniform_0,random_uniform_1,random_uniform_2,random_uniform_3,random_uniform_4,random_uniform_5,random_uniform_7,random_uniform_8,random_uniform_10,random_uniform_11,random_uniform_12,random_uniform_13,random_uniform_14,random_uniform_15,random_uniform_16,random_uniform_17,random_uniform_18,random_uniform_19 |
+| uni_enrollments_limit5 | deepseek-coder-v2:latest | fixed_0,multiplicity_0,zero_value_0,nullable_0,boundary_0,ties_0,random_uniform_0,random_uniform_1,random_uniform_2,random_uniform_3,random_uniform_4,random_uniform_5,random_uniform_6,random_uniform_7,random_uniform_8,random_uniform_9,random_uniform_10,random_uniform_11,random_uniform_12,random_uniform_13,random_uniform_14,random_uniform_15,random_uniform_16,random_uniform_17,random_uniform_18,random_uniform_19 |
+| uni_enrollments_status_or | deepseek-coder-v2:latest | random_uniform_0,random_uniform_1,random_uniform_2,random_uniform_3,random_uniform_4,random_uniform_5,random_uniform_6,random_uniform_7,random_uniform_8,random_uniform_9,random_uniform_10,random_uniform_11,random_uniform_12,random_uniform_13,random_uniform_14,random_uniform_15,random_uniform_16,random_uniform_17,random_uniform_18,random_uniform_19 |
+| uni_grades_score_open_range | deepseek-coder-v2:latest | random_uniform_1,random_uniform_5,random_uniform_10,random_uniform_12,random_uniform_18,random_uniform_19 |
+| uni_students_above_avg_count | phi3.5:3.8b | fixed_0,random_uniform_0,random_uniform_1,random_uniform_2,random_uniform_4,random_uniform_5,random_uniform_6,random_uniform_7,random_uniform_9,random_uniform_10,random_uniform_12,random_uniform_14,random_uniform_15,random_uniform_16,random_uniform_17,random_uniform_18,random_uniform_19 |
+| uni_students_with_enrollments | deepseek-coder-v2:latest | fixed_0,multiplicity_0,random_uniform_0,random_uniform_1,random_uniform_2,random_uniform_3,random_uniform_4,random_uniform_5,random_uniform_6,random_uniform_7,random_uniform_8,random_uniform_9,random_uniform_10,random_uniform_11,random_uniform_12,random_uniform_13,random_uniform_14,random_uniform_15,random_uniform_16,random_uniform_17,random_uniform_18,random_uniform_19 |
+| uni_union_bag_students | deepseek-coder-v2:latest | fixed_0,multiplicity_0,random_uniform_1,random_uniform_2,random_uniform_3,random_uniform_4,random_uniform_5,random_uniform_7,random_uniform_8,random_uniform_12,random_uniform_13,random_uniform_16,random_uniform_17,random_uniform_19 |
+| uni_union_distinct_students | qwen2.5:7b | fixed_0,multiplicity_0,random_uniform_1,random_uniform_2,random_uniform_3,random_uniform_4,random_uniform_5,random_uniform_7,random_uniform_8,random_uniform_12,random_uniform_13,random_uniform_16,random_uniform_17,random_uniform_19 |
+| uni_union_distinct_students | qwen2.5-coder:7b | fixed_0,multiplicity_0,random_uniform_1,random_uniform_2,random_uniform_3,random_uniform_4,random_uniform_5,random_uniform_7,random_uniform_8,random_uniform_12,random_uniform_13,random_uniform_16,random_uniform_17,random_uniform_19 |
 | union_bag | qwen2.5-coder:7b | multiplicity_0,nullable_0,ties_0 |
 | union_bag | qwen2.5:7b | multiplicity_0,nullable_0,ties_0 |
 | union_bag | phi3.5:3.8b | multiplicity_0,nullable_0,ties_0 |
