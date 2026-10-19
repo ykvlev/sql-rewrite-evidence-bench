@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SREB leaderboard — SQL Rewrite Evidence Benchmark v0.2.0</title>
-<meta name="description" content="Executable evidence for SQL rewrites proposed by language models, evaluated on 136 of 204 corpus families: refuted rewrites, preserved rewrites and the database states that prove them. Dataset v0.2.0.">
-<meta name="sreb-version" content="0.2.0">
+<title>SREB leaderboard — SQL Rewrite Evidence Benchmark v0.3.0</title>
+<meta name="description" content="Executable evidence for SQL rewrites proposed by language models, evaluated on all 204 corpus families across three schemas: refuted rewrites, preserved rewrites and the database states that prove them. Dataset v0.3.0.">
+<meta name="sreb-version" content="0.3.0">
 <meta name="sreb-source" content="data/evidence/*.json, manifest.json, docs/tables.md; numbers recomputable with scripts/recompute_tables.py">
 <meta name="generator" content="SREB static leaderboard (no JS, no external assets)">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2314110f'/%3E%3Ctext x='16' y='23' font-family='monospace' font-size='18' fill='%23f0b96b' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
 <!--
-  SREB leaderboard, dataset v0.2.0 (manifest created 2026-10-19T05:35:08+00:00).
+  SREB leaderboard, dataset v0.3.0 (manifest created 2026-10-19T09:51:01+00:00).
   Every figure is computed from data/evidence/*.json and manifest.json and cross-checked against docs/tables.md.
   Source digests (first 12 hex chars of sha256):
-  active_outer:d314f8c9a6ae all_returned:691337d4afe4 borrowers:e53e84eb3962 latest_ties:b74245e0a516 lib_book_cheaper_than_other:9d13c5e2e9ce lib_book_loan_sum:628fb332eb0d lib_books_distinct_prices:61365215a290 lib_books_loaned_in:43645359a126 lib_books_never_loaned:0cd655787930 lib_books_not_loaned_in:4e4a3aaf790e lib_books_order_price_desc:95d3479f4ab5 lib_books_price_boundary:0e5a8d18c0e8 lib_books_price_open_range:eb425477531e lib_books_price_or:571215cc1350 lib_books_price_rank:5cc3bc9d78f5 lib_books_title_like:8524d166d9e2 lib_count_star_vs_col:6edf1c8a8984 lib_global_stats:0f8335a5ec52 lib_loan_book_price:21ac773d88d1 lib_loans_above_avg:4da4b542603a lib_loans_count_by_day_order:6e69f7fa961c lib_loans_cte:33dc979a54a9 lib_loans_day_range:42d30a32acf6 lib_loans_fee_in:18ca88c14938 lib_loans_fee_or_returned:f6f29880693e lib_loans_fee_range:bc80bd4f8599 lib_loans_fee_zero_sum:a2b72c8962fc lib_loans_limit3:d7164a40a43a lib_loans_order_fee:3bafe5ed3c87 lib_loans_returned_in:1d7f4e402a9b lib_loans_returned_null:bb7277722f66 lib_loans_row_number:228ee359ecb8 lib_reader_all_null_returned:450f9864db16 lib_reader_avg_fee:e2b241e51634 lib_reader_book_multiplicity:d70647587243 lib_reader_book_titles:a47935f49cf3 lib_reader_cheapest_book:5846dabbd365 lib_reader_count_returned_equal:126e3d0afa01 lib_reader_derived_counts:de4fffad9579 lib_reader_distinct_books:1724db497017 lib_reader_fee_positive:df3201c526d2 lib_reader_fee_rank:8c19a5496d09 lib_reader_last_book_title:2b78f454e6ac lib_reader_left_join_null:8e0fa8e1891d lib_reader_left_with_flag:91abb7a4dac7 lib_reader_loan_count_scalar:1ac95d6bd26d lib_reader_loan_join_agg:73e9956c117e lib_reader_loan_rows:7aa2b14f9bf0 lib_reader_loan_sum:a3b909ac641b lib_reader_max_fee:6b7f269166bd lib_reader_multiple_loans:8ef3cbaa6db7 lib_reader_no_fee_loans:687c263da71e lib_reader_returned_sum:ec24bdb73b7d lib_reader_running_fee:a4163a00a465 lib_reader_same_book_twice:b2aa47d46065 lib_readers_order_name:e957ddbb6073 lib_readers_with_loans:75e83218c6e8 lib_same_day_pairs:72af21ad1258 lib_union_bag_books:ee279984ea2e lib_union_distinct_readers:105911ffd9f1 loan_count:a5bbe36b8b96 no_loans:3d729ceb55fa not_returned:b20a94816913 price_range:2b671a5d472b returned_count:7988f58ad023 shop_category_avg_price:491fe6d2e667 shop_category_product_count:9e81c6664e2b shop_category_self:77e459e4e654 shop_count_star_vs_col:3b8d8a07f5f7 shop_customer_city_orders:e9da29856d52 shop_customer_max_line:7894df21d435 shop_customer_order_count:74010fb6de42 shop_customer_order_count_scalar:9107a37e7fa5 shop_customer_order_rank:67c553d42ac8 shop_customer_order_total:c266680913b0 shop_customer_orders_per_status:8d9104658709 shop_customer_without_orders:e0af99b8f339 shop_customers_city_not_null:9e72dacabb28 shop_customers_city_null:e66fde552ff8 shop_customers_cte:602bdbb18f35 shop_customers_order_email:27761214627f shop_customers_with_orders:5a301f1313e6 shop_customers_without_orders:d69b75b15c36 shop_discount_full:8cae9ea85ac4 shop_global_orders:b8ff2e0cd5e3 shop_item_product_name:8c66da2330c8 shop_items_row_number:423be05cf5ca shop_join_agg_derived:3ad1b8f0cee0 shop_join_multiplicity:1dbc14b3a9ec shop_latest_order_per_customer:29b295b88929 shop_left_orders_no_items:c56e6c66b3cf shop_order_customer:5bcb4a2cc12a shop_order_gross:fdbab6dfee53 shop_order_item_count:4b803f5fdbfd shop_order_item_qty_ratio:70c5442ad867 shop_order_items_avg_discount:e2d2838f3c07 shop_order_max_quantity_items:b2c6a2e7040f shop_order_payments:213e18ca0658 shop_orders_above_avg:9ff51ca7c177 shop_orders_channel_or:25ace9c3697a shop_orders_customer_city:a3b443da4fd0 shop_orders_limit5:0de431103779 shop_orders_null_channel_group:b3831d71feee shop_orders_order_status_created:a8a52bb9c538 shop_orders_status_in:18ce539a219d shop_orders_status_not_in:b0ee80c6927b shop_orders_zero_total:32c2f7499131 shop_payments_method_equal:6cf7ae98e59e shop_payments_order_amount:2d99e0ac3388 shop_payments_zero_amount:7fb9de02628b shop_product_category_name:63bcffc236a7 shop_product_price_rank:fc1772698f38 shop_product_rating_avg:9cd2108e388e shop_product_revenue:acf4c1359a01 shop_product_reviews_count:be504a2350ec shop_product_units_running:2540312b9df2 shop_product_units_sold:dea0eb61f8a5 shop_products_active_flag:f5e44400bc50 shop_products_not_ordered_in:c8c05be94e9d shop_products_order_price_desc:01a9cf3df2aa shop_products_ordered_in:fea8dc8ab4ec shop_products_price_range:8ec470eb0830 shop_products_sku_like:bc675c0ea3a0 shop_products_stock_boundary:4bc8c30d7774 shop_products_stock_positive:2b7896af3782 shop_products_top_price:05b3b3300253 shop_recursive_category_depth:71528ab916a9 shop_reviews_null_body:574ab46bc90f shop_reviews_rating_boundary:81c0519d4217 shop_status_order_count:63ebfcf179c6 shop_three_way:3712a207dd5b shop_union_bag_items:7443191df811 shop_union_distinct_customers:6496696e3171 top_books:ae8cf32db83c union_bag:dca9b521a131 zero_fee:0b75be5673e4
+  active_outer:a2cfd29811b2 all_returned:78c574dfb4d4 borrowers:33082922b618 latest_ties:bf1b38d60daf lib_book_cheaper_than_other:66b86f6a5f04 lib_book_loan_sum:7d160adcd054 lib_books_distinct_prices:46536cee1fef lib_books_loaned_in:2ac63e8ffe82 lib_books_never_loaned:359c425bcf50 lib_books_not_loaned_in:f1769f03c4df lib_books_order_price_desc:e039ef3d3c8f lib_books_price_boundary:3306432ed82f lib_books_price_open_range:eb6571f36ade lib_books_price_or:3a6d7b556599 lib_books_price_rank:ff51fa53c35b lib_books_title_like:4559c2e6d2a8 lib_count_star_vs_col:eafbb9bd5981 lib_global_stats:1ab54f850b58 lib_loan_book_price:f455b01fb5dc lib_loans_above_avg:dad63052d64e lib_loans_count_by_day_order:1db0612e2495 lib_loans_cte:1c96a90a4f85 lib_loans_day_range:8bf90f1725e3 lib_loans_fee_in:90ab1f9317b3 lib_loans_fee_or_returned:471a247a3086 lib_loans_fee_range:e1473e73abea lib_loans_fee_zero_sum:80ff37ff3295 lib_loans_limit3:a93ed9a98a49 lib_loans_order_fee:108d3301278f lib_loans_returned_in:207cfddea50c lib_loans_returned_null:2ac575e0905b lib_loans_row_number:a6331cc67497 lib_reader_all_null_returned:eddb75a5fe9d lib_reader_avg_fee:4a4407e7afc1 lib_reader_book_multiplicity:60447cc2aa87 lib_reader_book_titles:1aa7dfef4526 lib_reader_cheapest_book:cfe2cfac5dc3 lib_reader_count_returned_equal:07cce992d012 lib_reader_derived_counts:c8fa3317130a lib_reader_distinct_books:bdbbce73fe60 lib_reader_fee_positive:7b3cf7e2a9ea lib_reader_fee_rank:fd8b724f71c9 lib_reader_last_book_title:2e57e7344599 lib_reader_left_join_null:bdb2e25d97c7 lib_reader_left_with_flag:fdfb795d207e lib_reader_loan_count_scalar:cc8ee42639ee lib_reader_loan_join_agg:320a77a1ee00 lib_reader_loan_rows:1ad2b09a682e lib_reader_loan_sum:4e5bef28149c lib_reader_max_fee:01b375948b5a lib_reader_multiple_loans:e3d32e52f74e lib_reader_no_fee_loans:48dec6d05e0f lib_reader_returned_sum:271d4e9f8195 lib_reader_running_fee:0a45767c7c66 lib_reader_same_book_twice:752230b231d1 lib_readers_order_name:9ea53b1b6f09 lib_readers_with_loans:f215ea155967 lib_same_day_pairs:db2a649b4cca lib_union_bag_books:b335da322278 lib_union_distinct_readers:ccbab3182b20 loan_count:234df876c7eb no_loans:ff99b0cde98e not_returned:1546f291f1bd price_range:2ac2a3b07f21 returned_count:5e37f67280b7 shop_category_avg_price:b192909d2ae3 shop_category_product_count:f5b8cb876bc8 shop_category_self:67b0382fc3c2 shop_count_star_vs_col:405e9163528e shop_customer_city_orders:3e9e0210bfcc shop_customer_max_line:c25f8de60492 shop_customer_order_count:159ce05a9e8c shop_customer_order_count_scalar:b233594edc5a shop_customer_order_rank:d4648158d98a shop_customer_order_total:c1597a0bd8b2 shop_customer_orders_per_status:0cd38dd88768 shop_customer_without_orders:0c2a0cb04ef4 shop_customers_city_not_null:ded7acf81225 shop_customers_city_null:77e3d54ff352 shop_customers_cte:b2b15207db6b shop_customers_order_email:0700961fc3a4 shop_customers_with_orders:bfe4ac95e205 shop_customers_without_orders:7cd1eb8b6414 shop_discount_full:c97ac43b5e7c shop_global_orders:a27447e8a2d2 shop_item_product_name:16acfc4e572d shop_items_row_number:9022477c7f2d shop_join_agg_derived:5f9e15065b0e shop_join_multiplicity:4ee65256a6e2 shop_latest_order_per_customer:90479e472ce9 shop_left_orders_no_items:010cbec2cd16 shop_order_customer:f069122aaa84 shop_order_gross:c52e2237232e shop_order_item_count:6a1600a2f408 shop_order_item_qty_ratio:67c27f8aec69 shop_order_items_avg_discount:fa918e134cb5 shop_order_max_quantity_items:caa4196a2204 shop_order_payments:e74a56533ba7 shop_orders_above_avg:e3f33da1410b shop_orders_channel_or:5c4260b4e07f shop_orders_customer_city:ca43487bf5ce shop_orders_limit5:6632dda4e489 shop_orders_null_channel_group:cc9861fa8707 shop_orders_order_status_created:106f82680751 shop_orders_status_in:69e3838a924b shop_orders_status_not_in:40ab26d47913 shop_orders_zero_total:f82471a446f4 shop_payments_method_equal:7cb3bb7df795 shop_payments_order_amount:5e110eaaf9ae shop_payments_zero_amount:728ec9cb5cee shop_product_category_name:92698c486d6b shop_product_price_rank:bd39cf8a0db7 shop_product_rating_avg:7a791440fa93 shop_product_revenue:4d5a7b598369 shop_product_reviews_count:692228d2c44b shop_product_units_running:12b37c3af324 shop_product_units_sold:4c1d1ad8d0d0 shop_products_active_flag:ae59e5d2c0bd shop_products_not_ordered_in:12ec6bc5cc6f shop_products_order_price_desc:be06eea5feeb shop_products_ordered_in:5496cac8e2dc shop_products_price_range:889a581535fc shop_products_sku_like:2e7f2e399b3f shop_products_stock_boundary:e873acea6998 shop_products_stock_positive:741db4d81025 shop_products_top_price:ae4cb56d8729 shop_recursive_category_depth:0664a4508d5b shop_reviews_null_body:3efd7288cece shop_reviews_rating_boundary:f7f919db9354 shop_status_order_count:97290296bb8e shop_three_way:51fbeaeb1e05 shop_union_bag_items:cc056b2b772b shop_union_distinct_customers:ef96f50e1419 top_books:48bb6fc69218 uni_count_star_vs_score:a45494737838 uni_course_avg_join:6a202fd18a0a uni_course_avg_score:b6f85f4b3794 uni_course_credits_above_avg:01f8c1e7a7ba uni_course_department:4c3cdc493f5c uni_course_enrollment_count:944f463df205 uni_course_enrollment_rank:a71e775307da uni_course_more_credits:343e951e63c3 uni_course_passed_failed:0fa266ce68de uni_course_score_rank:b488fc6c1d51 uni_course_top_score:40d87805f000 uni_courses_credits_in:65bd1cc49387 uni_courses_credits_range:3c642343ee91 uni_courses_enrolled_in:82917ab731f2 uni_courses_not_enrolled_in:28b36d6811a9 uni_courses_order_credits:b923669e3c92 uni_department_derived_counts:6cb5ef3f5cba uni_department_enrollment_multiplicity:660f90f5d34a uni_department_max_salary:19b2e7f8b371 uni_department_order_name:1ca067077eeb uni_department_payroll:cfe8bbafa82c uni_department_status_group:d9dc3b51bc9a uni_department_student_count:60ff7bf413f4 uni_department_student_share:bde1b7a23823 uni_department_teacher_count:1557e8580a72 uni_empty_departments:30959463874a uni_enrollment_student_course:34ee50ea40ed uni_enrollment_teacher_student:aaaf73a650fd uni_enrollments_limit5:8f8440210fa1 uni_enrollments_status_or:0b954a9cc344 uni_global_stats:6c0870f0c006 uni_grade_letter_count:ba5d925a1b84 uni_grades_order_score:ef60f0922b30 uni_grades_score_boundary:bbe686076f9b uni_grades_score_open_range:a38c8f7a099d uni_latest_semester_enrollments:99838bddd999 uni_min_credits_courses:ee6a0881dba3 uni_passed_without_grade:353e2163c2cc uni_semester_duration:57bfc9071add uni_semester_enrollment_count:8fef977e773e uni_status_student_count:b343856294cc uni_student_avg_score:1b57447e96f6 uni_student_course_pairs:1255aa5696ad uni_student_enrollment_count:9c13a2f9f6df uni_student_no_enrollment:6544bc688fca uni_student_running_credits:9ca1efde82d4 uni_students_above_avg_count:c5a6026205aa uni_students_birth_null:50f7ebe8bfb2 uni_students_cte:b9126b6710c1 uni_students_email_like:65cbfeaacb61 uni_students_order_email:6c8d93a808e1 uni_students_row_number:59ce0992371a uni_students_status_in:80415ebaf456 uni_students_with_enrollments:d8ae107debcb uni_students_without_enrollments:f2a710d1b202 uni_teacher_department:522c22374090 uni_teacher_latest_hired:bd52a05199e4 uni_teacher_no_enrollment:bb102e2e4e9b uni_teacher_same_department_pairs:e0e920502425 uni_teacher_student_count:a71c3e04956e uni_teacher_title_group:6906a2f88b73 uni_teachers_order_salary:ebacbf3f989a uni_teachers_salary_not_null:0f0286e8e416 uni_teachers_salary_null:f3b76fcbdb05 uni_teachers_title_equal:3dc56a93090a uni_three_way_grades:8198a3317fb6 uni_union_bag_students:8f874eb49a05 uni_union_distinct_students:20b59216f99d union_bag:76dba3e379cf zero_fee:727f04ce50aa
   Verify: python scripts/recompute_tables.py --repo-root .
 -->
 <style>
@@ -61,6 +61,10 @@ h2{font-size:clamp(1.35rem,3vw,1.7rem);letter-spacing:-.01em;margin:0 0 6px;font
 .stat .d{font-size:12.5px;color:var(--dim);display:block;margin-top:6px;line-height:1.45}
 .table-wrap{overflow-x:auto;border:1px solid var(--line);background:var(--panel)}
 table{width:100%;border-collapse:collapse;min-width:760px}
+table.leaderboard{min-width:1000px;table-layout:fixed}
+.leaderboard th{padding:10px}
+.leaderboard td{padding:12px 10px}
+.leaderboard .tag{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 caption{caption-side:top;text-align:left;padding:14px 16px 12px;color:var(--muted);font-size:13px;border-bottom:1px solid var(--line-soft)}
 th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
   text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);white-space:nowrap;font-weight:600;background:var(--panel-2)}
@@ -72,6 +76,7 @@ th.num{text-align:right}
 .n{font-family:var(--mono);font-size:20px;font-weight:700;display:block;line-height:1.15;
   font-variant-numeric:tabular-nums;color:var(--text)}
 .n.bad{color:var(--bad)} .n.good{color:var(--good)} .n.muted{color:var(--muted)}
+.n.warn{color:var(--warm)} .n.share{color:var(--warm);font-size:19px}
 .denom{font-family:var(--mono);font-size:12.5px;color:var(--muted);display:block;margin-top:2px}
 .model{font-weight:700;color:var(--text);border-bottom:0;display:block;line-height:1.3}
 a.model:hover{color:var(--accent)}
@@ -82,6 +87,10 @@ a.model:hover{color:var(--accent)}
 .sub.warn{color:var(--warm)}
 .tag + .sub{margin-top:6px}
 .footnote{color:var(--muted);font-size:13px;line-height:1.65;margin:12px 0 0;max-width:95ch}
+.observation{margin:16px 0 0;padding:14px 18px;border-left:3px solid var(--accent);background:var(--panel);
+  color:var(--muted);font-size:14px;line-height:1.65;max-width:95ch}
+.observation strong{color:var(--text)}
+.observation .big{color:var(--warm);font-family:var(--mono);font-weight:700}
 .footnote code, code{font-family:var(--mono);font-size:.92em;color:#e6d8c4;background:rgba(255,255,255,.045);
   border:1px solid var(--line-soft);padding:1px 5px}
 .evidence-example{background:var(--panel);border:1px solid var(--line);padding:22px 22px 20px}
@@ -132,6 +141,7 @@ footer strong{color:var(--text)}
   .how-grid,.links ul{grid-template-columns:1fr}
   section{margin-bottom:44px}
   table{min-width:0}
+  table.leaderboard{min-width:0;table-layout:auto}
   .table-wrap{overflow:visible}
   .leaderboard,.families,.coverage{display:block;width:100%}
   .leaderboard caption,.families caption,.coverage caption{display:block;width:100%}
@@ -161,93 +171,140 @@ footer strong{color:var(--text)}
 
 <header class="hero">
   <div class="wrap">
-    <p class="kicker"><span class="dot" aria-hidden="true"></span> SREB — SQL Rewrite Evidence Benchmark <span class="ver">v0.2.0</span></p>
+    <p class="kicker"><span class="dot" aria-hidden="true"></span> SREB — SQL Rewrite Evidence Benchmark <span class="ver">v0.3.0</span></p>
     <h1>Executable evidence,<br><span>not success rates.</span></h1>
     <p class="lede">For every SQL rewrite a language model proposes, SREB records a database state on which the rewrite changes the result — and the exact rows that prove it.</p>
-    <p class="meta">MySQL 8.4.11 · 4 models · 136 evaluated families of 204 · 28 frozen states per family · snapshot 0.2.0</p>
+    <p class="meta">MySQL 8.4.11 · 6 models · 204 families on 3 schemas · 28 frozen states per family · snapshot 0.3.0</p>
   </div>
 </header>
 
 <main id="main" class="wrap">
-  <section class="stats" aria-label="Dataset scale at v0.2.0">
-    <div class="stat"><span class="k">Dataset version</span><span class="v">0.2.0</span><span class="d">Snapshot 2026-10-19; corpus and evidence grow over time</span></div>
-    <div class="stat"><span class="k">Corpus families</span><span class="v">204</span><span class="d">68 library + 68 shop + 68 university</span></div>
-    <div class="stat"><span class="k">Evaluated families</span><span class="v">136</span><span class="d">Library and Shop have evidence; University is staged</span></div>
+  <section class="stats" aria-label="Dataset scale at v0.3.0">
+    <div class="stat"><span class="k">Dataset version</span><span class="v">0.3.0</span><span class="d">Snapshot 2026-10-19; all three schemas evaluated</span></div>
+    <div class="stat"><span class="k">Families</span><span class="v">204</span><span class="d">All evaluated · 68 library + 68 shop + 68 university</span></div>
     <div class="stat"><span class="k">Frozen states</span><span class="v">5,712</span><span class="d">204 families × 28 states</span></div>
-    <div class="stat"><span class="k">Run records</span><span class="v">544</span><span class="d">4 models × 136 evaluated families</span></div>
-    <div class="stat"><span class="k">Executed checks</span><span class="v">15,232</span><span class="d">136 families × 28 states × 4 models</span></div>
+    <div class="stat"><span class="k">Models</span><span class="v">6</span><span class="d">3B to 15.7B parameters; one response per family</span></div>
+    <div class="stat"><span class="k">Run records</span><span class="v">1,224</span><span class="d">6 models × 204 families</span></div>
+    <div class="stat"><span class="k">Executed checks</span><span class="v">34,272</span><span class="d">204 families × 28 states × 6 models</span></div>
   </section>
 
   <section aria-labelledby="coverage-title">
     <div class="section-head">
       <h2 id="coverage-title">Corpus coverage</h2>
-      <p>What exists and what is still pending, by schema</p>
+      <p>All three schemas are now evaluated</p>
     </div>
     <div class="table-wrap">
       <table class="coverage">
-        <caption>Counts from <code>manifest.json</code> and <code>data/evidence/</code>. “Runs pending” is not zero models and not zero errors — it means no model has been evaluated on this schema yet.</caption>
+        <caption>Counts from <code>manifest.json</code> and <code>data/evidence/</code>. Each schema has 68 families × 6 models = 408 run records; 204 families × 6 models = 1,224 run records in total.</caption>
         <thead><tr><th scope="col">Schema</th><th scope="col" class="num">Corpus families</th><th scope="col" class="num">Frozen states</th><th scope="col" class="num">Run records</th><th scope="col">Evidence</th><th scope="col">Status</th></tr></thead>
         <tbody>
         <tr>
           <td data-label="Schema"><span class="model">Library</span><span class="sub mono">library</span></td>
           <td class="num" data-label="Corpus families"><span class="n">68</span></td>
           <td class="num" data-label="Frozen states"><span class="n">1,904</span><span class="sub">68 × 28</span></td>
-          <td class="num" data-label="Run records"><span class="n">272</span></td>
-          <td data-label="Evidence"><span class="sub">68 families × 4 models</span></td>
+          <td class="num" data-label="Run records"><span class="n">408</span></td>
+          <td data-label="Evidence"><span class="sub">68 families × 6 models</span></td>
           <td data-label="Status"><span class="chip ok">evaluated</span></td>
         </tr>
         <tr>
           <td data-label="Schema"><span class="model">Shop</span><span class="sub mono">shop</span></td>
           <td class="num" data-label="Corpus families"><span class="n">68</span></td>
           <td class="num" data-label="Frozen states"><span class="n">1,904</span><span class="sub">68 × 28</span></td>
-          <td class="num" data-label="Run records"><span class="n">272</span></td>
-          <td data-label="Evidence"><span class="sub">68 families × 4 models</span></td>
+          <td class="num" data-label="Run records"><span class="n">408</span></td>
+          <td data-label="Evidence"><span class="sub">68 families × 6 models</span></td>
           <td data-label="Status"><span class="chip ok">evaluated</span></td>
         </tr>
         <tr>
           <td data-label="Schema"><span class="model">University</span><span class="sub mono">university</span></td>
           <td class="num" data-label="Corpus families"><span class="n">68</span></td>
           <td class="num" data-label="Frozen states"><span class="n">1,904</span><span class="sub">68 × 28</span></td>
-          <td class="num" data-label="Run records"><span class="n">—</span></td>
-          <td data-label="Evidence"><span class="sub">— (none yet)</span></td>
-          <td data-label="Status"><span class="chip pending">staged · runs pending</span></td>
+          <td class="num" data-label="Run records"><span class="n">408</span></td>
+          <td data-label="Evidence"><span class="sub">68 families × 6 models</span></td>
+          <td data-label="Status"><span class="chip ok">evaluated</span></td>
         </tr>
         </tbody>
       </table>
     </div>
-    <p class="footnote">University corpus and its frozen states are published in <a href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/corpus/university.json"><code>data/corpus/university.json</code></a> and <a href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/states/states.json"><code>data/states/states.json</code></a>; model runs and evidence for it are <strong>pending</strong>. The leaderboard below therefore covers the 136 evaluated families (library + shop), not all 204.</p>
+    <p class="footnote">All 204 corpus families are evaluated: 68 library + 68 shop + 68 university. Corpus and states live in <a href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/corpus/"><code>data/corpus/</code></a> and <a href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/states/states.json"><code>data/states/states.json</code></a>; 6 × 204 × 28 = 34,272 executable checks were run.</p>
   </section>
 
   <section aria-labelledby="models-title">
     <div class="section-head">
       <h2 id="models-title">Models</h2>
-      <p>Dataset v0.2.0 · sorted by refuting checks, <em>not</em> by accuracy</p>
+      <p>Dataset v0.3.0 · sorted by refuted rewrites (absolute); refuted share is shown separately</p>
     </div>
     <div class="table-wrap">
       <table class="leaderboard">
-        <caption>Outcomes of model-proposed rewrites on 136 evaluated families. <strong>Refuting checks</strong> are state checks whose result differed from the reference — evidence against the rewrite, not a quality score.</caption>
+        <caption>Outcomes of model-proposed rewrites on all 204 families. <strong>Refuted share</strong> = refuted / proposed, a fairer comparison than absolutes alone. <strong>Unsupported</strong> and <strong>errors</strong> are separate outcome types, not folded into “no rewrite”. <strong>Refuting checks</strong> are state checks whose result differed from the reference — evidence against the rewrite, not a quality score.</caption>
+        <colgroup>
+          <col style="width:27%">
+          <col style="width:10%">
+          <col style="width:9%">
+          <col style="width:8%">
+          <col style="width:9%">
+          <col style="width:9%">
+          <col style="width:10%">
+          <col style="width:7%">
+          <col style="width:11%">
+        </colgroup>
         <thead>
           <tr>
             <th scope="col">Model</th>
-            <th scope="col" class="num">Proposed rewrites</th>
+            <th scope="col" class="num">Proposed</th>
             <th scope="col" class="num">Refuted</th>
+            <th scope="col" class="num">Refuted %</th>
             <th scope="col" class="num">Preserved</th>
             <th scope="col" class="num">No rewrite</th>
-            <th scope="col" class="num">Refuting checks</th>
+            <th scope="col" class="num">Unsupported</th>
+            <th scope="col" class="num">Errors</th>
+            <th scope="col" class="num">Ref. checks</th>
           </tr>
         </thead>
         <tbody>
+        <tr>
+          <td data-label="Model">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/tree/master/data/runs/qwen2.5-3b/">Qwen2.5-3B</a>
+            <span class="tag mono">qwen2.5:3b</span>
+            <span class="sub mono">3.1B params · Q4_K_M · ollama 0.40.6</span>
+          </td>
+          <td class="num" data-label="Proposed rewrites"><span class="n">85</span></td>
+          <td class="num" data-label="Refuted"><span class="n bad">39</span></td>
+          <td class="num" data-label="Refuted share"><span class="n share">45.9%</span></td>
+          <td class="num" data-label="Preserved"><span class="n good">46</span></td>
+          <td class="num" data-label="No rewrite"><span class="n muted">97</span></td>
+          <td class="num" data-label="Unsupported"><span class="n warn">6</span></td>
+          <td class="num" data-label="Errors"><span class="n bad">16</span></td>
+          <td class="num" data-label="Refuting checks"><span class="n bad">629</span><span class="denom mono">/ 5,712</span></td>
+        </tr>
         <tr>
           <td data-label="Model">
             <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/tree/master/data/runs/deepseek-coder-v2/">DeepSeek-Coder-V2</a>
             <span class="tag mono">deepseek-coder-v2:latest</span>
             <span class="sub mono">15.7B params · Q4_0 · ollama 0.40.5</span>
           </td>
-          <td class="num" data-label="Proposed rewrites"><span class="n">50</span></td>
-          <td class="num" data-label="Refuted"><span class="n bad">21</span><span class="sub">21 of 136 families</span></td>
-          <td class="num" data-label="Preserved"><span class="n good">29</span></td>
-          <td class="num" data-label="No rewrite"><span class="n muted">85</span><span class="sub warn">+ 1 error</span></td>
-          <td class="num" data-label="Refuting checks"><span class="n bad">336</span><span class="denom mono">/ 3808</span><span class="sub">executed checks refuted</span></td>
+          <td class="num" data-label="Proposed rewrites"><span class="n">77</span></td>
+          <td class="num" data-label="Refuted"><span class="n bad">27</span></td>
+          <td class="num" data-label="Refuted share"><span class="n share">35.1%</span></td>
+          <td class="num" data-label="Preserved"><span class="n good">50</span></td>
+          <td class="num" data-label="No rewrite"><span class="n muted">126</span></td>
+          <td class="num" data-label="Unsupported"><span class="n muted">0</span></td>
+          <td class="num" data-label="Errors"><span class="n bad">1</span></td>
+          <td class="num" data-label="Refuting checks"><span class="n bad">444</span><span class="denom mono">/ 5,712</span></td>
+        </tr>
+        <tr>
+          <td data-label="Model">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/tree/master/data/runs/llama3.2-3b/">Llama-3.2-3B</a>
+            <span class="tag mono">llama3.2:3b</span>
+            <span class="sub mono">3.2B params · Q4_K_M · ollama 0.40.6</span>
+          </td>
+          <td class="num" data-label="Proposed rewrites"><span class="n">53</span></td>
+          <td class="num" data-label="Refuted"><span class="n bad">26</span></td>
+          <td class="num" data-label="Refuted share"><span class="n share">49.1%</span></td>
+          <td class="num" data-label="Preserved"><span class="n good">27</span></td>
+          <td class="num" data-label="No rewrite"><span class="n muted">140</span></td>
+          <td class="num" data-label="Unsupported"><span class="n warn">1</span></td>
+          <td class="num" data-label="Errors"><span class="n bad">10</span></td>
+          <td class="num" data-label="Refuting checks"><span class="n bad">415</span><span class="denom mono">/ 5,712</span></td>
         </tr>
         <tr>
           <td data-label="Model">
@@ -255,11 +312,14 @@ footer strong{color:var(--text)}
             <span class="tag mono">qwen2.5-coder:7b</span>
             <span class="sub mono">7.6B params · Q4_K_M · ollama 0.40.4</span>
           </td>
-          <td class="num" data-label="Proposed rewrites"><span class="n">21</span></td>
-          <td class="num" data-label="Refuted"><span class="n bad">10</span><span class="sub">10 of 136 families</span></td>
-          <td class="num" data-label="Preserved"><span class="n good">11</span></td>
-          <td class="num" data-label="No rewrite"><span class="n muted">115</span></td>
-          <td class="num" data-label="Refuting checks"><span class="n bad">107</span><span class="denom mono">/ 3808</span><span class="sub">executed checks refuted</span></td>
+          <td class="num" data-label="Proposed rewrites"><span class="n">30</span></td>
+          <td class="num" data-label="Refuted"><span class="n bad">12</span></td>
+          <td class="num" data-label="Refuted share"><span class="n share">40.0%</span></td>
+          <td class="num" data-label="Preserved"><span class="n good">18</span></td>
+          <td class="num" data-label="No rewrite"><span class="n muted">173</span></td>
+          <td class="num" data-label="Unsupported"><span class="n warn">1</span></td>
+          <td class="num" data-label="Errors"><span class="n muted">0</span></td>
+          <td class="num" data-label="Refuting checks"><span class="n bad">141</span><span class="denom mono">/ 5,712</span></td>
         </tr>
         <tr>
           <td data-label="Model">
@@ -267,11 +327,14 @@ footer strong{color:var(--text)}
             <span class="tag mono">phi3.5:3.8b</span>
             <span class="sub mono">3.8B params · Q4_0 · ollama 0.40.4</span>
           </td>
-          <td class="num" data-label="Proposed rewrites"><span class="n">21</span></td>
-          <td class="num" data-label="Refuted"><span class="n bad">7</span><span class="sub">7 of 136 families</span></td>
-          <td class="num" data-label="Preserved"><span class="n good">14</span></td>
-          <td class="num" data-label="No rewrite"><span class="n muted">108</span><span class="sub warn">+ 5 unsupported, 2 errors</span></td>
-          <td class="num" data-label="Refuting checks"><span class="n bad">94</span><span class="denom mono">/ 3808</span><span class="sub">executed checks refuted</span></td>
+          <td class="num" data-label="Proposed rewrites"><span class="n">30</span></td>
+          <td class="num" data-label="Refuted"><span class="n bad">8</span></td>
+          <td class="num" data-label="Refuted share"><span class="n share">26.7%</span></td>
+          <td class="num" data-label="Preserved"><span class="n good">22</span></td>
+          <td class="num" data-label="No rewrite"><span class="n muted">156</span></td>
+          <td class="num" data-label="Unsupported"><span class="n warn">15</span></td>
+          <td class="num" data-label="Errors"><span class="n bad">3</span></td>
+          <td class="num" data-label="Refuting checks"><span class="n bad">111</span><span class="denom mono">/ 5,712</span></td>
         </tr>
         <tr>
           <td data-label="Model">
@@ -279,21 +342,25 @@ footer strong{color:var(--text)}
             <span class="tag mono">qwen2.5:7b</span>
             <span class="sub mono">7.6B params · Q4_K_M · ollama 0.40.5</span>
           </td>
-          <td class="num" data-label="Proposed rewrites"><span class="n">21</span></td>
-          <td class="num" data-label="Refuted"><span class="n bad">7</span><span class="sub">7 of 136 families</span></td>
-          <td class="num" data-label="Preserved"><span class="n good">14</span></td>
-          <td class="num" data-label="No rewrite"><span class="n muted">114</span><span class="sub warn">+ 1 error</span></td>
-          <td class="num" data-label="Refuting checks"><span class="n bad">67</span><span class="denom mono">/ 3808</span><span class="sub">executed checks refuted</span></td>
+          <td class="num" data-label="Proposed rewrites"><span class="n">32</span></td>
+          <td class="num" data-label="Refuted"><span class="n bad">8</span></td>
+          <td class="num" data-label="Refuted share"><span class="n share">25.0%</span></td>
+          <td class="num" data-label="Preserved"><span class="n good">24</span></td>
+          <td class="num" data-label="No rewrite"><span class="n muted">169</span></td>
+          <td class="num" data-label="Unsupported"><span class="n muted">0</span></td>
+          <td class="num" data-label="Errors"><span class="n bad">3</span></td>
+          <td class="num" data-label="Refuting checks"><span class="n bad">81</span><span class="denom mono">/ 5,712</span></td>
         </tr>
         </tbody>
       </table>
     </div>
-    <p class="footnote">One response per model and family (temperature 0). “Proposed rewrites” = refuted + preserved. “No rewrite” = the model returned the reference query unchanged. Non-zero invalid outcomes are listed next to “No rewrite” (Phi-3.5-mini: 5 unsupported + 2 errors; DeepSeek-Coder-V2: 1 error; Qwen2.5-7B: 1 error) — they are recorded in the data, not hidden as no-rewrites. Refuting checks are shown over the 136 × 28 = 3808 checks executed per model. Source: <a href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/docs/tables.md"><code>docs/tables.md</code></a> and <a href="https://github.com/ykvlev/sql-rewrite-evidence-bench/tree/master/data/evidence/"><code>data/evidence/</code></a>.</p>
+    <p class="footnote">One response per model and family (temperature 0), 204 families × 6 models = 1,224 run records. “Proposed rewrites” = refuted + preserved; every family ends as refuted, preserved, no_rewrite, unsupported or error. Refuting checks are shown over 204 × 28 = 5,712 checks executed per model (34,272 in total). Source: <a href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/docs/tables.md"><code>docs/tables.md</code></a> and <a href="https://github.com/ykvlev/sql-rewrite-evidence-bench/tree/master/data/evidence/"><code>data/evidence/</code></a>.</p>
+    <div class="observation"><strong>Observation — the two 3B-class models are refuted most often in this snapshot.</strong> Refuted share of proposed rewrites: <span class="big">45.9%</span> (Qwen2.5-3B) and <span class="big">49.1%</span> (Llama-3.2-3B). The other four models span <span class="big">25.0–40.0%</span>: Qwen2.5-7B 25.0%, Phi-3.5 3.8B 26.7%, DeepSeek-Coder-V2 35.1%, Qwen2.5-Coder-7B 40.0%. Size is not destiny — Phi-3.5 3.8B sits inside that range — but the two 3B models are refuted at nearly half of their proposals and also carry most execution failures: Qwen2.5-3B 16 errors + 6 unsupported, Llama-3.2-3B 10 errors + 1 unsupported, Phi-3.5 15 unsupported + 3 errors. Together the three smallest models account for 51 of the 56 invalid outcomes (errors + unsupported) in the dataset.</div>
   </section>
 
   <section class="evidence-example" aria-labelledby="witness-title">
     <h2 id="witness-title">What a refutation looks like</h2>
-    <p>All four models were refuted on this family — three collapsed <code>UNION ALL</code> into <code>OR</code>, DeepSeek added <code>DISTINCT</code> over the union; either rewrite loses duplicates. One frozen state exposes it; the dataset stores the state and both result sets, and the refuting pair was replayed in a fresh schema.</p>
+    <p>Four of the six models were refuted on this family — three collapsed <code>UNION ALL</code> into <code>OR</code>, DeepSeek added <code>DISTINCT</code> over the union; either rewrite loses duplicates. Llama-3.2 hit an execution error here and Qwen2.5-3B returned the query unchanged. One frozen state exposes it; the dataset stores the state and both result sets, and the refuting pair was replayed in a fresh schema.</p>
     <pre><code><span class="k">family</span>      union_bag
 <span class="k">model</span>       qwen2.5-coder:7b
 <span class="k">state</span>       multiplicity_0  <span class="c">(profile: multiplicity)</span>
@@ -306,11 +373,11 @@ footer strong{color:var(--text)}
   <section aria-labelledby="families-title">
     <div class="section-head">
       <h2 id="families-title">Refuted families</h2>
-      <p>29 of 136 evaluated families have at least one refuted rewrite</p>
+      <p>75 of 204 evaluated families have at least one refuted rewrite</p>
     </div>
     <div class="table-wrap">
       <table class="families">
-        <caption>45 refuted family–model pairs across 29 families. Only the exact frozen states that broke each candidate are listed. State ids match <code>data/states/states.json</code>; <code>*_0</code> is the designed profile instance, <code>random_uniform_*</code> are pseudo-random states from fixed seeds.</caption>
+        <caption>120 refuted family–model pairs across 75 families (29 library + 25 shop + 21 university). Only the exact frozen states that broke each candidate are listed. State ids match <code>data/states/states.json</code>; <code>*_0</code> is the designed profile instance, <code>random_uniform_*</code> are pseudo-random states from fixed seeds.</caption>
         <thead>
           <tr>
             <th scope="col">Family</th>
@@ -378,6 +445,90 @@ footer strong{color:var(--text)}
         </tr>
         <tr>
           <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/all_returned.json">all_returned</a>
+            <span class="sub"><span class="schema mono">library</span> set-level conditions on returned values collapsed into a row condition</span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">llama3.2:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×17</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="chip mono">zero_fee<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, zero_fee_0, nullable_0, boundary_0, ties_0, random_uniform_0, random_uniform_1, random_uniform_2, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">23</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/all_returned.json">all_returned</a>
+            <span class="sub"><span class="schema mono">library</span> set-level conditions on returned values collapsed into a row condition</span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×13</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="sub">witness state: <code>nullable_0</code></span></summary>
+              <code class="states">nullable_0, ties_0, random_uniform_0, random_uniform_1, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_9, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">15</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/borrowers.json">borrowers</a>
+            <span class="sub"><span class="schema mono">library</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×12</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="sub">witness state: <code>multiplicity_0</code></span></summary>
+              <code class="states">multiplicity_0, ties_0, random_uniform_0, random_uniform_1, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_11, random_uniform_13, random_uniform_14, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">14</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/lib_book_cheaper_than_other.json">lib_book_cheaper_than_other</a>
+            <span class="sub"><span class="schema mono">library</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">llama3.2:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">random_uniform<span class="x">×19</span></span><span class="sub">witness state: <code>random_uniform_0</code></span></summary>
+              <code class="states">random_uniform_0, random_uniform_2, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">19</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/lib_book_cheaper_than_other.json">lib_book_cheaper_than_other</a>
+            <span class="sub"><span class="schema mono">library</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">no_loans<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×20</span></span><span class="chip mono">zero_fee<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, no_loans_0, multiplicity_0, zero_fee_0, nullable_0, boundary_0, random_uniform_0, random_uniform_1, random_uniform_2, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">26</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/lib_books_distinct_prices.json">lib_books_distinct_prices</a>
+            <span class="sub"><span class="schema mono">library</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">random_uniform<span class="x">×4</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="sub">witness state: <code>ties_0</code></span></summary>
+              <code class="states">ties_0, random_uniform_3, random_uniform_11, random_uniform_13, random_uniform_15</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">5</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
             <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/lib_books_loaned_in.json">lib_books_loaned_in</a>
             <span class="sub"><span class="schema mono">library</span> </span>
           </td>
@@ -420,6 +571,34 @@ footer strong{color:var(--text)}
         </tr>
         <tr>
           <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/lib_books_loaned_in.json">lib_books_loaned_in</a>
+            <span class="sub"><span class="schema mono">library</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">llama3.2:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×14</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="sub">witness state: <code>multiplicity_0</code></span></summary>
+              <code class="states">multiplicity_0, ties_0, random_uniform_0, random_uniform_1, random_uniform_2, random_uniform_5, random_uniform_6, random_uniform_8, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">16</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/lib_books_loaned_in.json">lib_books_loaned_in</a>
+            <span class="sub"><span class="schema mono">library</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×14</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="sub">witness state: <code>multiplicity_0</code></span></summary>
+              <code class="states">multiplicity_0, ties_0, random_uniform_0, random_uniform_1, random_uniform_2, random_uniform_5, random_uniform_6, random_uniform_8, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">16</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
             <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/lib_books_never_loaned.json">lib_books_never_loaned</a>
             <span class="sub"><span class="schema mono">library</span> </span>
           </td>
@@ -448,6 +627,34 @@ footer strong{color:var(--text)}
         </tr>
         <tr>
           <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/lib_books_price_open_range.json">lib_books_price_open_range</a>
+            <span class="sub"><span class="schema mono">library</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">llama3.2:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">no_loans<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×4</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="chip mono">zero_fee<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, no_loans_0, multiplicity_0, zero_fee_0, nullable_0, boundary_0, ties_0, random_uniform_7, random_uniform_8, random_uniform_9, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">11</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/lib_books_price_rank.json">lib_books_price_rank</a>
+            <span class="sub"><span class="schema mono">library</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">llama3.2:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">no_loans<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×19</span></span><span class="chip mono">zero_fee<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, no_loans_0, multiplicity_0, zero_fee_0, nullable_0, boundary_0, random_uniform_0, random_uniform_1, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">25</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
             <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/lib_count_star_vs_col.json">lib_count_star_vs_col</a>
             <span class="sub"><span class="schema mono">library</span> </span>
           </td>
@@ -459,6 +666,34 @@ footer strong{color:var(--text)}
             </details>
           </td>
           <td class="num" data-label="Count"><span class="n">17</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/lib_count_star_vs_col.json">lib_count_star_vs_col</a>
+            <span class="sub"><span class="schema mono">library</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">llama3.2:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×16</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="chip mono">zero_fee<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, zero_fee_0, nullable_0, boundary_0, ties_0, random_uniform_0, random_uniform_1, random_uniform_2, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">22</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/lib_count_star_vs_col.json">lib_count_star_vs_col</a>
+            <span class="sub"><span class="schema mono">library</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×19</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="chip mono">zero_fee<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, zero_fee_0, nullable_0, boundary_0, ties_0, random_uniform_0, random_uniform_1, random_uniform_2, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">25</span></td>
         </tr>
         <tr>
           <td data-label="Family">
@@ -504,6 +739,34 @@ footer strong{color:var(--text)}
         </tr>
         <tr>
           <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/lib_loans_fee_zero_sum.json">lib_loans_fee_zero_sum</a>
+            <span class="sub"><span class="schema mono">library</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">llama3.2:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×15</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="chip mono">zero_fee<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, zero_fee_0, boundary_0, ties_0, random_uniform_0, random_uniform_1, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_12, random_uniform_13, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">20</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/lib_loans_fee_zero_sum.json">lib_loans_fee_zero_sum</a>
+            <span class="sub"><span class="schema mono">library</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×6</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="chip mono">zero_fee<span class="x">×1</span></span><span class="sub">witness state: <code>multiplicity_0</code></span></summary>
+              <code class="states">multiplicity_0, zero_fee_0, ties_0, random_uniform_1, random_uniform_7, random_uniform_11, random_uniform_14, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">9</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
             <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/lib_reader_all_null_returned.json">lib_reader_all_null_returned</a>
             <span class="sub"><span class="schema mono">library</span> </span>
           </td>
@@ -532,6 +795,34 @@ footer strong{color:var(--text)}
         </tr>
         <tr>
           <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/lib_reader_cheapest_book.json">lib_reader_cheapest_book</a>
+            <span class="sub"><span class="schema mono">library</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×15</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="chip mono">zero_fee<span class="x">×1</span></span><span class="sub">witness state: <code>multiplicity_0</code></span></summary>
+              <code class="states">multiplicity_0, zero_fee_0, ties_0, random_uniform_0, random_uniform_1, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">18</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/lib_reader_count_returned_equal.json">lib_reader_count_returned_equal</a>
+            <span class="sub"><span class="schema mono">library</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×14</span></span><span class="chip mono">zero_fee<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, zero_fee_0, nullable_0, boundary_0, random_uniform_0, random_uniform_1, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_14, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">19</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
             <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/lib_reader_derived_counts.json">lib_reader_derived_counts</a>
             <span class="sub"><span class="schema mono">library</span> </span>
           </td>
@@ -543,6 +834,48 @@ footer strong{color:var(--text)}
             </details>
           </td>
           <td class="num" data-label="Count"><span class="n">18</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/lib_reader_derived_counts.json">lib_reader_derived_counts</a>
+            <span class="sub"><span class="schema mono">library</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×10</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="chip mono">zero_fee<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, zero_fee_0, nullable_0, boundary_0, ties_0, random_uniform_0, random_uniform_4, random_uniform_5, random_uniform_7, random_uniform_9, random_uniform_10, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_18</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">16</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/lib_reader_fee_positive.json">lib_reader_fee_positive</a>
+            <span class="sub"><span class="schema mono">library</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×18</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="chip mono">zero_fee<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, zero_fee_0, nullable_0, boundary_0, ties_0, random_uniform_0, random_uniform_1, random_uniform_2, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">24</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/lib_reader_left_join_null.json">lib_reader_left_join_null</a>
+            <span class="sub"><span class="schema mono">library</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×19</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="chip mono">zero_fee<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, zero_fee_0, nullable_0, boundary_0, ties_0, random_uniform_0, random_uniform_1, random_uniform_2, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">25</span></td>
         </tr>
         <tr>
           <td data-label="Family">
@@ -560,10 +893,66 @@ footer strong{color:var(--text)}
         </tr>
         <tr>
           <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/lib_reader_loan_join_agg.json">lib_reader_loan_join_agg</a>
+            <span class="sub"><span class="schema mono">library</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">no_loans<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×20</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="chip mono">zero_fee<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, no_loans_0, multiplicity_0, zero_fee_0, nullable_0, boundary_0, ties_0, random_uniform_0, random_uniform_1, random_uniform_2, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">27</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/lib_reader_no_fee_loans.json">lib_reader_no_fee_loans</a>
+            <span class="sub"><span class="schema mono">library</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="sub">witness state: <code>multiplicity_0</code></span></summary>
+              <code class="states">multiplicity_0, ties_0</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">2</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
             <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/lib_readers_with_loans.json">lib_readers_with_loans</a>
             <span class="sub"><span class="schema mono">library</span> </span>
           </td>
           <td data-label="Model"><span class="mono tag-inline">deepseek-coder-v2:latest</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×16</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="chip mono">zero_fee<span class="x">×1</span></span><span class="sub">witness state: <code>multiplicity_0</code></span></summary>
+              <code class="states">multiplicity_0, zero_fee_0, ties_0, random_uniform_0, random_uniform_1, random_uniform_2, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">19</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/lib_readers_with_loans.json">lib_readers_with_loans</a>
+            <span class="sub"><span class="schema mono">library</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">llama3.2:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×16</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="chip mono">zero_fee<span class="x">×1</span></span><span class="sub">witness state: <code>multiplicity_0</code></span></summary>
+              <code class="states">multiplicity_0, zero_fee_0, ties_0, random_uniform_0, random_uniform_1, random_uniform_2, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">19</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/lib_readers_with_loans.json">lib_readers_with_loans</a>
+            <span class="sub"><span class="schema mono">library</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
           <td data-label="Refuting states">
             <details>
               <summary><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×16</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="chip mono">zero_fee<span class="x">×1</span></span><span class="sub">witness state: <code>multiplicity_0</code></span></summary>
@@ -686,6 +1075,20 @@ footer strong{color:var(--text)}
         </tr>
         <tr>
           <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/returned_count.json">returned_count</a>
+            <span class="sub"><span class="schema mono">library</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×11</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, nullable_0, boundary_0, ties_0, random_uniform_4, random_uniform_5, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_16, random_uniform_17</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">15</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
             <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/shop_category_self.json">shop_category_self</a>
             <span class="sub"><span class="schema mono">shop</span> </span>
           </td>
@@ -700,6 +1103,62 @@ footer strong{color:var(--text)}
         </tr>
         <tr>
           <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/shop_count_star_vs_col.json">shop_count_star_vs_col</a>
+            <span class="sub"><span class="schema mono">shop</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">llama3.2:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×18</span></span><span class="chip mono">zero_value<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, zero_value_0, nullable_0, boundary_0, random_uniform_0, random_uniform_1, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">23</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/shop_count_star_vs_col.json">shop_count_star_vs_col</a>
+            <span class="sub"><span class="schema mono">shop</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">no_rows<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×10</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, no_rows_0, ties_0, random_uniform_2, random_uniform_3, random_uniform_4, random_uniform_7, random_uniform_9, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_16, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">13</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/shop_customer_city_orders.json">shop_customer_city_orders</a>
+            <span class="sub"><span class="schema mono">shop</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×4</span></span><span class="sub">witness state: <code>multiplicity_0</code></span></summary>
+              <code class="states">multiplicity_0, random_uniform_8, random_uniform_10, random_uniform_15, random_uniform_17</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">5</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/shop_customer_order_rank.json">shop_customer_order_rank</a>
+            <span class="sub"><span class="schema mono">shop</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">random_uniform<span class="x">×2</span></span><span class="sub">witness state: <code>random_uniform_4</code></span></summary>
+              <code class="states">random_uniform_4, random_uniform_15</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">2</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
             <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/shop_customers_with_orders.json">shop_customers_with_orders</a>
             <span class="sub"><span class="schema mono">shop</span> </span>
           </td>
@@ -711,6 +1170,146 @@ footer strong{color:var(--text)}
             </details>
           </td>
           <td class="num" data-label="Count"><span class="n">13</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/shop_customers_with_orders.json">shop_customers_with_orders</a>
+            <span class="sub"><span class="schema mono">shop</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">llama3.2:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×12</span></span><span class="sub">witness state: <code>multiplicity_0</code></span></summary>
+              <code class="states">multiplicity_0, random_uniform_1, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">13</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/shop_customers_with_orders.json">shop_customers_with_orders</a>
+            <span class="sub"><span class="schema mono">shop</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×12</span></span><span class="sub">witness state: <code>multiplicity_0</code></span></summary>
+              <code class="states">multiplicity_0, random_uniform_1, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">13</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/shop_join_agg_derived.json">shop_join_agg_derived</a>
+            <span class="sub"><span class="schema mono">shop</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×6</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="chip mono">zero_value<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, zero_value_0, nullable_0, boundary_0, ties_0, random_uniform_0, random_uniform_1, random_uniform_6, random_uniform_11, random_uniform_13, random_uniform_17</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">12</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/shop_join_multiplicity.json">shop_join_multiplicity</a>
+            <span class="sub"><span class="schema mono">shop</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">random_uniform<span class="x">×3</span></span><span class="sub">witness state: <code>random_uniform_1</code></span></summary>
+              <code class="states">random_uniform_1, random_uniform_11, random_uniform_17</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">3</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/shop_left_orders_no_items.json">shop_left_orders_no_items</a>
+            <span class="sub"><span class="schema mono">shop</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×18</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="chip mono">zero_value<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, zero_value_0, nullable_0, boundary_0, ties_0, random_uniform_0, random_uniform_1, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">24</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/shop_order_gross.json">shop_order_gross</a>
+            <span class="sub"><span class="schema mono">shop</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×18</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="chip mono">zero_value<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, zero_value_0, nullable_0, boundary_0, ties_0, random_uniform_0, random_uniform_1, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">24</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/shop_order_item_count.json">shop_order_item_count</a>
+            <span class="sub"><span class="schema mono">shop</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×19</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="chip mono">zero_value<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, zero_value_0, nullable_0, boundary_0, ties_0, random_uniform_0, random_uniform_1, random_uniform_2, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">25</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/shop_order_item_qty_ratio.json">shop_order_item_qty_ratio</a>
+            <span class="sub"><span class="schema mono">shop</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">llama3.2:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×17</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, nullable_0, random_uniform_0, random_uniform_1, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">20</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/shop_order_item_qty_ratio.json">shop_order_item_qty_ratio</a>
+            <span class="sub"><span class="schema mono">shop</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×14</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, nullable_0, random_uniform_0, random_uniform_1, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">17</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/shop_order_payments.json">shop_order_payments</a>
+            <span class="sub"><span class="schema mono">shop</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">llama3.2:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">random_uniform<span class="x">×4</span></span><span class="sub">witness state: <code>random_uniform_5</code></span></summary>
+              <code class="states">random_uniform_5, random_uniform_10, random_uniform_16, random_uniform_18</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">4</span></td>
         </tr>
         <tr>
           <td data-label="Family">
@@ -798,6 +1397,62 @@ footer strong{color:var(--text)}
         </tr>
         <tr>
           <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/shop_product_category_name.json">shop_product_category_name</a>
+            <span class="sub"><span class="schema mono">shop</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">random_uniform<span class="x">×14</span></span><span class="sub">witness state: <code>random_uniform_0</code></span></summary>
+              <code class="states">random_uniform_0, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_18</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">14</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/shop_product_price_rank.json">shop_product_price_rank</a>
+            <span class="sub"><span class="schema mono">shop</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">llama3.2:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">no_rows<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×17</span></span><span class="chip mono">zero_value<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, no_rows_0, multiplicity_0, zero_value_0, nullable_0, boundary_0, random_uniform_0, random_uniform_2, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">23</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/shop_product_rating_avg.json">shop_product_rating_avg</a>
+            <span class="sub"><span class="schema mono">shop</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">llama3.2:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×5</span></span><span class="sub">witness state: <code>multiplicity_0</code></span></summary>
+              <code class="states">multiplicity_0, random_uniform_4, random_uniform_7, random_uniform_8, random_uniform_14, random_uniform_17</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">6</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/shop_product_revenue.json">shop_product_revenue</a>
+            <span class="sub"><span class="schema mono">shop</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×18</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="chip mono">zero_value<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, zero_value_0, nullable_0, boundary_0, ties_0, random_uniform_0, random_uniform_1, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">24</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
             <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/shop_products_ordered_in.json">shop_products_ordered_in</a>
             <span class="sub"><span class="schema mono">shop</span> </span>
           </td>
@@ -823,6 +1478,34 @@ footer strong{color:var(--text)}
             </details>
           </td>
           <td class="num" data-label="Count"><span class="n">18</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/shop_products_ordered_in.json">shop_products_ordered_in</a>
+            <span class="sub"><span class="schema mono">shop</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">llama3.2:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×16</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, random_uniform_0, random_uniform_1, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">18</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/shop_status_order_count.json">shop_status_order_count</a>
+            <span class="sub"><span class="schema mono">shop</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×7</span></span><span class="sub">witness state: <code>multiplicity_0</code></span></summary>
+              <code class="states">multiplicity_0, random_uniform_1, random_uniform_6, random_uniform_10, random_uniform_11, random_uniform_14, random_uniform_16, random_uniform_17</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">8</span></td>
         </tr>
         <tr>
           <td data-label="Family">
@@ -879,6 +1562,412 @@ footer strong{color:var(--text)}
             </details>
           </td>
           <td class="num" data-label="Count"><span class="n">8</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/shop_union_distinct_customers.json">shop_union_distinct_customers</a>
+            <span class="sub"><span class="schema mono">shop</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">llama3.2:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×7</span></span><span class="sub">witness state: <code>multiplicity_0</code></span></summary>
+              <code class="states">multiplicity_0, random_uniform_3, random_uniform_8, random_uniform_9, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">8</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_count_star_vs_score.json">uni_count_star_vs_score</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">no_rows<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×19</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, no_rows_0, multiplicity_0, nullable_0, random_uniform_0, random_uniform_1, random_uniform_2, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">23</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_course_avg_score.json">uni_course_avg_score</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×11</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="sub">witness state: <code>boundary_0</code></span></summary>
+              <code class="states">boundary_0, ties_0, random_uniform_0, random_uniform_2, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_10, random_uniform_13, random_uniform_18</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">13</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_course_more_credits.json">uni_course_more_credits</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">llama3.2:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">random_uniform<span class="x">×2</span></span><span class="sub">witness state: <code>random_uniform_0</code></span></summary>
+              <code class="states">random_uniform_0, random_uniform_9</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">2</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_course_top_score.json">uni_course_top_score</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×16</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, boundary_0, random_uniform_1, random_uniform_2, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">19</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_courses_enrolled_in.json">uni_courses_enrolled_in</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">deepseek-coder-v2:latest</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×18</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, random_uniform_0, random_uniform_1, random_uniform_2, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_7, random_uniform_8, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">20</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_courses_enrolled_in.json">uni_courses_enrolled_in</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5-coder:7b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×18</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, random_uniform_0, random_uniform_1, random_uniform_2, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_7, random_uniform_8, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">20</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_courses_enrolled_in.json">uni_courses_enrolled_in</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">llama3.2:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×18</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, random_uniform_0, random_uniform_1, random_uniform_2, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_7, random_uniform_8, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">20</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_courses_enrolled_in.json">uni_courses_enrolled_in</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×18</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, random_uniform_0, random_uniform_1, random_uniform_2, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_7, random_uniform_8, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">20</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_department_derived_counts.json">uni_department_derived_counts</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">llama3.2:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">no_rows<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×13</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="chip mono">zero_value<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, no_rows_0, multiplicity_0, zero_value_0, nullable_0, boundary_0, ties_0, random_uniform_2, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">20</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_department_max_salary.json">uni_department_max_salary</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">llama3.2:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">no_rows<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×14</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, no_rows_0, multiplicity_0, nullable_0, boundary_0, ties_0, random_uniform_0, random_uniform_2, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_10, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_16, random_uniform_18</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">20</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_department_max_salary.json">uni_department_max_salary</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, ties_0</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">3</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_department_status_group.json">uni_department_status_group</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">no_rows<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×20</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, no_rows_0, multiplicity_0, random_uniform_0, random_uniform_1, random_uniform_2, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">23</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_empty_departments.json">uni_empty_departments</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">no_rows<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×20</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="chip mono">zero_value<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, no_rows_0, multiplicity_0, zero_value_0, nullable_0, boundary_0, ties_0, random_uniform_0, random_uniform_1, random_uniform_2, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">27</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_enrollments_limit5.json">uni_enrollments_limit5</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">deepseek-coder-v2:latest</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×20</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="chip mono">zero_value<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, zero_value_0, nullable_0, boundary_0, ties_0, random_uniform_0, random_uniform_1, random_uniform_2, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">26</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_enrollments_status_or.json">uni_enrollments_status_or</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">deepseek-coder-v2:latest</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">random_uniform<span class="x">×20</span></span><span class="sub">witness state: <code>random_uniform_0</code></span></summary>
+              <code class="states">random_uniform_0, random_uniform_1, random_uniform_2, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">20</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_grade_letter_count.json">uni_grade_letter_count</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×9</span></span><span class="sub">witness state: <code>nullable_0</code></span></summary>
+              <code class="states">nullable_0, random_uniform_1, random_uniform_2, random_uniform_5, random_uniform_7, random_uniform_10, random_uniform_12, random_uniform_14, random_uniform_15, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">10</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_grades_score_open_range.json">uni_grades_score_open_range</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">deepseek-coder-v2:latest</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">random_uniform<span class="x">×6</span></span><span class="sub">witness state: <code>random_uniform_1</code></span></summary>
+              <code class="states">random_uniform_1, random_uniform_5, random_uniform_10, random_uniform_12, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">6</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_grades_score_open_range.json">uni_grades_score_open_range</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">llama3.2:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×2</span></span><span class="sub">witness state: <code>multiplicity_0</code></span></summary>
+              <code class="states">multiplicity_0, random_uniform_5, random_uniform_7</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">3</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_latest_semester_enrollments.json">uni_latest_semester_enrollments</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">llama3.2:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×13</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, boundary_0, ties_0, random_uniform_0, random_uniform_1, random_uniform_3, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_16, random_uniform_17, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">17</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_status_student_count.json">uni_status_student_count</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">random_uniform<span class="x">×12</span></span><span class="sub">witness state: <code>random_uniform_1</code></span></summary>
+              <code class="states">random_uniform_1, random_uniform_2, random_uniform_3, random_uniform_4, random_uniform_7, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_14, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">12</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_student_course_pairs.json">uni_student_course_pairs</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">llama3.2:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="sub">witness state: <code>multiplicity_0</code></span></summary>
+              <code class="states">multiplicity_0</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">1</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_students_above_avg_count.json">uni_students_above_avg_count</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">phi3.5:3.8b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×16</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, random_uniform_0, random_uniform_1, random_uniform_2, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_9, random_uniform_10, random_uniform_12, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">17</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_students_with_enrollments.json">uni_students_with_enrollments</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">deepseek-coder-v2:latest</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×20</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, random_uniform_0, random_uniform_1, random_uniform_2, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">22</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_students_with_enrollments.json">uni_students_with_enrollments</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">llama3.2:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×20</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, random_uniform_0, random_uniform_1, random_uniform_2, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">22</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_teacher_latest_hired.json">uni_teacher_latest_hired</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">llama3.2:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">no_rows<span class="x">×1</span></span><span class="chip mono">nullable<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×17</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, no_rows_0, multiplicity_0, nullable_0, boundary_0, random_uniform_0, random_uniform_1, random_uniform_2, random_uniform_3, random_uniform_4, random_uniform_6, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_15, random_uniform_17, random_uniform_18, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">22</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_union_bag_students.json">uni_union_bag_students</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">deepseek-coder-v2:latest</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×12</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, random_uniform_1, random_uniform_2, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_7, random_uniform_8, random_uniform_12, random_uniform_13, random_uniform_16, random_uniform_17, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">14</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_union_distinct_students.json">uni_union_distinct_students</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:7b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×12</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, random_uniform_1, random_uniform_2, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_7, random_uniform_8, random_uniform_12, random_uniform_13, random_uniform_16, random_uniform_17, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">14</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/uni_union_distinct_students.json">uni_union_distinct_students</a>
+            <span class="sub"><span class="schema mono">university</span> </span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5-coder:7b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×12</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, random_uniform_1, random_uniform_2, random_uniform_3, random_uniform_4, random_uniform_5, random_uniform_7, random_uniform_8, random_uniform_12, random_uniform_13, random_uniform_16, random_uniform_17, random_uniform_19</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">14</span></td>
         </tr>
         <tr>
           <td data-label="Family">
@@ -950,10 +2039,38 @@ footer strong{color:var(--text)}
           </td>
           <td class="num" data-label="Count"><span class="n">9</span></td>
         </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/zero_fee.json">zero_fee</a>
+            <span class="sub"><span class="schema mono">library</span> aggregate condition replaced by a row condition</span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">llama3.2:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×14</span></span><span class="chip mono">zero_fee<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, zero_fee_0, boundary_0, random_uniform_1, random_uniform_4, random_uniform_5, random_uniform_7, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_11, random_uniform_12, random_uniform_13, random_uniform_14, random_uniform_16, random_uniform_17, random_uniform_18</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">18</span></td>
+        </tr>
+        <tr>
+          <td data-label="Family">
+            <a class="model" href="https://github.com/ykvlev/sql-rewrite-evidence-bench/blob/master/data/evidence/zero_fee.json">zero_fee</a>
+            <span class="sub"><span class="schema mono">library</span> aggregate condition replaced by a row condition</span>
+          </td>
+          <td data-label="Model"><span class="mono tag-inline">qwen2.5:3b</span></td>
+          <td data-label="Refuting states">
+            <details>
+              <summary><span class="chip mono">boundary<span class="x">×1</span></span><span class="chip mono">fixed<span class="x">×1</span></span><span class="chip mono">multiplicity<span class="x">×1</span></span><span class="chip mono">random_uniform<span class="x">×15</span></span><span class="chip mono">ties<span class="x">×1</span></span><span class="chip mono">zero_fee<span class="x">×1</span></span><span class="sub">witness state: <code>fixed_0</code></span></summary>
+              <code class="states">fixed_0, multiplicity_0, zero_fee_0, boundary_0, ties_0, random_uniform_0, random_uniform_1, random_uniform_4, random_uniform_5, random_uniform_6, random_uniform_7, random_uniform_8, random_uniform_9, random_uniform_10, random_uniform_12, random_uniform_13, random_uniform_15, random_uniform_16, random_uniform_17, random_uniform_18</code>
+            </details>
+          </td>
+          <td class="num" data-label="Count"><span class="n">20</span></td>
+        </tr>
         </tbody>
       </table>
     </div>
-    <p class="footnote">The other 107 evaluated families had no refuting state for any model: rewrites there were either preserved on the finite state bank or the model returned the reference unchanged. That is evidence of absence on this bank, not a proof of equivalence. University families are not in this table — they have no model runs yet.</p>
+    <p class="footnote">The other 129 evaluated families had no refuting state for any model: rewrites there were either preserved on the finite state bank or the model returned the reference unchanged. That is evidence of absence on this bank, not a proof of equivalence. All three schemas are represented in this table.</p>
   </section>
 
   <section aria-labelledby="how-title">
@@ -962,7 +2079,7 @@ footer strong{color:var(--text)}
       <div class="card break"><h3><span class="mark">✕</span>Refuted</h3><p>At least one frozen database state makes the candidate return a different result than the reference query. The state, both result sets and a replay flag are stored in <code>data/evidence/</code>.</p><p>One counterexample is enough: a rewrite is wrong if any allowed state breaks it.</p></div>
       <div class="card keep"><h3><span class="mark">✓</span>Preserved</h3><p>The candidate differs from the reference SQL, and no state in the finite bank broke it. This is <strong>not</strong> a proof of equivalence — the bank is finite and cannot cover all possible databases.</p><p>Read it as “no evidence against on this bank”, never as “correct rewrite”.</p></div>
       <div class="card none"><h3><span class="mark">–</span>No rewrite</h3><p>The model returned the reference query unchanged. That is neither a success nor a failure: there was no rewrite to validate.</p><p>Unsupported candidates and execution errors are separate outcomes and are reported explicitly, never folded into “no rewrite”.</p></div>
-      <div class="card count"><h3><span class="mark">Σ</span>Why checks beat shares</h3><p>A pass rate hides the counterexample: one broken state among 3,808 checks is still a wrong rewrite. That is why this table shows <strong>refuting checks</strong> (336, 107, 94, 67) over executed checks (3,808), not percentages.</p><p>Every check is one executable state; the count is directly auditable in the data.</p></div>
+      <div class="card count"><h3><span class="mark">Σ</span>Why checks beat shares</h3><p>A pass rate hides the counterexample: one broken state among 5,712 checks is still a wrong rewrite. That is why this table shows <strong>refuting checks</strong> (629, 444, 415, 141, 111, 81) over executed checks (5,712), not percentages alone. Refuted share is shown for scale; the counterexample count is the evidence.</p><p>Every check is one executable state; the count is directly auditable in the data.</p></div>
     </div>
   </section>
 
@@ -983,7 +2100,7 @@ footer strong{color:var(--text)}
   <div class="wrap">
     <p><strong>License.</strong> Data and documentation: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Code in <code>scripts/</code> and <code>.github/</code>: MIT.</p>
     <p><strong>Author.</strong> Artem Yakovlev · <a href="https://orcid.org/0009-0006-8617-7895">ORCID 0009-0006-8617-7895</a></p>
-    <p>Dataset v0.2.0 · numbers on this page are for the v0.2.0 snapshot (2026-10-19) and will grow with the dataset. Every figure is derived from <code>data/evidence/*.json</code>; verify with <code>python scripts/recompute_tables.py --repo-root .</code></p>
+    <p>Dataset v0.3.0 · numbers on this page are for the v0.3.0 snapshot (2026-10-19) and will grow with the dataset. Every figure is derived from <code>data/evidence/*.json</code>; verify with <code>python scripts/recompute_tables.py --repo-root .</code></p>
   </div>
 </footer>
 </body>
