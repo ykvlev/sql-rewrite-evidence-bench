@@ -73,23 +73,25 @@ For each (family, model):
 ## 6. Pilot results (v0.2.0, numbers from `data/`)
 
 The v0.2.0 corpus has 204 families on three schemas (library, shop, university); the
-evidence covers the 136 library and shop families, 28 states each, four models and 15 232
-executed checks on MySQL 8.4.11 (45 refuted rewrites in 29 families). The 68 university
-families have frozen states but no model runs yet.
+evidence covers all 204 families, 28 states each, six models and 34 272 executed checks on
+MySQL 8.4.11 (120 refuted rewrites in 75 families).
 
 - The code-specialised models rewrote more often and were refuted more often than the
-  general-purpose ones. `deepseek-coder-v2` proposed 50 rewrites (21 refuted),
-  `qwen2.5-coder:7b` 21 (10 refuted), `qwen2.5:7b` 21 (7 refuted), `phi3.5:3.8b` 21
-  (7 refuted, plus 5 unparsable answers).
-- All four models independently produced the same wrong rewrite class (`UNION ALL` → `OR`
-  or `DISTINCT` over the union), losing row multiplicities; `union_bag` and
-  `lib_union_bag_books` were refuted by every model. Six families have an identical
-  normalised wrong candidate produced by two or more models, e.g. `UNION` rewritten as `OR`
-  or `IN`, which keeps duplicates that `UNION` removes.
+  general-purpose ones. `deepseek-coder-v2` proposed 77 rewrites (27 refuted),
+  `qwen2.5-coder:7b` 30 (12 refuted), `qwen2.5:7b` 32 (8 refuted), `phi3.5:3.8b` 30
+  (8 refuted, plus 15 unparsable answers). The two 3B models rewrote aggressively:
+  `qwen2.5:3b` proposed 85 rewrites (39 refuted, 6 unparsable, 16 execution errors),
+  `llama3.2:3b` proposed 53 (26 refuted, 1 unparsable, 10 execution errors).
+- Four of the six models independently produced the same wrong rewrite class (`UNION ALL` →
+  `OR` or `DISTINCT` over the union), losing row multiplicities; `union_bag` and
+  `lib_union_bag_books` were refuted by every one of those four models. Several families have
+  an identical normalised wrong candidate produced by two or more models, e.g. `UNION`
+  rewritten as `OR` or `IN`, which keeps duplicates that `UNION` removes.
 - The models fail in different ways on the same family: `union_bag` is broken by an `OR`
   rewrite in three models and by `DISTINCT` over `UNION ALL` in the fourth. Invalid SQL is
-  also part of the record: an invalid use of a group function, an unknown column in
-  `HAVING`, and `ONLY_FULL_GROUP_BY` violations are stored as `error`, not discarded.
+  also part of the record: missing derived-table aliases, `ONLY_FULL_GROUP_BY` violations,
+  hallucinated clauses such as `WITHIN ...`, and unknown columns are stored as
+  `error`/`unsupported`, not discarded.
 
 ## 7. Reproducibility
 

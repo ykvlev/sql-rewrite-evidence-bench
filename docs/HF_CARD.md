@@ -78,14 +78,13 @@ Every published number is recomputable from `data/` without rerunning a model.
 
 - query families: **204** across three schemas (library, online shop, university)
 - frozen states: **5 712** (28 profiles per family)
-- model runs: **544** (4 models × 136 evaluated families)
-- evidence: **136 families**, evaluated on MySQL 8.4.11
-- total checks: **15 232** (model × family × state)
-- models: Qwen2.5-Coder-7B, Qwen2.5-7B, Phi-3.5-mini-3.8B, DeepSeek-Coder-V2
+- model runs: **1 224** (6 models × 204 evaluated families)
+- evidence: **204 families**, evaluated on MySQL 8.4.11
+- total checks: **34 272** (model × family × state)
+- models: Qwen2.5-Coder-7B, Qwen2.5-7B, Qwen2.5-3B, Phi-3.5-mini-3.8B,
+  DeepSeek-Coder-V2, Llama-3.2-3B
 
-The 68 university families have frozen states but are not yet evaluated by models.
-
-Cross-DBMS check: the schema and the 136 reference queries of the evaluated families execute
+Cross-DBMS check: the schemas and the 136 library/shop reference queries execute
 on PostgreSQL 16.15 without modification; on the 12 seed families the reference results and
 candidate classifications match MySQL exactly (0 divergences over 336 state pairs). The
 university schema has not been ported yet.
@@ -97,7 +96,9 @@ university schema has not been ported yet.
 - Witnesses are **not minimised**: the recorded state is the first one that refuted the
   candidate, not the smallest possible.
 - Model behaviour changes across engine versions; the engine version is part of the record.
-- 68 of 204 families have no model runs yet.
+  The six models span Ollama 0.40.4–0.40.6.
+- Small models can return invalid SQL: 23 answers are `unsupported` and 33 are `error` of
+  1 224 (recorded, not retried).
 
 ## Licence
 

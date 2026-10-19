@@ -14,7 +14,9 @@
       "deepseek-coder-v2:latest": "sreb-full-2026-10-19",
       "phi3.5:3.8b": "sreb-full-2026-10-19",
       "qwen2.5:7b": "sreb-full-2026-10-19",
-      "qwen2.5-coder:7b": "sreb-full-2026-10-19"
+      "qwen2.5-coder:7b": "sreb-full-2026-10-19",
+      "llama3.2:3b": "sreb-extra-models-2026-10-19",
+      "qwen2.5:3b": "sreb-extra-models-2026-10-19"
     }
   },
   "evidence": [
@@ -58,6 +60,27 @@
       "refuting_states": [],
       "witness": null,
       "checks": 28
+    },
+    {
+      "model": "llama3.2:3b",
+      "model_slug": "llama3.2-3b",
+      "model_digest": "a80c4f17acd55265feec403c7aef86be0c25983ab279d83f3bcd3abbcb5b8b72",
+      "status": "preserved",
+      "candidate_sql": "SELECT c.id, COALESCE((SELECT COUNT(*) FROM orders o WHERE o.customer_id=c.id), 0) AS n FROM customers c ORDER BY c.id",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "qwen2.5:3b",
+      "model_slug": "qwen2.5-3b",
+      "model_digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b",
+      "status": "error",
+      "candidate_sql": "SELECT c.id, COUNT(o.id) AS n FROM customers c LEFT JOIN orders o ON c.id = o.customer_id ORDER BY c.id",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28,
+      "reason": "(1140, \"In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'srebev_22653acb5a4e.c.id'; this is incompatible with sql_mode=only_full_group_by\")"
     }
   ]
 }

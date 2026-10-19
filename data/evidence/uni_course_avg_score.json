@@ -14,7 +14,9 @@
       "deepseek-coder-v2:latest": "sreb-university-2026-10-19",
       "phi3.5:3.8b": "sreb-university-2026-10-19",
       "qwen2.5:7b": "sreb-university-2026-10-19",
-      "qwen2.5-coder:7b": "sreb-university-2026-10-19"
+      "qwen2.5-coder:7b": "sreb-university-2026-10-19",
+      "llama3.2:3b": "sreb-extra-models-2026-10-19",
+      "qwen2.5:3b": "sreb-extra-models-2026-10-19"
     }
   },
   "evidence": [
@@ -56,6 +58,61 @@
       "candidate_sql": "SELECT c.id, AVG(g.score) AS avg_score FROM courses c JOIN enrollments e ON e.course_id = c.id JOIN grades g ON g.enrollment_id = e.id GROUP BY c.id ORDER BY c.id",
       "refuting_states": [],
       "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "llama3.2:3b",
+      "model_slug": "llama3.2-3b",
+      "model_digest": "a80c4f17acd55265feec403c7aef86be0c25983ab279d83f3bcd3abbcb5b8b72",
+      "status": "no_rewrite",
+      "candidate_sql": "SELECT c.id, AVG(g.score) AS avg_score FROM courses c JOIN enrollments e ON e.course_id=c.id JOIN grades g ON g.enrollment_id=e.id GROUP BY c.id ORDER BY c.id",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "qwen2.5:3b",
+      "model_slug": "qwen2.5-3b",
+      "model_digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b",
+      "status": "refuted",
+      "candidate_sql": "SELECT c.id, AVG(g.score) AS avg_score FROM courses c JOIN enrollments e ON e.course_id = c.id JOIN grades g ON g.enrollment_id = e.id JOIN students s ON s.department_id = c.department_id JOIN teachers t ON t.department_id = c.department_id JOIN semesters sm ON sm.id = e.semester_id GROUP BY c.id ORDER BY c.id",
+      "refuting_states": [
+        "boundary_0",
+        "ties_0",
+        "random_uniform_0",
+        "random_uniform_2",
+        "random_uniform_3",
+        "random_uniform_4",
+        "random_uniform_5",
+        "random_uniform_6",
+        "random_uniform_7",
+        "random_uniform_8",
+        "random_uniform_10",
+        "random_uniform_13",
+        "random_uniform_18"
+      ],
+      "witness": {
+        "state": "boundary_0",
+        "state_profile": "boundary_0",
+        "reference_rows": [
+          [
+            1,
+            "0.000000"
+          ],
+          [
+            2,
+            "100.000000"
+          ]
+        ],
+        "candidate_rows": [
+          [
+            1,
+            "0.000000"
+          ]
+        ],
+        "interface_equal": true,
+        "independent_replay": "counterexample"
+      },
       "checks": 28
     }
   ]

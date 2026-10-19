@@ -90,12 +90,12 @@ pseudo-random states from fixed seeds — **5 712 family–state pairs**. Every 
 into MySQL 8.4.11 with real foreign keys, UNIQUE and CHECK constraints enabled, and every
 reference query was executed on it.
 
-Model answers and executable evidence cover **136 families** (library and shop): four
-models (`qwen2.5-coder:7b`, `qwen2.5:7b`, `phi3.5:3.8b`, `deepseek-coder-v2`), 544 run
-records, 544 evidence records and **15 232 executed checks** on MySQL 8.4.11. Outcomes per
-model are in [docs/tables.md](docs/tables.md): 45 rewrites were refuted, in 29 families, and
-`union_bag` / `lib_union_bag_books` were broken by all four models. The 68 university
-families have frozen states but are not yet evaluated by models.
+Model answers and executable evidence cover **all 204 families** (library, shop and
+university): six models (`qwen2.5-coder:7b`, `qwen2.5:7b`, `qwen2.5:3b`, `phi3.5:3.8b`,
+`deepseek-coder-v2`, `llama3.2:3b`), 1 224 run records, 1 224 evidence records and
+**34 272 executed checks** on MySQL 8.4.11. Outcomes per model are in
+[docs/tables.md](docs/tables.md): 120 rewrites were refuted, in 75 families, and
+`union_bag` / `lib_union_bag_books` were broken by four of the six models.
 
 The evaluation mechanism was cross-checked on PostgreSQL 16.15 on the 12 seed families:
 identical outcomes in all 1 008 candidate checks and no DDL changes
@@ -110,8 +110,8 @@ Every data file is SHA-256 frozen in `manifest.json`; `python scripts/check_corp
 passes locally and in CI, and `python scripts/recompute_tables.py` reproduces
 `docs/tables.md` from `data/evidence/`.
 
-Next: model runs on the university schema, PostgreSQL evaluation on the full corpus, and
-more models.
+Next: PostgreSQL evaluation on the full corpus, more models, and first-class PostgreSQL
+evidence in the dataset format.
 
 ## Licence
 

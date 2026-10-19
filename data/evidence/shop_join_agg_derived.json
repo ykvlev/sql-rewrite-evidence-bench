@@ -14,7 +14,9 @@
       "deepseek-coder-v2:latest": "sreb-full-2026-10-19",
       "phi3.5:3.8b": "sreb-full-2026-10-19",
       "qwen2.5:7b": "sreb-full-2026-10-19",
-      "qwen2.5-coder:7b": "sreb-full-2026-10-19"
+      "qwen2.5-coder:7b": "sreb-full-2026-10-19",
+      "llama3.2:3b": "sreb-extra-models-2026-10-19",
+      "qwen2.5:3b": "sreb-extra-models-2026-10-19"
     }
   },
   "evidence": [
@@ -56,6 +58,55 @@
       "candidate_sql": "SELECT x.customer_id, x.total FROM (SELECT o.customer_id, SUM(oi.quantity * oi.unit_price) AS total FROM orders o JOIN order_items oi ON oi.order_id = o.id GROUP BY o.customer_id) x WHERE x.total > 100 ORDER BY x.customer_id",
       "refuting_states": [],
       "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "llama3.2:3b",
+      "model_slug": "llama3.2-3b",
+      "model_digest": "a80c4f17acd55265feec403c7aef86be0c25983ab279d83f3bcd3abbcb5b8b72",
+      "status": "preserved",
+      "candidate_sql": "SELECT o.customer_id, SUM(oi.quantity*oi.unit_price) AS total FROM orders o JOIN order_items oi ON oi.order_id=o.id GROUP BY o.customer_id HAVING SUM(oi.quantity*oi.unit_price) > 100 ORDER BY o.customer_id",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "qwen2.5:3b",
+      "model_slug": "qwen2.5-3b",
+      "model_digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b",
+      "status": "refuted",
+      "candidate_sql": "SELECT customer_id, SUM(quantity*unit_price) AS total FROM orders o JOIN order_items oi ON oi.order_id=o.id GROUP BY o.customer_id ORDER BY customer_id",
+      "refuting_states": [
+        "fixed_0",
+        "multiplicity_0",
+        "zero_value_0",
+        "nullable_0",
+        "boundary_0",
+        "ties_0",
+        "random_uniform_0",
+        "random_uniform_1",
+        "random_uniform_6",
+        "random_uniform_11",
+        "random_uniform_13",
+        "random_uniform_17"
+      ],
+      "witness": {
+        "state": "fixed_0",
+        "state_profile": "fixed_0",
+        "reference_rows": [],
+        "candidate_rows": [
+          [
+            1,
+            "40.00"
+          ],
+          [
+            2,
+            "10.00"
+          ]
+        ],
+        "interface_equal": true,
+        "independent_replay": "counterexample"
+      },
       "checks": 28
     }
   ]

@@ -42,7 +42,7 @@ second evidence bank.
   in a witness* can differ between engines; the refuting state and the multiset difference
   do not.
 - The check covers the 12 seed families only. It shows that the mechanism ports, not that
-  every one of the 136 families behaves identically on PostgreSQL. In particular, queries
+  every family in the corpus behaves identically on PostgreSQL. In particular, queries
   with engine-specific functions would need dialect review before a full PostgreSQL run.
 - The dataset format stores one `dbms` per evidence file. Adding a second engine as
   first-class evidence requires a format extension (separate evidence per engine or a

@@ -14,7 +14,9 @@
       "deepseek-coder-v2:latest": "sreb-university-2026-10-19",
       "phi3.5:3.8b": "sreb-university-2026-10-19",
       "qwen2.5:7b": "sreb-university-2026-10-19",
-      "qwen2.5-coder:7b": "sreb-university-2026-10-19"
+      "qwen2.5-coder:7b": "sreb-university-2026-10-19",
+      "llama3.2:3b": "sreb-extra-models-2026-10-19",
+      "qwen2.5:3b": "sreb-extra-models-2026-10-19"
     }
   },
   "evidence": [
@@ -56,6 +58,117 @@
       "candidate_sql": "SELECT d.id, MAX(t.salary) AS max_salary FROM departments d LEFT JOIN teachers t ON t.department_id=d.id GROUP BY d.id ORDER BY d.id",
       "refuting_states": [],
       "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "llama3.2:3b",
+      "model_slug": "llama3.2-3b",
+      "model_digest": "a80c4f17acd55265feec403c7aef86be0c25983ab279d83f3bcd3abbcb5b8b72",
+      "status": "refuted",
+      "candidate_sql": "SELECT d.id, COALESCE(MAX(t.salary), 0) AS max_salary FROM departments d LEFT JOIN teachers t ON t.department_id=d.id GROUP BY d.id ORDER BY d.id",
+      "refuting_states": [
+        "fixed_0",
+        "no_rows_0",
+        "multiplicity_0",
+        "nullable_0",
+        "boundary_0",
+        "ties_0",
+        "random_uniform_0",
+        "random_uniform_2",
+        "random_uniform_3",
+        "random_uniform_4",
+        "random_uniform_5",
+        "random_uniform_6",
+        "random_uniform_7",
+        "random_uniform_8",
+        "random_uniform_10",
+        "random_uniform_12",
+        "random_uniform_13",
+        "random_uniform_14",
+        "random_uniform_16",
+        "random_uniform_18"
+      ],
+      "witness": {
+        "state": "fixed_0",
+        "state_profile": "fixed_0",
+        "reference_rows": [
+          [
+            1,
+            "90000.00"
+          ],
+          [
+            2,
+            "45000.00"
+          ],
+          [
+            3,
+            null
+          ]
+        ],
+        "candidate_rows": [
+          [
+            1,
+            "90000.00"
+          ],
+          [
+            2,
+            "45000.00"
+          ],
+          [
+            3,
+            "0.00"
+          ]
+        ],
+        "interface_equal": false,
+        "independent_replay": "counterexample"
+      },
+      "checks": 28
+    },
+    {
+      "model": "qwen2.5:3b",
+      "model_slug": "qwen2.5-3b",
+      "model_digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b",
+      "status": "refuted",
+      "candidate_sql": "SELECT d.id, MAX(t.salary) AS max_salary FROM departments d LEFT JOIN teachers t ON t.department_id = d.id GROUP BY d.id",
+      "refuting_states": [
+        "fixed_0",
+        "multiplicity_0",
+        "ties_0"
+      ],
+      "witness": {
+        "state": "fixed_0",
+        "state_profile": "fixed_0",
+        "reference_rows": [
+          [
+            1,
+            "90000.00"
+          ],
+          [
+            2,
+            "45000.00"
+          ],
+          [
+            3,
+            null
+          ]
+        ],
+        "candidate_rows": [
+          [
+            1,
+            "90000.00"
+          ],
+          [
+            3,
+            null
+          ],
+          [
+            2,
+            "45000.00"
+          ]
+        ],
+        "interface_equal": true,
+        "independent_replay": "counterexample"
+      },
       "checks": 28
     }
   ]

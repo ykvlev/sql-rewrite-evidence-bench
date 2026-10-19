@@ -14,7 +14,9 @@
       "deepseek-coder-v2:latest": "sreb-full-2026-10-19",
       "phi3.5:3.8b": "sreb-full-2026-10-19",
       "qwen2.5:7b": "sreb-full-2026-10-19",
-      "qwen2.5-coder:7b": "sreb-full-2026-10-19"
+      "qwen2.5-coder:7b": "sreb-full-2026-10-19",
+      "llama3.2:3b": "sreb-extra-models-2026-10-19",
+      "qwen2.5:3b": "sreb-extra-models-2026-10-19"
     }
   },
   "evidence": [
@@ -108,6 +110,133 @@
       "candidate_sql": "SELECT reader_id, COUNT(*) AS star_cnt, COUNT(returned) AS returned_cnt FROM lib_loans GROUP BY reader_id ORDER BY reader_id",
       "refuting_states": [],
       "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "llama3.2:3b",
+      "model_slug": "llama3.2-3b",
+      "model_digest": "a80c4f17acd55265feec403c7aef86be0c25983ab279d83f3bcd3abbcb5b8b72",
+      "status": "refuted",
+      "candidate_sql": "SELECT reader_id, COUNT(*) AS star_cnt, COUNT(CASE WHEN returned = 0 THEN 1 END) AS returned_cnt FROM lib_loans GROUP BY reader_id ORDER BY reader_id",
+      "refuting_states": [
+        "fixed_0",
+        "multiplicity_0",
+        "zero_fee_0",
+        "nullable_0",
+        "boundary_0",
+        "ties_0",
+        "random_uniform_0",
+        "random_uniform_1",
+        "random_uniform_2",
+        "random_uniform_5",
+        "random_uniform_6",
+        "random_uniform_7",
+        "random_uniform_8",
+        "random_uniform_10",
+        "random_uniform_11",
+        "random_uniform_12",
+        "random_uniform_14",
+        "random_uniform_15",
+        "random_uniform_16",
+        "random_uniform_17",
+        "random_uniform_18",
+        "random_uniform_19"
+      ],
+      "witness": {
+        "state": "fixed_0",
+        "state_profile": "fixed_0",
+        "reference_rows": [
+          [
+            1,
+            1,
+            1
+          ],
+          [
+            2,
+            1,
+            1
+          ]
+        ],
+        "candidate_rows": [
+          [
+            1,
+            1,
+            0
+          ],
+          [
+            2,
+            1,
+            1
+          ]
+        ],
+        "interface_equal": true,
+        "independent_replay": "counterexample"
+      },
+      "checks": 28
+    },
+    {
+      "model": "qwen2.5:3b",
+      "model_slug": "qwen2.5-3b",
+      "model_digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b",
+      "status": "refuted",
+      "candidate_sql": "SELECT reader_id, COUNT(*) AS star_cnt, SUM(returned = 0) AS returned_cnt FROM lib_loans GROUP BY reader_id ORDER BY reader_id",
+      "refuting_states": [
+        "fixed_0",
+        "multiplicity_0",
+        "zero_fee_0",
+        "nullable_0",
+        "boundary_0",
+        "ties_0",
+        "random_uniform_0",
+        "random_uniform_1",
+        "random_uniform_2",
+        "random_uniform_4",
+        "random_uniform_5",
+        "random_uniform_6",
+        "random_uniform_7",
+        "random_uniform_8",
+        "random_uniform_9",
+        "random_uniform_10",
+        "random_uniform_11",
+        "random_uniform_12",
+        "random_uniform_13",
+        "random_uniform_14",
+        "random_uniform_15",
+        "random_uniform_16",
+        "random_uniform_17",
+        "random_uniform_18",
+        "random_uniform_19"
+      ],
+      "witness": {
+        "state": "fixed_0",
+        "state_profile": "fixed_0",
+        "reference_rows": [
+          [
+            1,
+            1,
+            1
+          ],
+          [
+            2,
+            1,
+            1
+          ]
+        ],
+        "candidate_rows": [
+          [
+            1,
+            1,
+            "0"
+          ],
+          [
+            2,
+            1,
+            "1"
+          ]
+        ],
+        "interface_equal": false,
+        "independent_replay": "counterexample"
+      },
       "checks": 28
     }
   ]

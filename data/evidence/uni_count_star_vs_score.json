@@ -14,7 +14,9 @@
       "deepseek-coder-v2:latest": "sreb-university-2026-10-19",
       "phi3.5:3.8b": "sreb-university-2026-10-19",
       "qwen2.5:7b": "sreb-university-2026-10-19",
-      "qwen2.5-coder:7b": "sreb-university-2026-10-19"
+      "qwen2.5-coder:7b": "sreb-university-2026-10-19",
+      "llama3.2:3b": "sreb-extra-models-2026-10-19",
+      "qwen2.5:3b": "sreb-extra-models-2026-10-19"
     }
   },
   "evidence": [
@@ -56,6 +58,94 @@
       "candidate_sql": "SELECT e.course_id, COUNT(*) AS rows_cnt, COUNT(g.score) AS scored_cnt FROM enrollments e LEFT JOIN grades g ON g.enrollment_id = e.id GROUP BY e.course_id ORDER BY e.course_id",
       "refuting_states": [],
       "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "llama3.2:3b",
+      "model_slug": "llama3.2-3b",
+      "model_digest": "a80c4f17acd55265feec403c7aef86be0c25983ab279d83f3bcd3abbcb5b8b72",
+      "status": "preserved",
+      "candidate_sql": "SELECT e.course_id, COUNT(*) AS rows_cnt, COUNT(CASE WHEN g.score IS NOT NULL THEN 1 ELSE NULL END) AS scored_cnt FROM enrollments e LEFT JOIN grades g ON g.enrollment_id=e.id GROUP BY e.course_id ORDER BY e.course_id",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "qwen2.5:3b",
+      "model_slug": "qwen2.5-3b",
+      "model_digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b",
+      "status": "refuted",
+      "candidate_sql": "SELECT c.id AS course_id, COUNT(e.id) AS rows_cnt, COUNT(g.id) AS scored_cnt FROM courses c LEFT JOIN enrollments e ON e.course_id = c.id LEFT JOIN grades g ON g.enrollment_id = e.id GROUP BY c.id ORDER BY c.id",
+      "refuting_states": [
+        "fixed_0",
+        "no_rows_0",
+        "multiplicity_0",
+        "nullable_0",
+        "random_uniform_0",
+        "random_uniform_1",
+        "random_uniform_2",
+        "random_uniform_3",
+        "random_uniform_4",
+        "random_uniform_5",
+        "random_uniform_6",
+        "random_uniform_8",
+        "random_uniform_9",
+        "random_uniform_10",
+        "random_uniform_11",
+        "random_uniform_12",
+        "random_uniform_13",
+        "random_uniform_14",
+        "random_uniform_15",
+        "random_uniform_16",
+        "random_uniform_17",
+        "random_uniform_18",
+        "random_uniform_19"
+      ],
+      "witness": {
+        "state": "fixed_0",
+        "state_profile": "fixed_0",
+        "reference_rows": [
+          [
+            1,
+            2,
+            1
+          ],
+          [
+            2,
+            1,
+            1
+          ],
+          [
+            3,
+            2,
+            1
+          ]
+        ],
+        "candidate_rows": [
+          [
+            1,
+            2,
+            1
+          ],
+          [
+            2,
+            1,
+            1
+          ],
+          [
+            3,
+            2,
+            1
+          ],
+          [
+            4,
+            0,
+            0
+          ]
+        ],
+        "interface_equal": true,
+        "independent_replay": "counterexample"
+      },
       "checks": 28
     }
   ]

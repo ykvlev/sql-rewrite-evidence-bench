@@ -14,7 +14,9 @@
       "deepseek-coder-v2:latest": "sreb-university-2026-10-19",
       "phi3.5:3.8b": "sreb-university-2026-10-19",
       "qwen2.5:7b": "sreb-university-2026-10-19",
-      "qwen2.5-coder:7b": "sreb-university-2026-10-19"
+      "qwen2.5-coder:7b": "sreb-university-2026-10-19",
+      "llama3.2:3b": "sreb-extra-models-2026-10-19",
+      "qwen2.5:3b": "sreb-extra-models-2026-10-19"
     }
   },
   "evidence": [
@@ -57,6 +59,27 @@
       "refuting_states": [],
       "witness": null,
       "checks": 28
+    },
+    {
+      "model": "llama3.2:3b",
+      "model_slug": "llama3.2-3b",
+      "model_digest": "a80c4f17acd55265feec403c7aef86be0c25983ab279d83f3bcd3abbcb5b8b72",
+      "status": "no_rewrite",
+      "candidate_sql": "SELECT e.course_id, g.score, RANK() OVER (PARTITION BY e.course_id ORDER BY g.score DESC) AS rnk FROM enrollments e JOIN grades g ON g.enrollment_id=e.id ORDER BY e.course_id, rnk, g.score DESC, e.id",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "qwen2.5:3b",
+      "model_slug": "qwen2.5-3b",
+      "model_digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b",
+      "status": "error",
+      "candidate_sql": "SELECT e.course_id, g.score, RANK() OVER (PARTITION BY e.course_id ORDER BY g.score DESC) AS rnk \nFROM enrollments e \nJOIN grades g ON g.enrollment_id = e.id \nJOIN courses c ON e.course_id = c.id \nJOIN semesters s ON e.semester_id = s.id \nJOIN departments d ON e.department_id = d.id \nJOIN teachers t ON e.teacher_id = t.id \nJOIN students st ON e.student_id = st.id \nORDER BY e.course_id, rnk, g.score DESC, e.id",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28,
+      "reason": "(1054, \"Unknown column 'e.department_id' in 'on clause'\")"
     }
   ]
 }

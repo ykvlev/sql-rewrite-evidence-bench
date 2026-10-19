@@ -14,7 +14,9 @@
       "deepseek-coder-v2:latest": "sreb-university-2026-10-19",
       "phi3.5:3.8b": "sreb-university-2026-10-19",
       "qwen2.5:7b": "sreb-university-2026-10-19",
-      "qwen2.5-coder:7b": "sreb-university-2026-10-19"
+      "qwen2.5-coder:7b": "sreb-university-2026-10-19",
+      "llama3.2:3b": "sreb-extra-models-2026-10-19",
+      "qwen2.5:3b": "sreb-extra-models-2026-10-19"
     }
   },
   "evidence": [
@@ -56,6 +58,49 @@
       "candidate_sql": "SELECT g.grade_letter, COUNT(*) AS n FROM grades g WHERE g.grade_letter IS NOT NULL GROUP BY g.grade_letter ORDER BY g.grade_letter",
       "refuting_states": [],
       "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "llama3.2:3b",
+      "model_slug": "llama3.2-3b",
+      "model_digest": "a80c4f17acd55265feec403c7aef86be0c25983ab279d83f3bcd3abbcb5b8b72",
+      "status": "no_rewrite",
+      "candidate_sql": "SELECT g.grade_letter, COUNT(*) AS n FROM grades g WHERE g.grade_letter IS NOT NULL GROUP BY g.grade_letter ORDER BY g.grade_letter",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "qwen2.5:3b",
+      "model_slug": "qwen2.5-3b",
+      "model_digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b",
+      "status": "refuted",
+      "candidate_sql": "SELECT g.grade_letter, COUNT(*) AS n FROM grades g GROUP BY g.grade_letter ORDER BY g.grade_letter",
+      "refuting_states": [
+        "nullable_0",
+        "random_uniform_1",
+        "random_uniform_2",
+        "random_uniform_5",
+        "random_uniform_7",
+        "random_uniform_10",
+        "random_uniform_12",
+        "random_uniform_14",
+        "random_uniform_15",
+        "random_uniform_19"
+      ],
+      "witness": {
+        "state": "nullable_0",
+        "state_profile": "nullable_0",
+        "reference_rows": [],
+        "candidate_rows": [
+          [
+            null,
+            2
+          ]
+        ],
+        "interface_equal": true,
+        "independent_replay": "counterexample"
+      },
       "checks": 28
     }
   ]

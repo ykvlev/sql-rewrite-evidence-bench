@@ -14,7 +14,9 @@
       "qwen2.5-coder:7b": "library_evaluation_20261019_qwen25",
       "qwen2.5:7b": "library_evaluation_20261019_qwen25",
       "phi3.5:3.8b": "library_evaluation_20261019_phi35_repro",
-      "deepseek-coder-v2:latest": "sreb-full-2026-10-19"
+      "deepseek-coder-v2:latest": "sreb-full-2026-10-19",
+      "llama3.2:3b": "sreb-extra-models-2026-10-19",
+      "qwen2.5:3b": "sreb-extra-models-2026-10-19"
     }
   },
   "evidence": [
@@ -54,6 +56,26 @@
       "model_digest": "63fb193b3a9b4322a18e8c6b250ca2e70a5ff531e962dbf95ba089b2566f2fa5",
       "status": "preserved",
       "candidate_sql": "SELECT l.id, l.reader_id, l.day_no \nFROM lib_loans l \nJOIN (\n    SELECT reader_id, MAX(day_no) AS max_day_no \n    FROM lib_loans \n    GROUP BY reader_id\n) AS max_days ON l.reader_id = max_days.reader_id AND l.day_no = max_days.max_day_no \nORDER BY l.id;",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "llama3.2:3b",
+      "model_slug": "llama3.2-3b",
+      "model_digest": "a80c4f17acd55265feec403c7aef86be0c25983ab279d83f3bcd3abbcb5b8b72",
+      "status": "preserved",
+      "candidate_sql": "SELECT l.id, l.reader_id, l.day_no FROM lib_loans l JOIN (SELECT reader_id, MAX(day_no) AS max_day_no FROM lib_loans GROUP BY reader_id) r ON l.reader_id = r.reader_id AND l.day_no = r.max_day_no ORDER BY l.id",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "qwen2.5:3b",
+      "model_slug": "qwen2.5-3b",
+      "model_digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b",
+      "status": "no_rewrite",
+      "candidate_sql": "SELECT l.id, l.reader_id, l.day_no \nFROM lib_loans l \nWHERE l.day_no = (SELECT MAX(x.day_no) FROM lib_loans x WHERE x.reader_id = l.reader_id) \nORDER BY l.id",
       "refuting_states": [],
       "witness": null,
       "checks": 28

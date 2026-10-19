@@ -13,18 +13,16 @@ allowed states of the database; when it does not, the dataset records exactly wh
 | Query families | 204 (68 library + 68 shop + 68 university) |
 | Frozen states per family | 28 |
 | Family–state pairs | 5 712 |
-| Models with runs | 4 (`qwen2.5-coder:7b`, `qwen2.5:7b`, `phi3.5:3.8b`, `deepseek-coder-v2:latest`) |
-| Run records (model × family) | 544 |
-| Evidence records (model × family) | 544 |
-| Executed checks (model × family × state) | 15 232 |
+| Models with runs | 6 (`qwen2.5-coder:7b`, `qwen2.5:7b`, `qwen2.5:3b`, `phi3.5:3.8b`, `deepseek-coder-v2:latest`, `llama3.2:3b`) |
+| Run records (model × family) | 1 224 |
+| Evidence records (model × family) | 1 224 |
+| Executed checks (model × family × state) | 34 272 |
 | Families with frozen states | 204 (all) |
-| Families with model runs | 136 (library and shop) |
+| Families with model runs | 204 (all) |
 
-Coverage is complete for the corpus and the state banks: every family has 28 frozen states.
-Every library/shop family has one answer per model and one evidence record per model; the 68
-university families have frozen states but no model runs yet — a family without runs is valid
-(staged coverage, see the integrity rules and `manifest.staging`). Two planned participants
-are missing. `gemma4:26b` is resource-blocked on the collection machine: the 25.2B Q4_K_M
+Coverage is complete for the corpus, the state banks and the model runs: every family has
+28 frozen states, one answer per model and one evidence record per model. Six models are
+included. `gemma4:26b` is resource-blocked on the collection machine: the 25.2B Q4_K_M
 model is 17.3 GB, the machine has 15.7 GB of RAM and no GPU, and a single request did not
 complete within 18 minutes. A deterministic rules baseline is not published because the rule
 module in the source application is an analyser, not a rewrite generator; it produces
@@ -151,11 +149,11 @@ no data can escape the frozen hashes.
 
 `manifest.counts` is the machine-readable statement of coverage; `check_corpus.py` recomputes
 every value from `data/`. `manifest.staging` records the current stage of the dataset —
-for v0.2.0 it is `university-states`: the corpus has 204 families on three schemas and the
-frozen state banks cover all 204, while model runs and evidence cover the 136 library/shop
-families; the PostgreSQL cross-check covers the 12 seed families (see
-[CROSS_DBMS.md](CROSS_DBMS.md)). The same note is repeated in the manifest and the dataset
-card so that coverage claims stay machine-checkable.
+for v0.2.0 it is `university-runs`: the corpus has 204 families on three schemas, the frozen
+state banks cover all 204 and model runs and evidence also cover all 204; the PostgreSQL
+cross-check covers the 12 seed families (see [CROSS_DBMS.md](CROSS_DBMS.md)). The same note
+is repeated in the manifest and the dataset card so that coverage claims stay
+machine-checkable.
 
 ## Integrity rules
 
@@ -182,17 +180,21 @@ card so that coverage claims stay machine-checkable.
 - Candidate rewrites were executed on MySQL only; the PostgreSQL cross-check covers the 12
   seed families and is not first-class evidence. The university schema has not been ported
   to PostgreSQL yet.
-- The 68 university families have frozen states but no model runs; no aggregate claim over
-  them follows from the current evidence.
 - The state bank is shared by all families of a schema: it stresses the schema, not every
   individual query shape. Coverage of edge cases that are specific to one family is a
   design target, not a guarantee.
 - `breaking_profile` is a design intent, not a measurement.
-- The model set is four models, not the five originally planned: `gemma4:26b` did not fit
-  the collection hardware (17.3 GB model on 15.7 GB RAM, no GPU) and is excluded.
+- The model set is six models; the originally planned `gemma4:26b` did not fit the collection
+  hardware (17.3 GB model on 15.7 GB RAM, no GPU) and is excluded. Engine versions span
+  Ollama 0.40.4–0.40.6 because the series were collected on different days; the version is
+  recorded in every run and evidence protocol.
 - No deterministic rules baseline: the rule module of the source application is an analyser,
   not a rewrite generator.
-- `phi3.5:3.8b` produced one service-level failure (empty response) on one family; it is
-  recorded as `error` and was not retried, because the protocol allows one answer per family.
-- Five `phi3.5:3.8b` answers and one `deepseek-coder-v2` / one `qwen2.5:7b` answer are
-  unparsable or invalid SQL; they are recorded as `unsupported`/`error`, not silently dropped.
+- Service-level failures (empty or failed responses) are recorded as `error` and are not
+  retried, because the protocol allows one answer per family: 33 of 1 224 records, mostly
+  `qwen2.5:3b` (16) and `llama3.2:3b` (10).
+- 23 answers are unparsable or invalid SQL and are stored as `unsupported` (15
+  `phi3.5:3.8b`, 6 `qwen2.5:3b`, 1 `qwen2.5-coder:7b`, 1 `llama3.2:3b`); execution
+  failures caused by the candidate SQL itself (missing derived-table aliases,
+  `ONLY_FULL_GROUP_BY` violations, unknown columns) are `error` records, not silently
+  dropped.

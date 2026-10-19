@@ -14,7 +14,9 @@
       "deepseek-coder-v2:latest": "sreb-full-2026-10-19",
       "phi3.5:3.8b": "sreb-full-2026-10-19",
       "qwen2.5:7b": "sreb-full-2026-10-19",
-      "qwen2.5-coder:7b": "sreb-full-2026-10-19"
+      "qwen2.5-coder:7b": "sreb-full-2026-10-19",
+      "llama3.2:3b": "sreb-extra-models-2026-10-19",
+      "qwen2.5:3b": "sreb-extra-models-2026-10-19"
     }
   },
   "evidence": [
@@ -106,6 +108,27 @@
         "independent_replay": "counterexample"
       },
       "checks": 28
+    },
+    {
+      "model": "llama3.2:3b",
+      "model_slug": "llama3.2-3b",
+      "model_digest": "a80c4f17acd55265feec403c7aef86be0c25983ab279d83f3bcd3abbcb5b8b72",
+      "status": "no_rewrite",
+      "candidate_sql": "SELECT o.id FROM orders o JOIN order_items oi ON oi.order_id=o.id GROUP BY o.id HAVING SUM(oi.quantity*oi.unit_price - oi.discount) = 0 ORDER BY o.id",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "qwen2.5:3b",
+      "model_slug": "qwen2.5-3b",
+      "model_digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b",
+      "status": "error",
+      "candidate_sql": "SELECT o.id FROM orders o JOIN order_items oi ON oi.order_id=o.id JOIN products p ON p.id=oi.product_id GROUP BY o.id HAVING SUM(oi.quantity*p.unit_price - oi.discount) = 0 ORDER BY o.id",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28,
+      "reason": "(1054, \"Unknown column 'p.unit_price' in 'having clause'\")"
     }
   ]
 }

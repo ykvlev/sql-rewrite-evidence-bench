@@ -14,7 +14,9 @@
       "deepseek-coder-v2:latest": "sreb-university-2026-10-19",
       "phi3.5:3.8b": "sreb-university-2026-10-19",
       "qwen2.5:7b": "sreb-university-2026-10-19",
-      "qwen2.5-coder:7b": "sreb-university-2026-10-19"
+      "qwen2.5-coder:7b": "sreb-university-2026-10-19",
+      "llama3.2:3b": "sreb-extra-models-2026-10-19",
+      "qwen2.5:3b": "sreb-extra-models-2026-10-19"
     }
   },
   "evidence": [
@@ -58,6 +60,26 @@
       "witness": null,
       "checks": 28,
       "reason": "parse error: Required keyword: 'this' missing for <class 'sqlglot.expressions.core.In'>. Line 1, Col: 77.\n  SELECT s.id FROM students s WHERE NOT IN (SELECT student_id FROM enrollments\u001b[4m)\u001b[0m ORDER BY s.id"
+    },
+    {
+      "model": "llama3.2:3b",
+      "model_slug": "llama3.2-3b",
+      "model_digest": "a80c4f17acd55265feec403c7aef86be0c25983ab279d83f3bcd3abbcb5b8b72",
+      "status": "no_rewrite",
+      "candidate_sql": "SELECT s.id FROM students s WHERE NOT EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id=s.id) ORDER BY s.id",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "qwen2.5:3b",
+      "model_slug": "qwen2.5-3b",
+      "model_digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b",
+      "status": "preserved",
+      "candidate_sql": "SELECT s.id FROM students s LEFT JOIN enrollments e ON s.id=e.student_id WHERE e.student_id IS NULL ORDER BY s.id",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28
     }
   ]
 }
