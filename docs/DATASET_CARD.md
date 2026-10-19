@@ -13,15 +13,24 @@ allowed states of the database; when it does not, the dataset records exactly wh
 | Query families | 136 (68 library schema + 68 shop schema) |
 | Frozen states per family | 28 |
 | Family–state pairs | 3 808 |
-| Models with runs | 3 (`qwen2.5-coder:7b`, `qwen2.5:7b`, `phi3.5:3.8b`) |
-| Run records (model × family) | 36 |
-| Evidence records (model × family) | 36 |
-| Executed checks (model × family × state) | 1 008 |
-| Families with model runs | 12 (the library seed) |
+| Models with runs | 4 (`qwen2.5-coder:7b`, `qwen2.5:7b`, `phi3.5:3.8b`, `deepseek-coder-v2:latest`) |
+| Run records (model × family) | 544 |
+| Evidence records (model × family) | 544 |
+| Executed checks (model × family × state) | 15 232 |
+| Families with model runs | 136 (all) |
 
-Coverage is staged: the corpus and the state banks cover all 136 families, while model
-runs and evidence currently cover the 12-family library seed. A family without runs is
-valid; a run may only exist for a family with frozen states (see integrity rules).
+Coverage is complete for the current corpus: every family has 28 frozen states, one answer
+per model per family, and one evidence record per model. Two planned participants are
+missing. `gemma4:26b` is resource-blocked on the collection machine: the 25.2B Q4_K_M model
+is 17.3 GB, the machine has 15.7 GB of RAM and no GPU, and a single request did not complete
+within 18 minutes. A deterministic rules baseline is not published because the rule module in
+the source application is an analyser, not a rewrite generator; it produces findings and
+suggestions rather than executable candidate SQL.
+
+The primary execution engine is MySQL 8.4.11. The evaluation mechanism was additionally
+cross-checked on PostgreSQL 16.15 for the 12 seed families (1 008 candidate checks, no status
+mismatches, no DDL changes); see [CROSS_DBMS.md](CROSS_DBMS.md). PostgreSQL evidence is not
+yet first-class in the dataset format.
 
 ## Structure
 
@@ -138,10 +147,10 @@ no data can escape the frozen hashes.
 
 `manifest.counts` is the machine-readable statement of coverage; `check_corpus.py` recomputes
 every value from `data/`. `manifest.staging` records the current stage of the dataset —
-for v0.2.0 it is `states-generated-shop`: the corpus and the state banks cover all 136
-families, while model runs and evidence cover the 12-family library seed. The same staging
-note is repeated in the dataset card so a reader cannot mistake corpus coverage for
-evaluated coverage.
+for v0.2.0 it is `full-corpus-runs`: corpus, state banks, model runs and evidence now cover
+all 136 families; the PostgreSQL cross-check covers the 12 seed families (see
+[CROSS_DBMS.md](CROSS_DBMS.md)). The same note is repeated in the manifest and the dataset
+card so that coverage claims stay machine-checkable.
 
 ## Integrity rules
 
@@ -154,8 +163,7 @@ evaluated coverage.
    equivalence.
 5. Models are described by digest, not by name alone. Two runs of "the same" tag can differ.
 6. Every *evaluated* family must have a run record for every model directory and an
-   evidence file. A family may still have no runs (staged coverage), but a run record may
-   only exist for a family that has frozen states.
+   evidence file. A run record may only exist for a family that has frozen states.
 7. Every evidence file must pin the current corpus and state-bank hashes in its protocol;
    `check_corpus.py` recomputes them, so CI fails when evidence and inputs drift apart.
 
@@ -166,12 +174,17 @@ evaluated coverage.
 - Model behaviour changes with engine version; the engine version is part of the protocol.
 - One response per (model, family), temperature 0, no explicit seed: the raw text is
   stored as produced but a rerun is not guaranteed to be byte-identical.
-- Candidate rewrites were executed on MySQL only in this seed; portability to other
-  engines is not established.
+- Candidate rewrites were executed on MySQL only; the PostgreSQL cross-check covers the 12
+  seed families and is not first-class evidence.
 - The state bank is shared by all families of a schema: it stresses the schema, not every
   individual query shape. Coverage of edge cases that are specific to one family is a
   design target, not a guarantee.
-- `breaking_profile` is a design intent, not a measurement; only families with model runs
-  have measured refutations.
-- Model runs cover 12 of 136 families; no aggregate claim over the expanded corpus follows
-  from the current evidence.
+- `breaking_profile` is a design intent, not a measurement.
+- The model set is four models, not the five originally planned: `gemma4:26b` did not fit
+  the collection hardware (17.3 GB model on 15.7 GB RAM, no GPU) and is excluded.
+- No deterministic rules baseline: the rule module of the source application is an analyser,
+  not a rewrite generator.
+- `phi3.5:3.8b` produced one service-level failure (empty response) on one family; it is
+  recorded as `error` and was not retried, because the protocol allows one answer per family.
+- Five `phi3.5:3.8b` answers and one `deepseek-coder-v2` / one `qwen2.5:7b` answer are
+  unparsable or invalid SQL; they are recorded as `unsupported`/`error`, not silently dropped.

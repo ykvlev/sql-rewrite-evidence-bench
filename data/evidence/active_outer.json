@@ -13,7 +13,8 @@
     "evaluation_runs": {
       "qwen2.5-coder:7b": "library_evaluation_20261019_qwen25",
       "qwen2.5:7b": "library_evaluation_20261019_qwen25",
-      "phi3.5:3.8b": "library_evaluation_20261019_phi35_repro"
+      "phi3.5:3.8b": "library_evaluation_20261019_phi35_repro",
+      "deepseek-coder-v2:latest": "sreb-full-2026-10-19"
     }
   },
   "evidence": [
@@ -45,6 +46,67 @@
       "candidate_sql": "SELECT r.id, l.id AS loan_id FROM lib_readers r LEFT JOIN lib_loans l ON l.reader_id = r.id AND l.returned = 0 ORDER BY r.id, l.id",
       "refuting_states": [],
       "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "deepseek-coder-v2:latest",
+      "model_slug": "deepseek-coder-v2",
+      "model_digest": "63fb193b3a9b4322a18e8c6b250ca2e70a5ff531e962dbf95ba089b2566f2fa5",
+      "status": "refuted",
+      "candidate_sql": "SELECT r.id, l.id AS loan_id \nFROM lib_readers r \nJOIN lib_loans l ON r.id = l.reader_id AND l.returned = 0 \nORDER BY r.id, l.id;",
+      "refuting_states": [
+        "fixed_0",
+        "no_loans_0",
+        "multiplicity_0",
+        "zero_fee_0",
+        "nullable_0",
+        "boundary_0",
+        "ties_0",
+        "random_uniform_0",
+        "random_uniform_1",
+        "random_uniform_2",
+        "random_uniform_3",
+        "random_uniform_4",
+        "random_uniform_5",
+        "random_uniform_6",
+        "random_uniform_7",
+        "random_uniform_8",
+        "random_uniform_9",
+        "random_uniform_10",
+        "random_uniform_12",
+        "random_uniform_13",
+        "random_uniform_14",
+        "random_uniform_15",
+        "random_uniform_16",
+        "random_uniform_17",
+        "random_uniform_18"
+      ],
+      "witness": {
+        "state": "fixed_0",
+        "state_profile": "fixed_0",
+        "reference_rows": [
+          [
+            1,
+            null
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            null
+          ]
+        ],
+        "candidate_rows": [
+          [
+            2,
+            2
+          ]
+        ],
+        "interface_equal": false,
+        "independent_replay": "counterexample"
+      },
       "checks": 28
     }
   ]

@@ -70,18 +70,25 @@ For each (family, model):
 3. Record outcome: `preserved` / `refuted` / `no_rewrite` / `unsupported` / `error`.
 4. If refuted, store the profile, the state seed and the row difference.
 
-## 6. Pilot results (numbers pending final dataset)
+## 6. Pilot results (v0.2.0, numbers from `data/`)
 
-The v0.2.0 corpus has 136 families on two schemas; the pilot evidence below covers the
-12-family library seed, 28 states each, 336 checks per model, three models.
+The v0.2.0 corpus has 136 families on two schemas; the evidence covers all 136 families,
+28 states each, four models and 15 232 executed checks on MySQL 8.4.11 (45 refuted rewrites
+in 29 families).
 
-- The code-specialised model rewrote more often and was refuted more often than the
-  general-purpose model — the opposite of the intuition that specialisation helps.
-- All three models independently produced the same wrong rewrite (`UNION ALL` → `OR`),
-  losing row multiplicities; only the states designed for multiplicity, nullable columns
-  and ties caught it, and none of the random states did.
-- Two models failed on the same family with *different* mechanisms, which matters for
-  error taxonomies.
+- The code-specialised models rewrote more often and were refuted more often than the
+  general-purpose ones. `deepseek-coder-v2` proposed 50 rewrites (21 refuted),
+  `qwen2.5-coder:7b` 21 (10 refuted), `qwen2.5:7b` 21 (7 refuted), `phi3.5:3.8b` 21
+  (7 refuted, plus 5 unparsable answers).
+- All four models independently produced the same wrong rewrite class (`UNION ALL` → `OR`
+  or `DISTINCT` over the union), losing row multiplicities; `union_bag` and
+  `lib_union_bag_books` were refuted by every model. Six families have an identical
+  normalised wrong candidate produced by two or more models, e.g. `UNION` rewritten as `OR`
+  or `IN`, which keeps duplicates that `UNION` removes.
+- The models fail in different ways on the same family: `union_bag` is broken by an `OR`
+  rewrite in three models and by `DISTINCT` over `UNION ALL` in the fourth. Invalid SQL is
+  also part of the record: an invalid use of a group function, an unknown column in
+  `HAVING`, and `ONLY_FULL_GROUP_BY` violations are stored as `error`, not discarded.
 
 ## 7. Reproducibility
 

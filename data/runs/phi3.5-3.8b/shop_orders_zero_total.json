@@ -1,0 +1,33 @@
+{
+  "schema": "shop",
+  "dataset_version": "0.2.0",
+  "family": "shop_orders_zero_total",
+  "model": "phi3.5:3.8b",
+  "model_slug": "phi3.5-3.8b",
+  "model_digest": "61819fb370a3c1a9be6694869331e5f85f867a079e9271d66cb223acb81d04ba",
+  "quantization": "Q4_0",
+  "parameter_size": "3.8B",
+  "protocol": {
+    "engine": "ollama",
+    "engine_version": "0.40.5",
+    "temperature": 0,
+    "seed": null,
+    "seed_note": "not set: the run protocol specified no seed, so the engine default was used",
+    "num_ctx": 4096,
+    "num_predict": 1200,
+    "responses_per_family": 1
+  },
+  "prompt": "Rewrite the following MySQL 8.4 SELECT query for efficiency. Preserve output column names, values, duplicates, NULL behavior and the specified row order for EVERY state allowed by the schema. Do not add indexes or change the schema. Return only one SELECT statement, without markdown or explanation. If no safe improvement is available, return the original query.\nCREATE TABLE categories(id INTEGER PRIMARY KEY, name VARCHAR(60) NOT NULL UNIQUE, parent_id INTEGER NULL, FOREIGN KEY(parent_id) REFERENCES categories(id))\nCREATE TABLE products(id INTEGER PRIMARY KEY, sku VARCHAR(32) NOT NULL UNIQUE, name VARCHAR(120) NOT NULL, category_id INTEGER NOT NULL, price DECIMAL(10,2) NOT NULL, cost DECIMAL(10,2) NOT NULL, stock INTEGER NOT NULL, active INTEGER NOT NULL DEFAULT 1, created_at DATE NOT NULL, FOREIGN KEY(category_id) REFERENCES categories(id), CHECK(price >= 0), CHECK(cost >= 0), CHECK(stock >= 0))\nCREATE TABLE customers(id INTEGER PRIMARY KEY, email VARCHAR(120) NOT NULL UNIQUE, name VARCHAR(80) NOT NULL, city VARCHAR(60) NULL, segment VARCHAR(20) NOT NULL, created_at DATE NOT NULL, CHECK(segment IN ('retail','wholesale','vip')))\nCREATE TABLE orders(id INTEGER PRIMARY KEY, customer_id INTEGER NOT NULL, created_at DATE NOT NULL, status VARCHAR(20) NOT NULL, channel VARCHAR(20) NULL, FOREIGN KEY(customer_id) REFERENCES customers(id), CHECK(status IN ('new','paid','shipped','cancelled','returned')))\nCREATE TABLE order_items(id INTEGER PRIMARY KEY, order_id INTEGER NOT NULL, product_id INTEGER NOT NULL, quantity INTEGER NOT NULL, unit_price DECIMAL(10,2) NOT NULL, discount DECIMAL(10,2) NOT NULL DEFAULT 0, FOREIGN KEY(order_id) REFERENCES orders(id), FOREIGN KEY(product_id) REFERENCES products(id), CHECK(quantity > 0), CHECK(unit_price >= 0), CHECK(discount >= 0), CHECK(discount <= unit_price))\nCREATE TABLE payments(id INTEGER PRIMARY KEY, order_id INTEGER NOT NULL, paid_at DATE NOT NULL, amount DECIMAL(10,2) NOT NULL, method VARCHAR(20) NOT NULL, FOREIGN KEY(order_id) REFERENCES orders(id), CHECK(amount >= 0), CHECK(method IN ('card','cash','transfer')))\nCREATE TABLE reviews(id INTEGER PRIMARY KEY, product_id INTEGER NOT NULL, customer_id INTEGER NOT NULL, rating INTEGER NOT NULL, body VARCHAR(200) NULL, created_at DATE NOT NULL, FOREIGN KEY(product_id) REFERENCES products(id), FOREIGN KEY(customer_id) REFERENCES customers(id), CHECK(rating BETWEEN 1 AND 5))\nQUERY:\nSELECT o.id FROM orders o JOIN order_items oi ON oi.order_id=o.id GROUP BY o.id HAVING SUM(oi.quantity*oi.unit_price - oi.discount) = 0 ORDER BY o.id",
+  "prompt_sha256": "ac3e5d4788df414ad553933dfba6edf2a29a613a35771c85c2559d26eb965cc0",
+  "candidate_sql": null,
+  "provenance": {
+    "collection": "sreb-full-2026-10-19",
+    "collected_utc": "2026-10-18T23:17:01+00:00"
+  },
+  "error": "HTTP Error 500: Internal Server Error",
+  "elapsed_seconds": 135.317,
+  "markdown_removed": false,
+  "raw_response": null,
+  "response_text": "",
+  "done_reason": null
+}

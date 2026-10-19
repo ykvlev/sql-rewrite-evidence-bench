@@ -13,7 +13,8 @@
     "evaluation_runs": {
       "qwen2.5-coder:7b": "library_evaluation_20261019_qwen25",
       "qwen2.5:7b": "library_evaluation_20261019_qwen25",
-      "phi3.5:3.8b": "library_evaluation_20261019_phi35_repro"
+      "phi3.5:3.8b": "library_evaluation_20261019_phi35_repro",
+      "deepseek-coder-v2:latest": "sreb-full-2026-10-19"
     }
   },
   "evidence": [
@@ -140,6 +141,53 @@
           [
             1
           ],
+          [
+            1
+          ]
+        ],
+        "interface_equal": true,
+        "independent_replay": "counterexample"
+      },
+      "checks": 28
+    },
+    {
+      "model": "deepseek-coder-v2:latest",
+      "model_slug": "deepseek-coder-v2",
+      "model_digest": "63fb193b3a9b4322a18e8c6b250ca2e70a5ff531e962dbf95ba089b2566f2fa5",
+      "status": "refuted",
+      "candidate_sql": "SELECT DISTINCT reader_id FROM (SELECT reader_id FROM lib_loans WHERE returned = 0 UNION ALL SELECT reader_id FROM lib_loans WHERE fee = 0) AS subquery ORDER BY reader_id;",
+      "refuting_states": [
+        "multiplicity_0",
+        "nullable_0",
+        "ties_0",
+        "random_uniform_0",
+        "random_uniform_1",
+        "random_uniform_5",
+        "random_uniform_6",
+        "random_uniform_11",
+        "random_uniform_13",
+        "random_uniform_17",
+        "random_uniform_18",
+        "random_uniform_19"
+      ],
+      "witness": {
+        "state": "multiplicity_0",
+        "state_profile": "multiplicity_0",
+        "reference_rows": [
+          [
+            1
+          ],
+          [
+            1
+          ],
+          [
+            1
+          ],
+          [
+            1
+          ]
+        ],
+        "candidate_rows": [
           [
             1
           ]

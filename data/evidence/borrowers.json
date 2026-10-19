@@ -13,7 +13,8 @@
     "evaluation_runs": {
       "qwen2.5-coder:7b": "library_evaluation_20261019_qwen25",
       "qwen2.5:7b": "library_evaluation_20261019_qwen25",
-      "phi3.5:3.8b": "library_evaluation_20261019_phi35_repro"
+      "phi3.5:3.8b": "library_evaluation_20261019_phi35_repro",
+      "deepseek-coder-v2:latest": "sreb-full-2026-10-19"
     }
   },
   "evidence": [
@@ -43,6 +44,16 @@
       "model_digest": "61819fb370a3c1a9be6694869331e5f85f867a079e9271d66cb223acb81d04ba",
       "status": "no_rewrite",
       "candidate_sql": "SELECT DISTINCT r.id FROM lib_readers r JOIN lib_loans l ON l.reader_id=r.id JOIN lib_books b ON b.id=l.book_id WHERE b.price<=20 ORDER BY r.id;",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "deepseek-coder-v2:latest",
+      "model_slug": "deepseek-coder-v2",
+      "model_digest": "63fb193b3a9b4322a18e8c6b250ca2e70a5ff531e962dbf95ba089b2566f2fa5",
+      "status": "no_rewrite",
+      "candidate_sql": "SELECT DISTINCT r.id \nFROM lib_readers r \nJOIN lib_loans l ON l.reader_id = r.id \nJOIN lib_books b ON b.id = l.book_id \nWHERE b.price <= 20 \nORDER BY r.id;",
       "refuting_states": [],
       "witness": null,
       "checks": 28

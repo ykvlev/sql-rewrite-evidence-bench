@@ -1,0 +1,79 @@
+{
+  "schema": "shop",
+  "dataset_version": "0.2.0",
+  "family": "shop_payments_zero_amount",
+  "reference_sql": "SELECT id FROM payments WHERE amount = 0 ORDER BY id",
+  "protocol": {
+    "dbms": "mysql",
+    "dbms_version": "8.4.11",
+    "checks_per_model": 28,
+    "corpus_sha256": "5ef775c9c8257933ba4c6db3b3f2fda2d07915439d6615974cef4508526b0b97",
+    "state_bank_sha256": "3809f11b6031ac4fd7594e0944a76c72ece9797588b3ce05d079266dafca38ee",
+    "evaluation": "reference and candidate executed on every frozen state in a private schema under a SELECT-only account; each refuting pair replayed in an independent fresh schema",
+    "evaluation_runs": {
+      "deepseek-coder-v2:latest": "sreb-full-2026-10-19",
+      "phi3.5:3.8b": "sreb-full-2026-10-19",
+      "qwen2.5:7b": "sreb-full-2026-10-19",
+      "qwen2.5-coder:7b": "sreb-full-2026-10-19"
+    }
+  },
+  "evidence": [
+    {
+      "model": "deepseek-coder-v2:latest",
+      "model_slug": "deepseek-coder-v2",
+      "model_digest": "63fb193b3a9b4322a18e8c6b250ca2e70a5ff531e962dbf95ba089b2566f2fa5",
+      "status": "refuted",
+      "candidate_sql": "SELECT p.id \nFROM payments p \nJOIN orders o ON p.order_id = o.id \nJOIN customers c ON o.customer_id = c.id \nJOIN order_items oi ON o.id = oi.order_id \nJOIN products pr ON oi.product_id = pr.id \nWHERE pr.cost = 0 \nORDER BY c.id;",
+      "refuting_states": [
+        "fixed_0",
+        "boundary_0",
+        "random_uniform_6",
+        "random_uniform_9",
+        "random_uniform_11"
+      ],
+      "witness": {
+        "state": "fixed_0",
+        "state_profile": "fixed_0",
+        "reference_rows": [
+          [
+            2
+          ]
+        ],
+        "candidate_rows": [],
+        "interface_equal": true,
+        "independent_replay": "counterexample"
+      },
+      "checks": 28
+    },
+    {
+      "model": "phi3.5:3.8b",
+      "model_slug": "phi3.5-3.8b",
+      "model_digest": "61819fb370a3c1a9be6694869331e5f85f867a079e9271d66cb223acb81d04ba",
+      "status": "no_rewrite",
+      "candidate_sql": "SELECT id FROM payments WHERE amount = 0 ORDER BY id;",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "qwen2.5:7b",
+      "model_slug": "qwen2.5-7b",
+      "model_digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e",
+      "status": "no_rewrite",
+      "candidate_sql": "SELECT id FROM payments WHERE amount = 0 ORDER BY id",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "qwen2.5-coder:7b",
+      "model_slug": "qwen2.5-coder-7b",
+      "model_digest": "dae161e27b0e90dd1856c8bb3209201fd6736d8eb66298e75ed87571486f4364",
+      "status": "no_rewrite",
+      "candidate_sql": "SELECT id FROM payments WHERE amount = 0 ORDER BY id",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28
+    }
+  ]
+}

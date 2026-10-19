@@ -26,7 +26,16 @@ The output must match `docs/tables.md` byte for byte; a mismatch means the publi
 tables are stale. CI reruns both the check and the regeneration and fails if the committed
 file differs.
 
-## 3. Model collection and evaluation
+## 3. Cross-DBMS verification
+
+[docs/CROSS_DBMS.md](CROSS_DBMS.md) records the PostgreSQL 16.15 re-run of the seed
+families: the same corpus, states and saved answers, the corpus DDL executed unchanged,
+1 008 candidate checks and zero status mismatches against the published MySQL evidence.
+The raw check record is [docs/cross_dbms_seed_check.json](cross_dbms_seed_check.json).
+PostgreSQL is not yet first-class evidence in `data/`; the format stores one DBMS per
+evidence file.
+
+## 4. Model collection and evaluation
 
 The scripts that collect model answers and execute candidates on a DBMS are **not part of
 v0.2.0**; the dataset publishes their outputs instead. Each record carries everything needed

@@ -42,8 +42,7 @@ def gather(root: Path) -> dict:
 
 def render(data: dict) -> str:
     lines = ["# SREB summary tables", "",
-             f"Families with evidence: **{data['families']}** "
-             "(corpus coverage is larger; see `manifest.json`). "
+             f"Families with evidence: **{data['families']}**. "
              "Generated from `data/evidence/` only.", "",
              "## Outcomes per model", "",
              "| Model | Proposed | " + " | ".join(s.capitalize() for s in STATUSES) + " | Checks |",

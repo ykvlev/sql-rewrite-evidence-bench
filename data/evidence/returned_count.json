@@ -13,7 +13,8 @@
     "evaluation_runs": {
       "qwen2.5-coder:7b": "library_evaluation_20261019_qwen25",
       "qwen2.5:7b": "library_evaluation_20261019_qwen25",
-      "phi3.5:3.8b": "library_evaluation_20261019_phi35_repro"
+      "phi3.5:3.8b": "library_evaluation_20261019_phi35_repro",
+      "deepseek-coder-v2:latest": "sreb-full-2026-10-19"
     }
   },
   "evidence": [
@@ -45,6 +46,52 @@
       "candidate_sql": "SELECT reader_id, COUNT(CASE WHEN returned = 1 THEN 1 END) AS n FROM lib_loans GROUP BY reader_id ORDER BY reader_id;",
       "refuting_states": [],
       "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "deepseek-coder-v2:latest",
+      "model_slug": "deepseek-coder-v2",
+      "model_digest": "63fb193b3a9b4322a18e8c6b250ca2e70a5ff531e962dbf95ba089b2566f2fa5",
+      "status": "refuted",
+      "candidate_sql": "SELECT reader_id, COUNT(CASE WHEN returned = 1 THEN 1 END) AS n \nFROM lib_loans \nWHERE returned IS NOT NULL \nGROUP BY reader_id \nORDER BY reader_id;",
+      "refuting_states": [
+        "nullable_0",
+        "ties_0",
+        "random_uniform_4",
+        "random_uniform_9",
+        "random_uniform_13",
+        "random_uniform_17"
+      ],
+      "witness": {
+        "state": "nullable_0",
+        "state_profile": "nullable_0",
+        "reference_rows": [
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            0
+          ],
+          [
+            3,
+            1
+          ]
+        ],
+        "candidate_rows": [
+          [
+            2,
+            0
+          ],
+          [
+            3,
+            1
+          ]
+        ],
+        "interface_equal": true,
+        "independent_replay": "counterexample"
+      },
       "checks": 28
     }
   ]
