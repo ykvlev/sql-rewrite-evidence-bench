@@ -1,13 +1,30 @@
 # SREB — SQL Rewrite Evidence Benchmark
 
-A dataset of **executable evidence** for SQL query rewrites proposed by language models.
+[![validate dataset](https://github.com/ykvlev/sql-rewrite-evidence-bench/actions/workflows/validate.yml/badge.svg)](https://github.com/ykvlev/sql-rewrite-evidence-bench/actions/workflows/validate.yml)
+[![Live leaderboard](https://img.shields.io/badge/leaderboard-live-39D0D0)](https://ykvlev.github.io/sql-rewrite-evidence-bench/leaderboard.html)
+[![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97-dataset-yellow)](https://huggingface.co/datasets/ykvlev/sreb)
+[![License: CC BY 4.0](https://img.shields.io/badge/data-CC%20BY%204.0-lightgrey)](LICENSE)
 
-Most SQL benchmarks ask *"write a query for this question"*. Most rewrite papers report
-a success rate. SREB publishes something different: for every rewrite, **the state of the
-database on which the result changes, and the specific rows that prove it**.
+> **Language models rewrite SQL for speed and silently change the result.**
+> This dataset publishes, for every rewrite, the database state that breaks it
+> and the rows that prove it — not a success rate.
 
 ```
-reference [1,1,1,1]   candidate [1,1,1]   ->  multiplicity lost, 3 refuting states
+  user asks: make this query faster
+
+  reference   SELECT ... UNION ALL SELECT ...   ->  [1,1,1,1]   correct
+  candidate   SELECT ... WHERE a=0 OR b=0       ->  [1,1,1]     one row gone
+
+  faster?  yes.   error?  none.   result?  different.
+```
+
+All four evaluated models broke the query above — three replaced `UNION ALL` with
+`OR`, one wrapped it in `DISTINCT`. Both changes remove duplicate rows.
+One reader with an unreturned book *and* a zero fee should appear twice.
+
+```python
+from datasets import load_dataset
+ds = load_dataset("ykvlev/sreb", "evidence")   # every refutation with its witness
 ```
 
 ## Why this is different
@@ -19,7 +36,12 @@ reference [1,1,1,1]   candidate [1,1,1]   ->  multiplicity lost, 3 refuting stat
 | Cosette, VeriEQL | formal equivalence proofs | only for supported constructs |
 
 SREB keeps the evidence, not just the score. Every record is reproducible: DBMS version,
-model digest, sampling parameters, state profile, and a counterexample.
+model digest, sampling parameters, state profile, and a counterexample that can be replayed.
+
+**What it does not claim:** `preserved` means *no refuting state was found in a finite
+state bank*. It is not a proof of equivalence, and the dataset never says otherwise.
+Witnesses are not minimised — the recorded state is the first one that refuted the
+candidate. See [docs/DATASET_CARD.md](docs/DATASET_CARD.md).
 
 ## Dataset layout
 
