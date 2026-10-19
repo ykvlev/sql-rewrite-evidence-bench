@@ -75,14 +75,14 @@ python scripts/check_corpus.py            # integrity, hashes, pins, schema cons
 python scripts/recompute_tables.py        # rebuild docs/tables.md from data/evidence/
 ```
 
-Model collection and DBMS evaluation scripts are **not part of v0.2.0**: the dataset
+Model collection and DBMS evaluation scripts are **not part of v0.3.0**: the dataset
 publishes their outputs in `data/runs/` and `data/evidence/`, and each record carries the
 engine version, model digest, sampling parameters and input hashes needed to audit it.
 See [docs/REPRODUCE.md](docs/REPRODUCE.md) for the exact protocol.
 
 ## Status
 
-Dataset version **0.2.0**. Corpus: **204 query families on three synthetic schemas** — 68
+Dataset version **0.3.0**. Corpus: **204 query families on three synthetic schemas** — 68
 library (3 tables), 68 shop (7 tables) and 68 university (departments, teachers, students,
 semesters, courses, enrollments, grades). Each family has 28 frozen states: 8 designed
 profiles (fixed, empty, no_rows, multiplicity, zero_value, nullable, boundary, ties) and 20
@@ -90,12 +90,17 @@ pseudo-random states from fixed seeds — **5 712 family–state pairs**. Every 
 into MySQL 8.4.11 with real foreign keys, UNIQUE and CHECK constraints enabled, and every
 reference query was executed on it.
 
-Model answers and executable evidence cover **all 204 families** (library, shop and
-university): six models (`qwen2.5-coder:7b`, `qwen2.5:7b`, `qwen2.5:3b`, `phi3.5:3.8b`,
-`deepseek-coder-v2`, `llama3.2:3b`), 1 224 run records, 1 224 evidence records and
-**34 272 executed checks** on MySQL 8.4.11. Outcomes per model are in
-[docs/tables.md](docs/tables.md): 120 rewrites were refuted, in 75 families, and
-`union_bag` / `lib_union_bag_books` were broken by four of the six models.
+Model answers and executable evidence cover **all 204 families**: six models
+(`qwen2.5-coder:7b`, `qwen2.5:7b`, `qwen2.5:3b`, `phi3.5:3.8b`, `deepseek-coder-v2`,
+`llama3.2:3b`), 1 224 run records, 1 224 evidence records and **34 272 executed checks**
+on MySQL 8.4.11. Outcomes per model are in [docs/tables.md](docs/tables.md): **120 rewrites
+were refuted, in 75 families**, and `union_bag` / `lib_union_bag_books` were broken by
+four of the six models. Error and `unsupported` outcomes are recorded as such, never
+replayed — the smaller models produced 33 and 23 of them respectively.
+
+A note on scale: the two 3-billion-parameter models refuted a *larger share* of their own
+rewrites (46 % and 49 %) than the 7B models (25–40 %). Smaller models rewrite with similar
+confidence and less semantic understanding.
 
 The evaluation mechanism was cross-checked on PostgreSQL 16.15 on the 12 seed families:
 identical outcomes in all 1 008 candidate checks and no DDL changes

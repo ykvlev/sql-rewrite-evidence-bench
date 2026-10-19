@@ -6,6 +6,6 @@ authors:
   - family-names: Yakovlev
     given-names: Artem
     orcid: "https://orcid.org/0009-0006-8617-7895"
-version: "0.2.0"
+version: "0.3.0"
 date-released: "2026-10-19"
 license: CC-BY-4.0

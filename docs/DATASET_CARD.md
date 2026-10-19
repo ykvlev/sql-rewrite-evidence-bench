@@ -1,4 +1,4 @@
-# Dataset card — SREB v0.2.0
+# Dataset card — SREB v0.3.0
 
 ## Purpose
 
@@ -149,7 +149,7 @@ no data can escape the frozen hashes.
 
 `manifest.counts` is the machine-readable statement of coverage; `check_corpus.py` recomputes
 every value from `data/`. `manifest.staging` records the current stage of the dataset —
-for v0.2.0 it is `university-runs`: the corpus has 204 families on three schemas, the frozen
+for v0.3.0 it is `university-runs`: the corpus has 204 families on three schemas, the frozen
 state banks cover all 204 and model runs and evidence also cover all 204; the PostgreSQL
 cross-check covers the 12 seed families (see [CROSS_DBMS.md](CROSS_DBMS.md)). The same note
 is repeated in the manifest and the dataset card so that coverage claims stay

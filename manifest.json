@@ -1,9 +1,9 @@
 {
   "dataset": "SREB",
   "title": "SQL Rewrite Evidence Benchmark",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "schema": "library",
-  "created_utc": "2026-10-19T09:45:43+00:00",
+  "created_utc": "2026-10-19T09:51:01+00:00",
   "counts": {
     "families": 204,
     "families_by_schema": {
@@ -1523,7 +1523,7 @@
     "data/runs/qwen2.5-coder-7b/zero_fee.json": "aab8df6e5aa6d84c4b3c04679dc5d4da842f4ce2c5058d4064ee929f84ba52e3",
     "data/states/states.json": "6943d9b515202ea1538bf4868fbb2c97463c9a56c2589340c0acaee333b35ff5"
   },
-  "dataset_version": "0.2.0",
+  "dataset_version": "0.3.0",
   "staging": {
     "stage": "university-runs",
     "note": "Корпус: 204 семейства на трёх схемах; замороженные состояния — для всех 204; прогоны моделей и улики — для всех семейств корпуса. PostgreSQL-проверка механизма — на 12 seed-семействах; схема «Университет» на PostgreSQL пока не портирована.",

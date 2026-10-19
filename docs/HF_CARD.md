@@ -74,7 +74,7 @@ python scripts/recompute_tables.py --repo-root .    # rebuild summary tables
 
 Every published number is recomputable from `data/` without rerunning a model.
 
-## Scale (v0.2.0)
+## Scale (v0.3.0)
 
 - query families: **204** across three schemas (library, online shop, university)
 - frozen states: **5 712** (28 profiles per family)

@@ -5,13 +5,26 @@
   "access_right": "open",
   "license": "cc-by-4.0",
   "creators": [
-    {"name": "Yakovlev, Artem", "orcid": "0009-0006-8617-7895"}
+    {
+      "name": "Yakovlev, Artem",
+      "orcid": "0009-0006-8617-7895"
+    }
   ],
   "keywords": [
-    "SQL", "query rewriting", "query optimization", "language models",
-    "counterexamples", "database testing", "benchmark", "reproducibility"
+    "SQL",
+    "query rewriting",
+    "query optimization",
+    "language models",
+    "counterexamples",
+    "database testing",
+    "benchmark",
+    "reproducibility"
   ],
   "related_identifiers": [
-    {"identifier": "https://github.com/ykvlev/sql-rewrite-evidence-bench", "relation": "isSupplementTo", "scheme": "url"}
+    {
+      "identifier": "https://github.com/ykvlev/sql-rewrite-evidence-bench",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
   ]
 }
