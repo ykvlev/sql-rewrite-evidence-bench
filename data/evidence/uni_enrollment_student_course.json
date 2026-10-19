@@ -1,0 +1,62 @@
+{
+  "schema": "university",
+  "dataset_version": "0.2.0",
+  "family": "uni_enrollment_student_course",
+  "reference_sql": "SELECT e.id, s.name, c.title FROM enrollments e JOIN students s ON s.id=e.student_id JOIN courses c ON c.id=e.course_id ORDER BY e.id",
+  "protocol": {
+    "dbms": "mysql",
+    "dbms_version": "8.4.11",
+    "checks_per_model": 28,
+    "corpus_sha256": "5fbda427d5122987d140eff6dcf5ee87897d0e3cedd4c5bbdf6a520b518f7f36",
+    "state_bank_sha256": "6943d9b515202ea1538bf4868fbb2c97463c9a56c2589340c0acaee333b35ff5",
+    "evaluation": "reference and candidate executed on every frozen state in a private schema under a SELECT-only account; each refuting pair replayed in an independent fresh schema",
+    "evaluation_runs": {
+      "deepseek-coder-v2:latest": "sreb-university-2026-10-19",
+      "phi3.5:3.8b": "sreb-university-2026-10-19",
+      "qwen2.5:7b": "sreb-university-2026-10-19",
+      "qwen2.5-coder:7b": "sreb-university-2026-10-19"
+    }
+  },
+  "evidence": [
+    {
+      "model": "deepseek-coder-v2:latest",
+      "model_slug": "deepseek-coder-v2",
+      "model_digest": "63fb193b3a9b4322a18e8c6b250ca2e70a5ff531e962dbf95ba089b2566f2fa5",
+      "status": "no_rewrite",
+      "candidate_sql": "SELECT e.id, s.name, c.title \nFROM enrollments e \nJOIN students s ON s.id = e.student_id \nJOIN courses c ON c.id = e.course_id \nORDER BY e.id;",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "phi3.5:3.8b",
+      "model_slug": "phi3.5-3.8b",
+      "model_digest": "61819fb370a3c1a9be6694869331e5f85f867a079e9271d66cb223acb81d04ba",
+      "status": "no_rewrite",
+      "candidate_sql": "SELECT e.id, s.name, c.title FROM enrollments e JOIN students s ON s.id=e.student_id JOIN courses c ON c.id=e.course_id ORDER BY e.id;",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "qwen2.5:7b",
+      "model_slug": "qwen2.5-7b",
+      "model_digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e",
+      "status": "no_rewrite",
+      "candidate_sql": "SELECT e.id, s.name, c.title FROM enrollments e JOIN students s ON s.id = e.student_id JOIN courses c ON c.id = e.course_id ORDER BY e.id",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "qwen2.5-coder:7b",
+      "model_slug": "qwen2.5-coder-7b",
+      "model_digest": "dae161e27b0e90dd1856c8bb3209201fd6736d8eb66298e75ed87571486f4364",
+      "status": "no_rewrite",
+      "candidate_sql": "SELECT e.id, s.name, c.title FROM enrollments e JOIN students s ON s.id = e.student_id JOIN courses c ON c.id = e.course_id ORDER BY e.id",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28
+    }
+  ]
+}

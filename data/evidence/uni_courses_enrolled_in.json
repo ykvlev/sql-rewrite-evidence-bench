@@ -1,0 +1,171 @@
+{
+  "schema": "university",
+  "dataset_version": "0.2.0",
+  "family": "uni_courses_enrolled_in",
+  "reference_sql": "SELECT c.id FROM courses c WHERE c.id IN (SELECT e.course_id FROM enrollments e) ORDER BY c.id",
+  "protocol": {
+    "dbms": "mysql",
+    "dbms_version": "8.4.11",
+    "checks_per_model": 28,
+    "corpus_sha256": "5fbda427d5122987d140eff6dcf5ee87897d0e3cedd4c5bbdf6a520b518f7f36",
+    "state_bank_sha256": "6943d9b515202ea1538bf4868fbb2c97463c9a56c2589340c0acaee333b35ff5",
+    "evaluation": "reference and candidate executed on every frozen state in a private schema under a SELECT-only account; each refuting pair replayed in an independent fresh schema",
+    "evaluation_runs": {
+      "deepseek-coder-v2:latest": "sreb-university-2026-10-19",
+      "phi3.5:3.8b": "sreb-university-2026-10-19",
+      "qwen2.5:7b": "sreb-university-2026-10-19",
+      "qwen2.5-coder:7b": "sreb-university-2026-10-19"
+    }
+  },
+  "evidence": [
+    {
+      "model": "deepseek-coder-v2:latest",
+      "model_slug": "deepseek-coder-v2",
+      "model_digest": "63fb193b3a9b4322a18e8c6b250ca2e70a5ff531e962dbf95ba089b2566f2fa5",
+      "status": "refuted",
+      "candidate_sql": "SELECT c.id \nFROM courses c\nJOIN enrollments e ON c.id = e.course_id\nORDER BY c.id;",
+      "refuting_states": [
+        "fixed_0",
+        "multiplicity_0",
+        "random_uniform_0",
+        "random_uniform_1",
+        "random_uniform_2",
+        "random_uniform_3",
+        "random_uniform_4",
+        "random_uniform_5",
+        "random_uniform_7",
+        "random_uniform_8",
+        "random_uniform_10",
+        "random_uniform_11",
+        "random_uniform_12",
+        "random_uniform_13",
+        "random_uniform_14",
+        "random_uniform_15",
+        "random_uniform_16",
+        "random_uniform_17",
+        "random_uniform_18",
+        "random_uniform_19"
+      ],
+      "witness": {
+        "state": "fixed_0",
+        "state_profile": "fixed_0",
+        "reference_rows": [
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "candidate_rows": [
+          [
+            1
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            3
+          ]
+        ],
+        "interface_equal": true,
+        "independent_replay": "counterexample"
+      },
+      "checks": 28
+    },
+    {
+      "model": "phi3.5:3.8b",
+      "model_slug": "phi3.5-3.8b",
+      "model_digest": "61819fb370a3c1a9be6694869331e5f85f867a079e9271d66cb223acb81d04ba",
+      "status": "unsupported",
+      "candidate_sql": "SELECT c.id FROM courses c ORDER BY c.id\n\n(Note: The subquery is removed as it is not necessary for the desired output. The main query now directly selects from the courses table and orders by course ID, which should be efficient without the need for a subquery.)",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28,
+      "reason": "parse error: Expecting ). Line 3, Col: 6.\n  SELECT c.id FROM courses c ORDER BY c.id\n\n(Note\u001b[4m:\u001b[0m The subquery is removed as it is not necessary for the desired output. The main query now directly "
+    },
+    {
+      "model": "qwen2.5:7b",
+      "model_slug": "qwen2.5-7b",
+      "model_digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e",
+      "status": "preserved",
+      "candidate_sql": "SELECT c.id FROM courses c WHERE EXISTS (SELECT 1 FROM enrollments e WHERE e.course_id = c.id) ORDER BY c.id",
+      "refuting_states": [],
+      "witness": null,
+      "checks": 28
+    },
+    {
+      "model": "qwen2.5-coder:7b",
+      "model_slug": "qwen2.5-coder-7b",
+      "model_digest": "dae161e27b0e90dd1856c8bb3209201fd6736d8eb66298e75ed87571486f4364",
+      "status": "refuted",
+      "candidate_sql": "SELECT c.id FROM courses c JOIN enrollments e ON c.id = e.course_id ORDER BY c.id",
+      "refuting_states": [
+        "fixed_0",
+        "multiplicity_0",
+        "random_uniform_0",
+        "random_uniform_1",
+        "random_uniform_2",
+        "random_uniform_3",
+        "random_uniform_4",
+        "random_uniform_5",
+        "random_uniform_7",
+        "random_uniform_8",
+        "random_uniform_10",
+        "random_uniform_11",
+        "random_uniform_12",
+        "random_uniform_13",
+        "random_uniform_14",
+        "random_uniform_15",
+        "random_uniform_16",
+        "random_uniform_17",
+        "random_uniform_18",
+        "random_uniform_19"
+      ],
+      "witness": {
+        "state": "fixed_0",
+        "state_profile": "fixed_0",
+        "reference_rows": [
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "candidate_rows": [
+          [
+            1
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ],
+          [
+            3
+          ]
+        ],
+        "interface_equal": true,
+        "independent_replay": "counterexample"
+      },
+      "checks": 28
+    }
+  ]
+}
